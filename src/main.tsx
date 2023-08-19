@@ -5,15 +5,25 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
+import Login from "./pages/login/Login";
+
 
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <>
+		element:
+		<>
 			<Header />
 			<Home />
 		</>,
+	}, 
+	{
+		path: "/login",
+		element: 
+		<>
+			<Login />
+		</>
 	}
 ])
 

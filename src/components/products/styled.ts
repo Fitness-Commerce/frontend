@@ -13,7 +13,7 @@ export const Products = styled.section`
         button {
             font-size: 16px;
             font-weight: 700;
-            color: #47a1e5;
+            color: var(--color-accent-blue);
             background-color: transparent;
             border: none;
         }
@@ -49,8 +49,8 @@ export const ProductCard = styled.article`
         }
         .product-card__status {
             border-radius: 4px;
-            background-color: rgba(213, 243, 231);
-            color: rgb(19, 189, 126);
+            background-color: var(--color-accent-bright-green);
+            color: var(--color-accent-dark-green);
             display: inline-flex;
             justify-content: center;
             align-items: center;

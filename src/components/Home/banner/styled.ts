@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
 
 export const Banner = styled.div`
-    background-color: rgb(254, 246, 217);
+    /* background-color: transparent; */
+    background-color: var(--color-gray);
     width: 100%;
     height: 25vh;
     display: flex;

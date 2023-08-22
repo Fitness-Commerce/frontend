@@ -1,0 +1,24 @@
+<svg
+    width="20"
+    height="20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <g clipPath="url(#ic_arrow_mini_svg__a)">
+        <path
+            d="M12.866 4.583 7.083 9.908l5.783 5.334"
+            stroke="#000"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        ></path>
+    </g>
+    <defs>
+        <clipPath id="ic_arrow_mini_svg__a">
+            <path
+                fill="#fff"
+                transform="translate(6.667 4.167)"
+                d="M0 0h6.617v11.492H0z"
+            ></path>
+        </clipPath>
+    </defs>
+</svg>

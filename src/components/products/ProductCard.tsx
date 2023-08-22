@@ -2,7 +2,6 @@ import * as S from "./styled";
 
 
 const ProductCard = ({props}: IProductCardProps) => {
-    console.log(props);
     return (
         <S.ProductCard>
             <img src={props.item_images} alt={props.item_name} className="product-card__img" />

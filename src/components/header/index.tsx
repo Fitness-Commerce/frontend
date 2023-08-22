@@ -1,8 +1,17 @@
 import * as S from "./styled";
+
+import { useState } from "react";
+
+import LoginModal from "../login/LoginModal";
 // import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+
 
 const Header = () => {
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const onClickLogin = () => {
+        setIsLoginModalOpen(true);
+    }
+
     return (
         <S.Header>
             <div className="header__logo">
@@ -15,7 +24,10 @@ const Header = () => {
                 </form>
             </div>
             
-            <Link to="/login"><button className="header__login">Log in</button></Link>
+            <button className="header__login" onClick={ onClickLogin }>Log in</button>
+
+            {/* Login Modal */}
+            { isLoginModalOpen && <LoginModal setIsLoginModalOpen={ setIsLoginModalOpen } /> }
         </S.Header>
     );
 }

@@ -1,6 +1,6 @@
 import * as S from "./styled";
-import Banner from "../../components/Home/banner";
-import Nav from "../../components/Home/nav";
+import Banner from "./banner";
+import Nav from "./nav";
 import Products from "../../components/products";
 
 const Home = () => {

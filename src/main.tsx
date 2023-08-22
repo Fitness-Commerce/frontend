@@ -5,8 +5,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
-import Login from "./pages/login/Login";
-
 
 
 const router = createBrowserRouter([
@@ -16,13 +14,6 @@ const router = createBrowserRouter([
 		<>
 			<Header />
 			<Home />
-		</>,
-	}, 
-	{
-		path: "/login",
-		element: 
-		<>
-			<Login />
 		</>
 	}
 ])

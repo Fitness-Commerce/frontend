@@ -13,11 +13,28 @@ const GlobalStyles = createGlobalStyle`
         --color-accent-dark-green: rgb(19, 189, 126);
         --color-accent-blue: #47a1e5;
 
+        /* text */
+        --text-size-small: 12px;
+        --text-size-primary: 16px;
+        --text-size-medium: 18px;
+        --text-size-large: 24px;
+        
         /* button */
         --button-radius: 8px;
         --color-button-hover: rgb(56,56,56);
         --color-button-bg-black: var(--color-black-primary);
         
+        /* modal */
+        --modal-radius: 10px;
+
+        /* label */
+        --label-color: #a7a7a7;
+        --label-text-size: var(--text-size-small);
+        --label-font-weight: 300;
+
+        /* input */
+        --height-input: 48px;
+
         /* header height */
         --header-height: 8vh;
     }

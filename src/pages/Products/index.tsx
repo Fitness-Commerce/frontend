@@ -40,6 +40,8 @@ const Products = () => {
                     })}
                 </div>
             </S.Category>
+            {/* ViewLayoutButton를 ProductLayout에 넣지 않은 이유:
+                    메인페이지에선 ViewLayoutButton가 필요 없음 */}
             <ViewLayoutButton
                 isGridLayout={isGridLayout}
                 setGridLayout={setGridLayout}

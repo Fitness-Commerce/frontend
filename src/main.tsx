@@ -1,8 +1,9 @@
 import ReactDOM from "react-dom/client";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+
 import Home from "./pages/Home";
 import Products from "./pages/Products";
-
-import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import Community from "./pages/Community";
 
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
 			{
 				path: "products",
 				element: <Products />
+			},
+			{
+				path: "community",
+				element: <Community />
 			}
 		]
 	}

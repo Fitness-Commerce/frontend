@@ -13,7 +13,8 @@ import Navigation from "./components/Navigation";
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <>
+		element:
+		<>
 			<Header />
 			<Navigation />
 			<Outlet />

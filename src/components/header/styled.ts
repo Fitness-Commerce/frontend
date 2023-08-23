@@ -1,15 +1,13 @@
 import { styled } from "styled-components";
 
 export const Header = styled.header`
-    position: fixed;
     display: flex;
-    top: 0;
     width: 100%;
-    height: 10vh;
-    padding: 0 5vw;
+    height: var(--header-height);
+    padding: 50px 5vw;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
+    background-color: var(--color-bg-primary);
     
     .header__logo {
         display: flex;
@@ -21,7 +19,7 @@ export const Header = styled.header`
         }
         .header__logo-name {
             font-size: 1.5rem;
-            font-weight: 500;
+            font-weight: 700;
         }
     }
 
@@ -40,44 +38,39 @@ export const Header = styled.header`
                 border-radius: 6px;
                 padding: 2px 16px;
                 padding-right: 74px;
-                color: #303030;
-                background-color: #F4F4F4;
+                color: var(--color-text-black);
+                background-color: var(--color-gray);
                 font-size: 14px;
                 font-weight: 400;
                 border: none;
                 outline: none;
                 &:focus {
-                    box-shadow: 0 0 0 1px inset #ffe84a;
+                    box-shadow: 0 0 0 1px inset var(--color-bright-black);
+                    background-color: var(--color-bright-black);
+                    color: white;
+                    svg {
+                        
+                    }
                 }
-            }
-            button {
-                position: absolute;
-                outline: none;
-                border: none;
-                padding: 0;
-                background-color: transparent;
-            }
-            .header__search__form__button-remove {
-                fill: #ADADAD;
-                right: 40px;
-                opacity: 0;
-            }
-            .header__search__form__button-search {
-                right: 13px;
             }
         }
     }
     .header__login {
-        font-size: 12px;
-        font-weight: 700;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
         align-items: center;
         width: max-content;
         height: 44px;
-        padding: 6px 12px;
+        padding: 0 20px;
         border: 1px solid;
-        border-radius: 4px;
-        color: rgb(25,25,25);
-        background-color: transparent;
+        border-radius: var(--button-radius);
+        color: var(--color-white-primary);
+        background-color: var(--color-black-primary);
+        
+        &:hover {
+            background-color: var(--color-button-hover);
+        }
     }
 `;
 

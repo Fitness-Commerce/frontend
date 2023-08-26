@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
 // constance
@@ -6,6 +6,10 @@ import { KOREALOCATION } from "../../contance/koreaData.ts";
 
 // select range component
 import SelectRange from "./SelectRange.tsx";
+
+// Recoil
+import { rangeListAtom } from "../../recoil/signup/atom.ts";
+import { useRecoilState } from "recoil";
 
 
 const StyledSignUpForm = styled.div<IProps>`
@@ -61,11 +65,11 @@ const StyledSignUpForm = styled.div<IProps>`
                 width: 45%;
             }
             input {
-                border-bottom: ${props => props.isShowMessage ? '1px solid red;' : 'none;'}
+                border-bottom: ${props => props.isshowmessage === 'true' ? '1px solid red;' : 'none;'}
             }
 
             .password-lead {
-                opacity: ${props => props.isShowMessage ? 1 : 0};
+                opacity: ${props => props.isshowmessage === 'true' ? 1 : 0};
                 position: absolute;
                 bottom: 10px;
                 left: 50%;
@@ -81,9 +85,6 @@ const StyledSignUpForm = styled.div<IProps>`
             input::-webkit-inner-spin-button {
                 -webkit-appearance: none;
                 margin: 0;
-            }
-            input[type=number] {
-                -moz-appearance: textfield;
             }
         }
         
@@ -121,6 +122,11 @@ const StyledSignUpForm = styled.div<IProps>`
                     }
                 }
             }
+            #remove-range {
+                cursor: pointer;
+                border: none;
+                background-color: transparent;
+            }
         }
 
         /* 회원가입 제출 버튼 */
@@ -129,6 +135,7 @@ const StyledSignUpForm = styled.div<IProps>`
             color: var(--color-white-primary);
             padding: 1rem;
             margin-bottom: 1rem;
+            margin-top: 1rem;
             border: none;
             border-radius: var(--button-radius);
             outline: none;
@@ -142,7 +149,6 @@ const StyledSignUpForm = styled.div<IProps>`
 const SignUpForm = () => {
     // SignForm state
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [leadPassword, setLeadPassword] = useState(false);
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
@@ -155,15 +161,22 @@ const SignUpForm = () => {
     const [val2, setVal2] = useState("");
     const [val3, setVal3] = useState("");
     const { sido, sigugun, dong } = KOREALOCATION;
+    const [detailAddress, setDetailAddress] = useState("");
+
 
     // Area_range
-    const [selectRangeComponents, setSelectRangeComponents] = useState<JSX.Element[]>([]);
-    // const [areaRange, setAreaRange] = useState<string[]>([]);
+    const [selectRangeComponents, setSelectRangeComponents] = useState<JSX.Element[]>([]); // select 추가 담당
+    const [areaRangeList, setAreaRangeList] = useRecoilState(rangeListAtom);
+
 
     const onClickAddRange = () => {
         setSelectRangeComponents((prevComponents) => [
             ...prevComponents,
-            <SelectRange key={prevComponents.length} />
+            <SelectRange
+                key={prevComponents.length}
+                index={prevComponents.length}
+                setSelectRangeComponentsFn={setSelectRangeComponents}
+            />
         ])
     }
 
@@ -174,25 +187,31 @@ const SignUpForm = () => {
         address += sigugun.filter(e => e.sido === val1 && e.sigugun === val2)[0].codeNm + ' ';
         address += dong.filter(e => e.sido === val1 && e.sigugun === val2 && e.dong === val3)[0].codeNm;
 
-        // password check
-        if(password1 !== password2) {
-            setLeadPassword(true);
-            return;
-        }
-        setPassword(password1);
+        if(password1 !== password2) return;
 
-        return { 
-            email,
-            password, 
-            phoneNumber, 
-            username,
-            nickname, 
-            address 
-        };
+        const SignUpData = {
+            "email" : email,
+            "password" : password1,
+            "phoneNumber" : phoneNumber,
+            "username" : username,
+            "nickname" : nickname,
+            "address" : {
+                "front_address" : address,
+                "detailed_address" : detailAddress
+            },
+            "area_range" : areaRangeList
+        }
+        console.log(SignUpData);
     }
 
+    useEffect(() => {
+        return () => {
+            setAreaRangeList([]);
+        }
+    }, [])
+
     return (
-        <StyledSignUpForm isShowMessage={leadPassword}>
+        <StyledSignUpForm isshowmessage={`${leadPassword}`}>
             <h1>Sign Up</h1>
             <form onSubmit={onClickSubmit}>
 
@@ -217,9 +236,14 @@ const SignUpForm = () => {
                     <div>
                         <span className="form__label-wrapper"><label htmlFor="repeat-password">check password</label><span className="form__required">*</span></span>
                         <input
-                            type="password" required 
+                            type="password" required
                             placeholder="Repeat Password" id="repeat-password" 
-                            onChange={(e) => setPassword2(e.target.value)} 
+                            onChange={(e) => {
+                                setPassword2(e.target.value)
+                                if(password1 === e.target.value) {
+                                    setLeadPassword(false);
+                                } else setLeadPassword(true);
+                            }} 
                         />
                     </div>
                     <span className="password-lead">동일한 비밀번호를 입력해주세요</span>
@@ -228,7 +252,7 @@ const SignUpForm = () => {
 
                 {/* 전화번호 */}
                 <span className="form__label-wrapper"><label htmlFor="phone">휴대전화</label><span className="form__required">*</span></span>
-                <input 
+                <input
                     className="form__phone"
                     name="phone" type="number"
                     required inputMode="numeric"
@@ -289,6 +313,8 @@ const SignUpForm = () => {
                             ))}
                     </select>
                 </div>
+                <span className="form__label-wrapper"><label htmlFor="detail">상세주소</label></span>
+                <input type="text" name="detail" onChange={(e) => setDetailAddress(e.target.value)} value={detailAddress} />
 
                 {/* 거래가능 지역 추가 */}
                 <div className="form__range">
@@ -304,8 +330,6 @@ const SignUpForm = () => {
                     </div>
                 </div>
                 
-                
-                
                 {/* 제출하기 */}
                 <input className="form__input-submit" type="submit" value="제출하기" />
             </form>
@@ -316,5 +340,5 @@ const SignUpForm = () => {
 export default SignUpForm;
 
 interface IProps {
-    isShowMessage: boolean,
+    isshowmessage: string,
 }

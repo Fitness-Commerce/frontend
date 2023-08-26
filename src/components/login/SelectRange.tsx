@@ -1,30 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useSetRecoilState } from "recoil";
+import { rangeListAtom } from "../../recoil/signup/atom.ts";
+
+
 
 // constance
 import { KOREALOCATION } from "../../contance/koreaData.ts";
 
-const SelectRange = () => {
+interface ISelectRange {
+    index: number,
+    setSelectRangeComponentsFn: React.Dispatch<React.SetStateAction<JSX.Element[]>>
+}
+
+const SelectRange = ({index, setSelectRangeComponentsFn}: ISelectRange) => {
+    console.log(`ADD index: ${index}`);
     // Location
-    const [val1, setVal1] = useState("");
-    const [val2, setVal2] = useState("");
-    const [val3, setVal3] = useState("");
+    const [sidoState, setSidoState] = useState("");
+    const [sigugunState, setSigugunState] = useState("");
 
     const { sido, sigugun, dong } = KOREALOCATION;
 
-    
+    // Recoil
+    const setAreaRangeList = useSetRecoilState(rangeListAtom);
 
-    const onChangeLastSelect = () => {
-        let address = '';
-        address += sido.filter(e => e.sido === val1)[0].codeNm + ' ';
-        address += sigugun.filter(e => e.sido === val1 && e.sigugun === val2)[0].codeNm + ' ';
-        address += dong.filter(e => e.sido === val1 && e.sigugun === val2 && e.dong === val3)[0].codeNm;
-        console.log(address);
+    const onClickRemove = () => {
+        setSelectRangeComponentsFn((prev) => {
+            const temp = [...prev];
+            temp.splice(index, 1);
+            return temp;
+        })
     }
+
+    useEffect(() => {
+        return () => {
+            setAreaRangeList((prev) => {
+                const prevList = [...prev];
+                prevList.splice(index, 1);
+                return prevList;
+            })
+        }
+    }, []);
 
     return (
         <div className="form__address">
             {/* 시/도 선택 */}
-            <select name="sido" required onChange={(e) => setVal1(e.target.value)}>
+            <select name="sido" required onChange={(e) => setSidoState(e.target.value)}>
                 <option value="">선택</option>
                 {sido.map((el) => (
                     <option key={el.sido} value={el.sido}>
@@ -34,10 +55,10 @@ const SelectRange = () => {
             </select>
             
             {/* 시/군/구 선택 */}
-            <select required onChange={(e) => setVal2(e.target.value)}>
+            <select required onChange={(e) => setSigugunState(e.target.value)}>
                 <option value="">선택</option>
                 {sigugun
-                    .filter((el) => el.sido === val1)
+                    .filter((el) => el.sido === sidoState)
                     .map((el) => (
                         <option key={el.sigugun} value={el.sigugun}>
                             {el.codeNm}
@@ -47,18 +68,23 @@ const SelectRange = () => {
 
             {/* 동 선택 */}
             <select required onChange={(e) => {
-                setVal3(e.target.value);
-                onChangeLastSelect();
+                const temp = e.target.value;
+                let address = '';
+                address += sido.filter(e => e.sido === sidoState)[0].codeNm + ' ';
+                address += sigugun.filter(e => e.sido === sidoState && e.sigugun === sigugunState)[0].codeNm + ' ';
+                address += dong.filter(e => e.sido === sidoState && e.sigugun === sigugunState && e.dong === temp)[0].codeNm;
+                setAreaRangeList((prev) => [...prev, address]);
             }}>
                 <option value="">선택</option>
                 {dong
-                    .filter((el) => el.sido === val1 && el.sigugun === val2)
+                    .filter((el) => el.sido === sidoState && el.sigugun === sigugunState)
                     .map((el) => (
                         <option key={el.dong} value={el.dong}>
                             {el.codeNm}
                         </option>
                     ))}
             </select>
+            <button id="remove-range" onClick={onClickRemove}>🅧</button>
         </div>
     );
 }

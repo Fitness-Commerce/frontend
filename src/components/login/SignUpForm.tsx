@@ -4,6 +4,10 @@ import { styled } from "styled-components";
 // constance
 import { KOREALOCATION } from "../../contance/koreaData.ts";
 
+// select range component
+import SelectRange from "./SelectRange.tsx";
+
+
 const StyledSignUpForm = styled.div<IProps>`
     width: 100%;
     height: max-content;
@@ -17,17 +21,33 @@ const StyledSignUpForm = styled.div<IProps>`
         flex-direction: column;
         justify-content: space-between;
         input {
-            margin: 0px; 
+            margin: 0px;
             padding: 12px;
             margin-bottom: 2rem;
             border: none;
+            outline: none;
+        }
+        select {
+            outline: none;
+        }
+        .form__label-wrapper {
+            height: 1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
         }
         label {
             color: var(--label-color);
             font-size: var(--label-text-size);
             font-weight: var(--label-font-weight);
-            margin-bottom: 8px;
+            
             text-transform: uppercase;
+        }
+        .form__required {
+            color: red;
+            margin-left: .25rem;
+            font-size: var(--label-text-size);
+            font-weight: var(--label-font-weight);
         }
 
         /* password */
@@ -79,7 +99,28 @@ const StyledSignUpForm = styled.div<IProps>`
 
         /* range */
         .form__range {
-            
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            .form__range__label-wrapper {
+                display: flex;
+                margin-bottom: 8px;
+                .form__range__p {
+                    font-size: var(--label-text-size);
+                    font-weight: var(--label-font-weight);
+                    margin-left: 1rem;
+                    opacity: 0;
+                }
+                .form__range__label {
+                    color: black;
+                    &:hover ~ .form__range__p {
+                        opacity: 1;
+                    }
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
         }
 
         /* 회원가입 제출 버튼 */
@@ -115,6 +156,16 @@ const SignUpForm = () => {
     const [val3, setVal3] = useState("");
     const { sido, sigugun, dong } = KOREALOCATION;
 
+    // Area_range
+    const [selectRangeComponents, setSelectRangeComponents] = useState<JSX.Element[]>([]);
+    // const [areaRange, setAreaRange] = useState<string[]>([]);
+
+    const onClickAddRange = () => {
+        setSelectRangeComponents((prevComponents) => [
+            ...prevComponents,
+            <SelectRange key={prevComponents.length} />
+        ])
+    }
 
     const onClickSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -146,7 +197,7 @@ const SignUpForm = () => {
             <form onSubmit={onClickSubmit}>
 
                 {/* EMAIL */}
-                <label htmlFor="email">email</label>
+                <span className="form__label-wrapper"><label htmlFor="email">email</label><span className="form__required">*</span></span>
                 <input 
                     type="email" required 
                     placeholder="E-mail" id="email" 
@@ -156,7 +207,7 @@ const SignUpForm = () => {
                 {/* ID / PASSWORD */}
                 <div className="form__password">
                     <div>
-                        <label htmlFor="password">password</label>
+                        <span className="form__label-wrapper"><label htmlFor="password">password</label><span className="form__required">*</span></span>
                         <input 
                             type="password" required 
                             placeholder="Password" id="password" 
@@ -164,7 +215,7 @@ const SignUpForm = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="repeat-password">check password</label>
+                        <span className="form__label-wrapper"><label htmlFor="repeat-password">check password</label><span className="form__required">*</span></span>
                         <input
                             type="password" required 
                             placeholder="Repeat Password" id="repeat-password" 
@@ -176,7 +227,7 @@ const SignUpForm = () => {
                 
 
                 {/* 전화번호 */}
-                <label htmlFor="phone">휴대전화</label>
+                <span className="form__label-wrapper"><label htmlFor="phone">휴대전화</label><span className="form__required">*</span></span>
                 <input 
                     className="form__phone"
                     name="phone" type="number"
@@ -186,7 +237,7 @@ const SignUpForm = () => {
                 />
 
                 {/* 이름 */}
-                <label htmlFor="username">이름</label>
+                <span className="form__label-wrapper"><label htmlFor="username">이름</label><span className="form__required">*</span></span>
                 <input 
                     name="username" type="text" inputMode="text"
                     required placeholder="Username" 
@@ -194,7 +245,7 @@ const SignUpForm = () => {
                 />
 
                 {/* 닉네임 */}
-                <label htmlFor="nickname">닉네임</label>
+                <span className="form__label-wrapper"><label htmlFor="nickname">닉네임</label><span className="form__required">*</span></span>
                 <input 
                     name="nickname" type="text" 
                     required placeholder="Nickname" 
@@ -202,7 +253,7 @@ const SignUpForm = () => {
                 />
                 
                 {/* 주소 선택 */}
-                <label htmlFor="address">주소</label>
+                <span className="form__label-wrapper"><label htmlFor="address">주소</label><span className="form__required">*</span></span>
                 <div className="form__address">
                     {/* 시/도 선택 */}
                     <select name="sido" required onChange={(e) => setVal1(e.target.value)}>
@@ -213,7 +264,7 @@ const SignUpForm = () => {
                             </option>
                         ))}
                     </select>
-
+                    
                     {/* 시/군/구 선택 */}
                     <select required onChange={(e) => setVal2(e.target.value)}>
                         <option value="">선택</option>
@@ -238,6 +289,22 @@ const SignUpForm = () => {
                             ))}
                     </select>
                 </div>
+
+                {/* 거래가능 지역 추가 */}
+                <div className="form__range">
+                    <span className="form__range__label-wrapper">
+                        <label className="form__range__label" onClick={onClickAddRange}>거래지역 추가</label>
+                        <p className="form__range__p">로그인 후 회원 수정 페이지에서 추가 및 수정이 가능합니다.</p>
+                    </span>
+
+                    <div className="form__range__array-wrapper">
+                    {
+                        selectRangeComponents?.map((SelectComponent) => SelectComponent)
+                    }
+                    </div>
+                </div>
+                
+                
                 
                 {/* 제출하기 */}
                 <input className="form__input-submit" type="submit" value="제출하기" />

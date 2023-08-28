@@ -74,6 +74,7 @@ export const Wrapper = styled.div`
             filter: invert(50%);
         }
 
+        /* 거래 지역 */
         .trade__area-range {
             display: flex;
             align-items: center;
@@ -83,11 +84,13 @@ export const Wrapper = styled.div`
             color: var(--color-black-primary);
         }
 
+        /* 거래 버튼 컨테이너 */
         .trade__btn-container {
             display: flex;
             gap: 1rem;
             width: 100%;
 
+            /* 버튼 공통 속성 */
             .trade__consider-btn,
             .trade__chat-btn {
                 flex: 1 1 0%;

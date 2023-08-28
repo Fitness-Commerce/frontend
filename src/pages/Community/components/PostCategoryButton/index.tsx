@@ -7,7 +7,7 @@ interface PostCategoryButtonProps {
 const PostCategoryButton = ({children}: PostCategoryButtonProps) => {
     return ( 
         <S.Wrapper>
-            <button type="button" className="community__post-board-btn">
+            <button type="button" className="unset-btn community__post-board-btn">
                 {children}
             </button>
         </S.Wrapper>

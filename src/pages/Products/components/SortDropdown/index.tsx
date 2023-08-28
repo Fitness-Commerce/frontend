@@ -8,7 +8,7 @@ interface SortDropdownProps {
 function SortDropdown({ children }: SortDropdownProps) {
     return (
         <S.Wrapper>
-            <button type="button" className="products__category-dropdown">
+            <button type="button" className="unset-btn products__category-dropdown">
                 {children}
                 <img
                     className="products__category-dropdown__arrow-svg"

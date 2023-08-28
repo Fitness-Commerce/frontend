@@ -6,10 +6,10 @@ import PostList from "./PostList";
 
 //FIXME: 더미데이터
 // import { dummyPostList } from "../../../../../dummy";
-import fetchPostsList from "../../../../api/posts_api/fetchPostsList";
+import getPostsList from "../../../../api/posts_api/getPostsList";
 
 const PostsListLayout = () => {
-    const {data: postList, error, isLoading, isError } = useQuery(["postList"], fetchPostsList)
+    const {data: postList, error, isLoading, isError } = useQuery(["postList"], getPostsList)
 
     if(isLoading) {
         return <div>Loading...</div>

@@ -7,9 +7,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/api':{
-        target: "http://localhost:8080",
+        // 배포 URL
+        target: "http://52.78.248.147:8080/",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        // 로컬 URL
+        // target: "http://localhost:8080/",
       }
     }
   }

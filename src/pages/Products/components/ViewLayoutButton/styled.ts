@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
     .products__view-layout-btn {
         all: unset;
         display: inline-block;
+
         cursor: pointer;
     }
 `

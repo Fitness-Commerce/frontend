@@ -10,12 +10,16 @@ export const Products = styled.section`
             font-size: 24px;
             font-weight: bold;
         }
-        button {
+        .product__view-more-btn {
+            all: unset;
+
             font-size: 16px;
             font-weight: 700;
             color: var(--color-accent-blue);
             background-color: transparent;
             border: none;
+
+            cursor: pointer;
         }
     }
     .products__box {

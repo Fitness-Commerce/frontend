@@ -69,7 +69,7 @@ export const Header = styled.header`
         background-color: var(--color-black-primary);
         
         &:hover {
-            background-color: var(--color-button-hover);
+            background-color: var(--color-button-bg-hover);
         }
     }
 `;

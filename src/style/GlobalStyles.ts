@@ -42,7 +42,6 @@ const GlobalStyles = createGlobalStyle`
 
         /* padding */
         --padding-default: 16px;
-
     }
     html * {
         box-sizing: border-box;

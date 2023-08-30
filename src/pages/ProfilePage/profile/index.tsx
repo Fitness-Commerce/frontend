@@ -15,6 +15,7 @@ const Profile = () => {
     const phoneNumber = "010-9999-9999";
     const address = "빅토리아 아일랜드 헤네시스";
     const addressDetail = "택시승강장 채널 1";
+    const currentAreaRange = ["자유시장", "궁수 교육원", "마야의 집"];
     return (
         <S.Profile>
             <S.UserData className="box-shadow-default">
@@ -88,8 +89,32 @@ const Profile = () => {
 
                     {/* 거래가능 범위 */}
                     <div className="range">
-                        <span className="info-text">거래범위</span>
-                        <FontAwesomeIcon icon={faHandshake} />
+                        <div className="range__header">
+                            <span className="info-text">거래범위</span>
+                            <button className="modify-btn">추가 및 삭제</button>
+                        </div>
+                        
+                        <div className="range__current">
+                            <FontAwesomeIcon icon={faHandshake} />
+                            <div className="range__current__area-range">
+                            {
+                                currentAreaRange.map((location) => (
+                                    <span className="location-item">{location}</span>
+                                ))
+                            }
+                            {
+                                currentAreaRange.map((location) => (
+                                    <span className="location-item">{location}</span>
+                                ))
+                            }
+                            {
+                                currentAreaRange.map((location) => (
+                                    <span className="location-item">{location}</span>
+                                ))
+                            }
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </S.Residence>

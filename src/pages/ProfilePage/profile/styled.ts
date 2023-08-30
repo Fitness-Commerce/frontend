@@ -136,7 +136,33 @@ export const Residence = styled.div`
         .range {
             display: flex;
             flex-direction: column;
-            padding: var(--padding-default) 0;
+            padding-bottom: var(--padding-default);
+            .range__header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: var(--padding-default) 0;
+                span {
+                    margin-right: 1rem;
+                }
+            }
+            .range__current {
+                display: flex;
+                .range__current__area-range {
+                    /* 거래 지역 */
+                    .location-item {
+                        white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+                        display: inline-block; /* 아이템을 가로로 배치 */
+                        font-size: var(--text-size-small);
+                        margin-right: 10px;
+                        padding: 5px;
+                        margin-bottom: 5px;
+                        border-radius: 40px;
+                        background-color: var(--color-black-primary);
+                        color: var(--color-white-primary);
+                    }
+                }
+            }
         }
     }
 `;

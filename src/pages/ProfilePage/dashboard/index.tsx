@@ -1,6 +1,10 @@
+import * as S from "./styled";
+
 const Dashboard = () => {
     return (
-        <h1>Dashboard</h1>
+        <S.Dashboard>
+            <h1>Dashboard</h1>
+        </S.Dashboard>
     );
 }
 

@@ -1,6 +1,10 @@
+import * as S from "./styled";
+
 const Chat = () => {
     return (
-        <h1>chat</h1>
+        <S.Chat>
+            <h1>chat</h1>
+        </S.Chat>
     );
 }
 

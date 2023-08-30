@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Community from "./pages/Community";
 import Trade from "./pages/Trade";
+import ErrorPage from "./pages/Error";
 
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
             },
         ],
     },
+    {
+        path: "*",
+        element: <ErrorPage />
+    }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

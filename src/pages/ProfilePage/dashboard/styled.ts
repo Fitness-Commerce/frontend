@@ -8,4 +8,11 @@ export const Dashboard = styled.div`
     h1 {
         font-size: 100px;
     }
+
+    .test {
+        width: 100%;
+        height: 1000px;
+        background-color: aqua;
+        align-self: center;
+    }
 `;

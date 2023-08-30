@@ -7,6 +7,7 @@ import { RecoilRoot } from "recoil";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Community from "./pages/Community";
+import Trade from "./pages/Trade";
 
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
@@ -16,7 +17,14 @@ import Dashboard from "./pages/ProfilePage/dashboard";
 import Chat from "./pages/ProfilePage/chat";
 import Profile from "./pages/ProfilePage/profile";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+        },
+    },
+});
 
 const router = createBrowserRouter([
     {
@@ -41,7 +49,11 @@ const router = createBrowserRouter([
                 path: "community",
                 element: <Community />,
             },
-        ]
+            {
+                path: "trade",
+                element: <Trade />,
+            },
+        ],
     },
     {
         path: "/user",

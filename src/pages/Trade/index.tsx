@@ -1,4 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 import SideMarginWrapper from "../../style/SideMarginWrapper";
 import ImageSlide from "./components/ImageSlide";
@@ -15,6 +18,7 @@ import pastTimeCalculator from "../../util/pastTimeCalculator";
 
 // 매물 상세 페이지(거래 페이지)
 const Trade = () => {
+    const navigate = useNavigate();
     const {
         data: product,
         error,
@@ -28,13 +32,13 @@ const Trade = () => {
     });
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingSpinner />;
     }
 
     if (isError) {
-        const message =
-            error instanceof Error ? error.message : "An error occurred";
-        return <div>{message}</div>;
+        console.log(error);
+        
+        return navigate("error");
     }
 
     return (

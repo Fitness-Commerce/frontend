@@ -23,6 +23,7 @@ const SelectRange = ({index, setSelectRangeComponentsFn}: ISelectRange) => {
 
     // Recoil
     const setAreaRangeList = useSetRecoilState(rangeListAtom);
+    
 
     const onClickRemove = () => {
         setSelectRangeComponentsFn((prev) => {

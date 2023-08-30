@@ -13,6 +13,10 @@ import ErrorPage from "./pages/Error";
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
 import Navigation from "./components/Navigation";
+import ProfilePage from "./pages/ProfilePage";
+import Dashboard from "./pages/ProfilePage/dashboard";
+import Chat from "./pages/ProfilePage/chat";
+import Profile from "./pages/ProfilePage/profile";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -55,6 +59,29 @@ const router = createBrowserRouter([
     {
         path: "*",
         element: <ErrorPage />
+    },
+    {
+        path: "/user",
+        element: (
+            <>
+                <ProfilePage />
+            </>
+        ),
+        children: [
+            {
+                path: "profile",
+                element: <Profile />
+            },
+            {
+                path: "dashboard",
+                element: <Dashboard />
+            },
+            {
+                path: "chat",
+                element: <Chat />
+            }
+        ]
+
     }
 ]);
 

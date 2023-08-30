@@ -7,11 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api':{
-        // 배포 URL
         target: "http://52.78.248.147:8080/",
         changeOrigin: true,
-        // 로컬 URL
-        // target: "http://localhost:8080/",
       }
     }
   }

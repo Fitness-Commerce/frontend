@@ -94,7 +94,7 @@ export const Modal = styled.div`
         border: none;
         border-radius: var(--button-radius);
         &:hover {
-            background-color: var(--color-button-hover);
+            background-color: var(--color-button-bg-hover);
         }
     }
 `;

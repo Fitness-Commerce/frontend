@@ -41,7 +41,7 @@ const StyledLoginForm = styled.div`
             border-radius: var(--button-radius);
             outline: none;
             &:hover {
-                background-color: var(--color-button-hover);
+                background-color: var(--color-button-bg-hover);
             }
         }
     }

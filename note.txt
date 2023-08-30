@@ -1,17 +1,5 @@
-회원가입시 서버에 보낼 값 17일 기준
-{
-    "email" : "jungkt0x@naver.cm",
-    "password" : "12341234",
-    "phoneNumber" : "01022345678",
-    "username" : "정지원",
-    "nickname" : "닉네2임",
-    "role" : "USER",
-    "address" : {
-        "front_address" : "경기도 성남시 분당구",
-        "detailed_address" : "xxx동 xxx아파트 000-000"
-    },
-    "area_range" : ["경기도 용인시 수지구", "경기도 용인시 기흥구"]
-}
 
 # 로컬 mypage 브랜치를 원격 mypage 브랜치로 푸시 이때 원격 브랜치에 mypage를 생성해줌 
 git push origin mypage:mypage
+
+http://52.78.248.147:8080/

@@ -3,7 +3,8 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import { ILoginModalProp } from "./LoginModal";
 
-const StyledLoginForm = styled.div`
+
+const StyledLoginForm = styled.div<IShowError>`
     width: 100%;
     height: max-content;
     h1 {
@@ -47,6 +48,14 @@ const StyledLoginForm = styled.div`
                 background-color: var(--color-button-bg-hover);
             }
         }
+
+        /* 입력된 정보가 틀렸을 경우 */
+        .email {
+            border-bottom: ${props => props.email === 'true' ? "1px solid red" : "none"};
+        }
+        .password {
+            border-bottom: ${props => props.pass === 'true' ? "1px solid red" : "none"};
+        }
     }
 `;
 
@@ -54,35 +63,58 @@ const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
 
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    
+    // 잘못된 이메일, 패스워스 핸들링 
+    const [isShowEmailError, setIsShowEmailError] = useState(false);
+    const [isShowPassError, setIsShowPassError] = useState(false);
+
+
     const onClickLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const Data = {
             email: email,
             password: pass
         };
-        console.log(`Data: ${Data}`);
+        
         axios.post('api/auth/login', Data)
         .then((response) => {
-            console.log(response);
             setIsLoginModalOpen(false);
+            localStorage.setItem("jwt", response.data.accessToken);
         })
-        .catch(error => console.error(error));
+        .catch((error) => {
+            console.error(error);
+            const errMsg = error.response.data.message;
+            if(errMsg === "해당 이메일을 찾을 수 없습니다.") {
+                setIsShowEmailError(true);
+            }
+            if(errMsg === "비밀번호가 틀립니다.") {
+                setIsShowPassError(true);
+            }
+        });
     }
-
+    
     return (
-        <StyledLoginForm>
+        <StyledLoginForm email={`${isShowEmailError}`} pass={`${isShowPassError}`}>
             <h1>Log in</h1>
             <form onSubmit={onClickLogin}>
                 <label className="form__label-login">Email or Username</label>
-                <input className="form__input-login" type="email"
+                <input className="form__input-login email" type="email"
                     placeholder="Email or Username"
-                    onChange={(e) => {setEmail(e.target.value)}}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        setIsShowEmailError(() => {
+                            return false;            
+                        });
+                    }}
                 />
 
                 <label className="form__label-login">Password</label>
-                <input className="form__input-login" type="password"
+                <input className="form__input-login password" type="password"
                     placeholder="Password" 
-                    onChange={(e) => {setPass(e.target.value)}}
+                    onChange={(e) => {
+                        setPass(e.target.value);
+                        setIsShowPassError(false);
+                    }}
                 />
 
                 <span>
@@ -97,3 +129,8 @@ const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
 }
 
 export default LoginForm;
+
+interface IShowError {
+    email: string,
+    pass: string
+}

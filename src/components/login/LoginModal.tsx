@@ -58,7 +58,7 @@ const LoginModal = ({ setIsLoginModalOpen }: ILoginModalProp) => {
                 </div>
                 <div className="container__right">
                 {
-                    isLogin ? <LoginForm /> : <SignUpForm />
+                    isLogin ? <LoginForm setIsLoginModalOpen={setIsLoginModalOpen} /> : <SignUpForm setIsLoginModalOpen={setIsLoginModalOpen} />
                 }
                 </div>
             </div>
@@ -70,6 +70,6 @@ const LoginModal = ({ setIsLoginModalOpen }: ILoginModalProp) => {
 export default LoginModal;
 
 
-interface ILoginModalProp {
+export interface ILoginModalProp {
     setIsLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

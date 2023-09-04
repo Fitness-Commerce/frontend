@@ -4,7 +4,7 @@ import { useState } from "react";
 
 // components
 import LoginModal from "../login/LoginModal";
-// import ProfileIcon from "../profileIcon";
+import ProfileIcon from "../profileIcon";
 
 
 const Header = () => {
@@ -25,10 +25,10 @@ const Header = () => {
                     <input type="text" placeholder="찾고 싶은 헬스용품을 검색해 보세요" className="header__search__form__input" />
                 </form>
             </div>
-            
-            <button className="header__login" onClick={ onClickLogin }>Log in</button>
 
-            {/* <ProfileIcon /> */}
+        
+            <ProfileIcon /> : 
+            <button className="header__login" onClick={ onClickLogin }>Log in</button>
 
             {/* Login Modal */}
             { isLoginModalOpen && <LoginModal setIsLoginModalOpen={ setIsLoginModalOpen } /> }

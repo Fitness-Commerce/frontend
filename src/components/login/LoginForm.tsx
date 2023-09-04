@@ -1,4 +1,7 @@
+import axios from "axios";
+import { useState } from "react";
 import { styled } from "styled-components";
+import { ILoginModalProp } from "./LoginModal";
 
 const StyledLoginForm = styled.div`
     width: 100%;
@@ -47,16 +50,40 @@ const StyledLoginForm = styled.div`
     }
 `;
 
-const LoginForm = () => {
+const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
+
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
+    const onClickLogin = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const Data = {
+            email: email,
+            password: pass
+        };
+        console.log(`Data: ${Data}`);
+        axios.post('api/auth/login', Data)
+        .then((response) => {
+            console.log(response);
+            setIsLoginModalOpen(false);
+        })
+        .catch(error => console.error(error));
+    }
+
     return (
         <StyledLoginForm>
             <h1>Log in</h1>
-            <form>
+            <form onSubmit={onClickLogin}>
                 <label className="form__label-login">Email or Username</label>
-                <input className="form__input-login" type="email" placeholder="Email or Username" />
+                <input className="form__input-login" type="email"
+                    placeholder="Email or Username"
+                    onChange={(e) => {setEmail(e.target.value)}}
+                />
 
                 <label className="form__label-login">Password</label>
-                <input className="form__input-login" type="password" placeholder="Password" />
+                <input className="form__input-login" type="password"
+                    placeholder="Password" 
+                    onChange={(e) => {setPass(e.target.value)}}
+                />
 
                 <span>
                     <input className="form__input-checkbox" type="checkbox" id="remember-check" />

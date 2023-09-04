@@ -1,5 +1,4 @@
-
-# 로컬 mypage 브랜치를 원격 mypage 브랜치로 푸시 이때 원격 브랜치에 mypage를 생성해줌 
+# 로컬 mypage 브랜치를 원격 mypage 브랜치로 푸시 이때 원격 브랜치에 mypage를 생성해줌
 git push origin mypage:mypage
 
 http://52.78.248.147:8080/

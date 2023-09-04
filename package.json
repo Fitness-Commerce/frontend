@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "issue": "#13",
+  "issue": "#20",
 
   "scripts": {
     "dev": "vite",

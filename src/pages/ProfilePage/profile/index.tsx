@@ -98,18 +98,18 @@ const Profile = () => {
                             <FontAwesomeIcon icon={faHandshake} />
                             <div className="range__current__area-range">
                             {
-                                currentAreaRange.map((location) => (
-                                    <span className="location-item">{location}</span>
+                                currentAreaRange.map((location, index) => (
+                                    <span className="location-item" key={index}>{location}</span>
                                 ))
                             }
                             {
-                                currentAreaRange.map((location) => (
-                                    <span className="location-item">{location}</span>
+                                currentAreaRange.map((location, index) => (
+                                    <span className="location-item" key={index}>{location}</span>
                                 ))
                             }
                             {
-                                currentAreaRange.map((location) => (
-                                    <span className="location-item">{location}</span>
+                                currentAreaRange.map((location, index) => (
+                                    <span className="location-item" key={index}>{location}</span>
                                 ))
                             }
                             </div>

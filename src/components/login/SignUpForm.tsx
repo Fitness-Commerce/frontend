@@ -12,6 +12,7 @@ import { rangeListAtom } from "../../recoil/signup/atom.ts";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import { ILoginModalProp } from "./LoginModal.tsx";
+import { REGISTER } from "../../contance/endPoint.ts";
 
 
 const StyledSignUpForm = styled.div<IProps>`
@@ -205,7 +206,7 @@ const SignUpForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
             "area_range" : areaRangeList
         }
 
-        axios.post('/api/members/signup', SignUpData)
+        axios.post(REGISTER, SignUpData)
             .then((response) => {
                 console.log(response);
                 alert('정상적으로 회원가입 되었습니다.');
@@ -227,7 +228,7 @@ const SignUpForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
         return () => {
             setAreaRangeList([]);
         }
-    }, [])
+    }, [setAreaRangeList])
 
     return (
         <StyledSignUpForm isshowmessage={`${leadPassword}`}>

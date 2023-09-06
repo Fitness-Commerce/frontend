@@ -7,9 +7,15 @@ import { faAddressCard, faCommentDots } from "@fortawesome/free-regular-svg-icon
 import { faTableColumns } from "@fortawesome/free-solid-svg-icons";
 
 import profile from "../../assets/profile.jpeg";
+import { useLogout } from "../../hooks/useLogout";
+import { useEffect } from "react";
+import { useAxios } from "../../hooks/useAxios";
 
 
 const ProfilePage = () => {
+    const logout = useLogout();
+    const request = useAxios();
+    
     const url = useLocation().pathname.slice(1);
     let isAddNow = false;
     let location = '';
@@ -22,6 +28,18 @@ const ProfilePage = () => {
             location += url[i];
         }
     }
+    // FIXME TESTCODE 정상 작동 
+    // TODO 회원 단건 조회 엔드포인트 응답 400
+    // TODO 회원 전체 조회는 응답 200ok
+    useEffect(() => {
+        request.get('/api/members')
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    }, [request]);
 
     const nickname="닉네임";
     const email="jsj2505@gmail.com";
@@ -64,7 +82,7 @@ const ProfilePage = () => {
                 </S.Ul>
 
                 <div className="profile-page__left__logout">
-                    <span>로그아웃</span>
+                    <Link to="/"><span onClick={logout}>로그아웃</span></Link>
                 </div>
             </S.ProfilePageLeft>
 

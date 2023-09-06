@@ -2,6 +2,9 @@ import axios from "axios";
 import { useState } from "react";
 import { styled } from "styled-components";
 import { ILoginModalProp } from "./LoginModal";
+import { useSetRecoilState } from "recoil";
+import { isLogin } from "../../recoil/login/atom";
+import { LOGIN } from "../../contance/endPoint";
 
 
 const StyledLoginForm = styled.div<IShowError>`
@@ -60,7 +63,6 @@ const StyledLoginForm = styled.div<IShowError>`
 `;
 
 const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
-
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     
@@ -68,6 +70,7 @@ const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
     const [isShowEmailError, setIsShowEmailError] = useState(false);
     const [isShowPassError, setIsShowPassError] = useState(false);
 
+    const setIsLogin = useSetRecoilState(isLogin);
 
     const onClickLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -76,10 +79,11 @@ const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
             password: pass
         };
         
-        axios.post('api/auth/login', Data)
+        axios.post(LOGIN, Data)
         .then((response) => {
             setIsLoginModalOpen(false);
-            localStorage.setItem("jwt", response.data.accessToken);
+            localStorage.setItem("accessToken", response.data.accessToken);
+            setIsLogin(true);
         })
         .catch((error) => {
             console.error(error);

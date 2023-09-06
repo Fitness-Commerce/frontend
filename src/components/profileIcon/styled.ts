@@ -71,6 +71,7 @@ export const Profile = styled.div`
             padding: 1rem 0;
         }
         .ul-logout {
+            cursor: pointer;
             padding-top: 1rem;
             padding-bottom: 0;
             border-top: 0.1px solid gray;

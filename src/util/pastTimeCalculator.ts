@@ -1,4 +1,3 @@
-
 // 생성 시간에서 현재까지 지난 시간을 계산하여 "~일 전", "~시간 전" 같은 문자열 반환
 const pastTimeCalculator = (created_at: string) => {
     const parsed = Date.parse(created_at);

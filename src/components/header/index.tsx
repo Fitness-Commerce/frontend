@@ -2,12 +2,19 @@ import * as S from "./styled";
 
 import { useState } from "react";
 
+// Recoil
+import { useRecoilValue } from "recoil";
+import { isLogin } from "../../recoil/login/atom";
+
 // components
 import LoginModal from "../login/LoginModal";
 import ProfileIcon from "../profileIcon";
 
 
 const Header = () => {
+    // 로그인 로그아웃 위한 상태 값
+    const isLoggedIn = useRecoilValue(isLogin);
+
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     const onClickLogin = () => {
@@ -26,10 +33,10 @@ const Header = () => {
                 </form>
             </div>
 
-        
+            {isLoggedIn ?
             <ProfileIcon /> : 
-            <button className="header__login" onClick={ onClickLogin }>Log in</button>
-
+            <button className="header__login" onClick={ onClickLogin }>Log in</button>}       
+            
             {/* Login Modal */}
             { isLoginModalOpen && <LoginModal setIsLoginModalOpen={ setIsLoginModalOpen } /> }
         </S.Header>

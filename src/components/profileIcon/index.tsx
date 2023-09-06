@@ -1,11 +1,15 @@
 import * as S from "./styled";
 
-
 import profile from "../../assets/profile.jpeg";
+
 import { Link } from "react-router-dom";
+import { useLogout } from "../../hooks/useLogout";
+
 
 
 const ProfileIcon = () => {
+    const logout = useLogout();
+    
     return (
         <S.Profile>
             <div className="profile-wrapper">
@@ -28,7 +32,7 @@ const ProfileIcon = () => {
                         <Link to="/user/chat"><li className="ul-center__li-chat"><span>Chat</span></li></Link>
                     </ul>
                     <ul className="ul-logout">
-                        <li className="ul-logout__li-logout"><span>Log out</span></li>
+                        <li className="ul-logout__li-logout"><span onClick={logout}>Log out</span></li>
                     </ul>
                 </div>
             </div>

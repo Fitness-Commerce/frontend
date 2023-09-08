@@ -4,16 +4,16 @@ import { useState } from "react";
 
 // components
 import LoginModal from "../login/LoginModal";
-import ProfileIcon from "../profileIcon";
+// import ProfileIcon from "../profileIcon";
 
 
 const Header = () => {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     // TODO profile 컴포넌트를 위해 라인을 주석처리 해 놓음
-    // const onClickLogin = () => {
-    //     setIsLoginModalOpen(true);
-    // }
+    const onClickLogin = () => {
+        setIsLoginModalOpen(true);
+    }
 
     return (
         <S.Header>
@@ -28,9 +28,9 @@ const Header = () => {
             </div>
             
             {/* TODO  profile컴포넌트 작성을 위해 라인을 주석처리 해 놓음 */}
-            {/* <button className="header__login" onClick={ onClickLogin }>Log in</button> */}
+            <button className="header__login" onClick={ onClickLogin }>Log in</button>
 
-            <ProfileIcon />
+            {/* <ProfileIcon /> */}
 
             {/* Login Modal */}
             { isLoginModalOpen && <LoginModal setIsLoginModalOpen={ setIsLoginModalOpen } /> }

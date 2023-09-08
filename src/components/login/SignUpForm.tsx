@@ -192,6 +192,7 @@ const SignUpForm = () => {
         const SignUpData = {
             "email" : email,
             "password" : password1,
+            "role": "USER",
             "phoneNumber" : phoneNumber,
             "username" : username,
             "nickname" : nickname,
@@ -201,7 +202,8 @@ const SignUpForm = () => {
             },
             "area_range" : areaRangeList
         }
-        console.log(SignUpData);
+
+        return SignUpData;
     }
 
     useEffect(() => {

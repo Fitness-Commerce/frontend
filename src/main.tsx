@@ -9,6 +9,7 @@ import Products from "./pages/Products";
 import Community from "./pages/Community";
 import Trade from "./pages/Trade";
 import ErrorPage from "./pages/Error";
+import Post from "./pages/Post";
 
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
@@ -17,6 +18,15 @@ import ProfilePage from "./pages/ProfilePage";
 import Dashboard from "./pages/ProfilePage/dashboard";
 import Chat from "./pages/ProfilePage/chat";
 import Profile from "./pages/ProfilePage/profile";
+
+// FIXME: 테스트용
+import login from "./api/posts_api/login";
+import logout from "./api/posts_api/logout";
+import signup from "./api/posts_api/signup";
+import createCommunity from "./api/posts_api/createCummunity";
+import getMyProfile from "./api/posts_api/getMyProfile";
+
+
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -54,11 +64,29 @@ const router = createBrowserRouter([
                 path: "trade",
                 element: <Trade />,
             },
+            {
+                path: "post",
+                element: <Post />,
+            },
+            {
+                path: "test",
+                element: (
+                    <>
+                    <button type="button" onClick={login}>로그인</button>
+                    <button type="button" onClick={logout}>로그아웃</button>
+                    <button type="button" onClick={signup}>회원가입</button>
+                    <button type="button" onClick={createCommunity}>커뮤니티 생성</button>
+                    <button type="button" onClick={getMyProfile}>내 프로필</button>
+                    </>
+                ),
+            },
         ],
+        // errorElement: <ErrorPage />,
     },
     {
         path: "*",
-        element: <ErrorPage />
+        element: <ErrorPage />,
+        errorElement: <ErrorPage />,
     },
     {
         path: "/user",
@@ -70,19 +98,19 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "profile",
-                element: <Profile />
+                element: <Profile />,
             },
             {
                 path: "dashboard",
-                element: <Dashboard />
+                element: <Dashboard />,
             },
             {
                 path: "chat",
-                element: <Chat />
-            }
-        ]
-
-    }
+                element: <Chat />,
+            },
+        ],
+        errorElement: <ErrorPage />,
+    },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -1,16 +1,13 @@
 import axios from "axios";
 
-interface Post {
-    postId: number;
-    postTitle: string;
-    author: string;
-    viewCount: number;
-    created_at: string;
-}
-
-const getPostsList = async () => {
-    const res = await axios.get("/api/posts");
-    const newPostsList: Post[] = res.data;
+const getPostsList = async (
+    page: number,
+    size: number,
+    // orderBy: string,
+    // directrion: string
+) => {
+    const res = await axios.get(`/api/posts?page=${page}&size=${size}`);
+    const newPostsList = res.data;
     return newPostsList;
 };
 

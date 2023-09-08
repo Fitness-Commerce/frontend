@@ -1,4 +1,5 @@
 import * as S from "./styled";
+import logo from "../../assets/logo.png";
 
 import { useState } from "react";
 
@@ -24,7 +25,7 @@ const Header = () => {
     return (
         <S.Header>
             <div className="header__logo">
-                {/* <img src={logo} alt="header log" className="header__logo-img" /> */}
+                <img src={logo} alt="header log" className="header__logo-img logo" />
                 <h1 className="header__logo-name">헬스마켓+</h1>
             </div>
             <div className="header__search">

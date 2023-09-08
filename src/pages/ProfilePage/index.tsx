@@ -7,9 +7,12 @@ import { faAddressCard, faCommentDots } from "@fortawesome/free-regular-svg-icon
 import { faTableColumns } from "@fortawesome/free-solid-svg-icons";
 
 import profile from "../../assets/profile.jpeg";
+import logo from "../../assets/logo.png";
 import { useLogout } from "../../hooks/useLogout";
-import { useEffect } from "react";
 import { useAxios } from "../../hooks/useAxios";
+import { useQuery } from "@tanstack/react-query";
+import { GET_SELF_MEMBER } from "../../contance/endPoint";
+
 
 
 const ProfilePage = () => {
@@ -28,28 +31,29 @@ const ProfilePage = () => {
             location += url[i];
         }
     }
-    // FIXME TESTCODE 정상 작동 
-    // TODO 회원 단건 조회 엔드포인트 응답 400
-    // TODO 회원 전체 조회는 응답 200ok
-    useEffect(() => {
-        request.get('/api/members')
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.error(error);
-            })
-    }, [request]);
+    
+    // 처음 렌더시 유저 프로필 정보 가져오기
+    const { isLoading, error, data } = useQuery({
+        queryKey: ['myProfile'],
+        queryFn: () => request(GET_SELF_MEMBER)
+    })
 
-    const nickname="닉네임";
-    const email="jsj2505@gmail.com";
+    if(isLoading) return <>Loading...</>
+    if (error) return 'An error has occurred';
 
+    const nickname = data?.data.nickname;
+    const email = data?.data.email;
+
+    
     return (
         <S.ProfilePage>
             {/* profile page left side */}
             <S.ProfilePageLeft>
                 <span className="profile-page__left__title">
-                    <Link to="/">헬스마켓+</Link>    
+                    <Link to="/">
+                        <img src={logo} alt="logo" className="logo" />
+                        <span>헬스마켓+</span>
+                    </Link>
                 </span>
                 
                 <S.UserProfile>

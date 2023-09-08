@@ -19,6 +19,7 @@ const GlobalStyles = createGlobalStyle`
         --text-size-small: 12px;
         --text-size-primary: 16px;
         --text-size-medium: 18px;
+        --text-size-semiLarge: 20px;
         --text-size-large: 24px;
         
         /* button */
@@ -58,6 +59,11 @@ const GlobalStyles = createGlobalStyle`
             padding: var(--padding-default);
             box-shadow: 0 0 5px .1px;
         }
+        .logo {
+            width: 25px;
+            margin-right: 10px;
+        }
+        
     }
     a {
         text-decoration: none;

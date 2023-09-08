@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { Dispatch, ReactNode, SetStateAction, useEffect, useRef } from "react";
 import * as S from "./styled";
 
 import { useScrollLock } from "../../hooks/useScrollLock";
@@ -7,9 +7,12 @@ interface IModalProps {
     onClose: () => void,
     closeOnOutsideClick?: boolean,
     children: ReactNode,
+    // setter: 한 컴포넌트 내 여러모달창이 필요할 경우 각 모달을 띄울 상태 값을 변경해줄 setter
+    // 이후 모달이 닫힐 때 받은 setter를 이용해 각 상태값을 관리
+    setter?: Dispatch<SetStateAction<boolean>>
 }
 
-const Modal = ({ onClose, closeOnOutsideClick=true, children }: IModalProps) => {
+const Modal = ({ onClose, closeOnOutsideClick=true, children, setter }: IModalProps) => {
     const { lockScroll, unLockScroll } = useScrollLock();
     const modalRef = useRef<HTMLDivElement | null>(null);
     
@@ -32,11 +35,15 @@ const Modal = ({ onClose, closeOnOutsideClick=true, children }: IModalProps) => 
             return () => {
                 unLockScroll();
                 document.removeEventListener('mousedown', modalHandler);
+                if(setter) setter(false);
             }
         }
 
         // 모달이 제거되면 스크롤 잠금해제
-        return () => { unLockScroll(); }
+        return () => { 
+            unLockScroll(); 
+            if(setter) setter(false);
+        }
     });
 
     return (

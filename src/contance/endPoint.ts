@@ -11,11 +11,11 @@
 
 export const REGISTER = '/api/members/signup';
 export const LOGIN = '/api/auth/login';
-export const LOGOUT = '/api/auth/logout'
+export const LOGOUT = '/api/auth/logout';
 export const REFRESH_TOKEN = '/api/auth/token-refresh';
 export const UPDATE_PROFILE = '/api/members/myProfile';
 export const UPDATE_PASSWORD = '/api/members/myProfile/password';
-export const GET_SELF_MEMBER = '/api/members/mypage';
+export const GET_SELF_MEMBER = '/api/members/myProfile';
 export const GET_OTHER_MEMBER = '/api/members/';
 export const GET_ALL_MEMBERS = '/api/members';
 export const DELETE_MEMBER = '/api/members/myProfile';

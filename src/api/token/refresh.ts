@@ -1,36 +1,37 @@
 import axios from "axios";
 import { IAxios } from "../Axios";
-import { LOGOUT, REFRESH_TOKEN } from "../../contance/endPoint";
+import { REFRESH_TOKEN } from "../../contance/endPoint";
 
 
-export const refresh = async ({accessToken, setIsLogin}: IAxios) => {
-    await axios.get(
-        REFRESH_TOKEN,
-        {withCredentials: true},
-    )
-    .then((response) => {
-        console.log('refresh success!');
-        localStorage.setItem('accessToken', response.data.accessToken);
+const refresh = async ({accessToken, setIsLogin}: IAxios) => {
+    await axios.get(REFRESH_TOKEN, {
+        //config
+        headers: {
+            // header에 accessToken을 담아 보내준다.
+            Authorization: accessToken,
+        },
+        withCredentials: true, // cookie전송 허용
     })
-    .catch(() => {
-        // 만약 refreshToken으로 accessToken을 갱신하는데 실패하면
-        // refreshToken의 만료기간이 끝났음을 의미 로그아웃 처리해준다.
-        // 로그아웃 엔드포인트 요청
-        axios.post(LOGOUT, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-            withCredentials: true,
-            timeout: 10 * 1000,
-        })
-        .then((response) => {
-            // 로그아웃 요청 성공 -> 로그아웃 상태로 변경
-            if(response.status === 200) {
-                setIsLogin(false);
-            }
-        })
-        .catch((error) => {
-            return error;
-        })
+    .then((res) => {
+        console.log('accessToken재발급 성공');
+        localStorage.setItem('accessToken', res.data.accessToken);
+
+    }).catch(() => {
+        console.log('accessToken재발급 실패 -> 로그아웃 처리');
+        setIsLogin(false);
+        localStorage.removeItem('accessToken');
+        // axios.post(LOGOUT, {}, {
+        //     headers: {
+        //         Authorization: accessToken,
+        //     },
+        //     withCredentials: true,
+        // })
+        // .then(() => {
+        //     console.log('로그아웃 요청 성공');
+        // }).catch(() => {
+        //     console.log('로그아웃 요청 실패');
+        // })
     })
 }
+
+export default refresh;

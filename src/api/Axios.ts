@@ -1,5 +1,5 @@
 import axios from "axios";
-import { refresh } from "./token/refresh";
+import refresh from "./token/refresh";
 import { SetterOrUpdater } from "recoil";
 
 export interface IAxios {
@@ -12,7 +12,7 @@ export const Axios = ({accessToken, setIsLogin}: IAxios) => {
     const instance = axios.create({
         baseURL: "",
         headers: {
-            Authorization: `${accessToken}`,
+            Authorization: accessToken,
         },
         withCredentials: true,
         timeout: 10 * 1000,
@@ -21,16 +21,29 @@ export const Axios = ({accessToken, setIsLogin}: IAxios) => {
     // instance의 interceptors 구성
     instance.interceptors.response.use(
         (response) => {
+            console.log('요청 성공');
             return response;
         },
-        (error) => {
-            if(error.response.status === 401) {
-                // 해당 block은 accessToken의 만료기간이 끝났음을 의미
-                // refreshToken을 이용해 accessToken재발급 시도
-                return refresh({accessToken, setIsLogin});
+        async (error) => {
+            if(error.response.status !== null) {
+                switch (error.response.status) {
+                    case 401:
+                        console.log('유효하지 않은 토큰 전송됨 -> accessToken 재발급 시도중');
+                        await refresh({accessToken, setIsLogin});
+                        
+                        // 재 발급 후 기존 요청 재시도
+                        // eslint-disable-next-line no-case-declarations
+                        const originRequest = error.config;
+                        originRequest.headers.Authorization = localStorage.getItem('accessToken');
+                        return instance(originRequest);
+                    case 500:
+                        console.log('현재 알 수 없는 에러');
+                        break;
+                    default:
+                        console.error(error);
+                }
             }
-
-            return error;
+            return Promise.reject(error);
         }
     );
 

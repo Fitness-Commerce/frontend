@@ -23,6 +23,11 @@ export const ProfilePageLeft = styled.div`
         font-weight: bold;
         color: var(--color-black-primary);
         padding: 3rem 0;
+        a {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
     }
     .profile-page__left__logout {
         cursor: pointer;

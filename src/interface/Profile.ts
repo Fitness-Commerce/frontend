@@ -5,8 +5,16 @@ export interface IProfileData {
         nickname: string;
         phoneNumber: string;
         regidence: string;
-        address: object;
+        address: {
+            front_address: string,
+            detailed_address: string
+        };
         area_range: string[];
     },
     onClose: () => void;
+}
+
+export interface IIsCheck {
+    is_check: string;
+    lead_password?: string;
 }

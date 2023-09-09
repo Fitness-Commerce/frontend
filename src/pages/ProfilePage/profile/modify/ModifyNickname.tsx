@@ -1,14 +1,24 @@
 import { styled } from "styled-components";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
+
 import { useState } from "react";
-import { IProfileData } from "../../../../interface/Profile";
 import { useAxios } from "../../../../hooks/useAxios";
-import { UPDATE_PROFILE } from "../../../../contance/endPoint";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { IIsCheck, IProfileData } from "../../../../interface/Profile";
+import { VALIDATE_MEMBER_INFO, UPDATE_PROFILE } from "../../../../contance/endPoint";
 
 
-const StyledModifyNickname = styled.div`
+
+export const StyledModifyNickname = styled.div<IIsCheck>`
+    /* isCheck에 따른 확인버튼 스타일 */
+    .check-btn {
+        color: white;
+        background-color: ${props => props.is_check === 'true' ? 'gray' : 'var(--color-accent-dark-green)'};
+    }
+
+    /* 확인버튼을 클릭하지 않고 변경버튼을 누를시 보여질 상태안내문구 */
     .check-nickname {
         padding: 1rem;
         font-size: var(--text-size-small);
@@ -18,31 +28,57 @@ const StyledModifyNickname = styled.div`
 `;
 
 const ModifyNickname = ({data, onClose}: IProfileData) => {
-    const request = useAxios();
-
     // 변경하고자 하는 닉네임
     const [value, setValue] = useState("");
-
     // 닉네임 중복 체크 여부
     const [isCheck, setIsCheck] = useState(false);
     // 변경 버튼 클릭 여부
-    const [isClick, setIsClick] = useState(false);
+    const [isChange, setIsChange] = useState(false);
 
+    // 권한이 필요한 서버요청시 접근할 axios instance
+    const request = useAxios();
+    const queryClient = useQueryClient();
+
+    const updateNickname = () => request.put(UPDATE_PROFILE, {...data, nickname: value});
+    
+
+    // 데이터가 유효하지 않은 경우 다시 가져오도록 트리거
+    const mutationNickname = useMutation(updateNickname, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['myProfile']);
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+            console.log(error.response.data.message);
+        }
+    });
+
+    // 닉네임 중복 체크 요청
     const onClickCheck = () => {
-        // 닉네임 중복 체크 요청
-        // FIXME 이후 중복해당 사항 없음으로 성공 시 
         console.log(`변경하고자 하는 닉네임: ${value}`);
-        request.put(UPDATE_PROFILE, {...data, nickname: value});
-        setIsCheck(true);
+        if(value.length < 1) {
+            alert('닉네임은 1글자 이상이여야 합니다.');
+        }
+        request.put(VALIDATE_MEMBER_INFO, {...data, nickname: value})
+            .then((response) => {
+                console.log(response);
+                setIsCheck(true);
+            })
+            .catch((error) => {
+                console.error(error.response.data.message);
+            })
     }
 
-    const onCLickChange = () => {
-        setIsClick(true);
+    const onClickChange = () => {
+        setIsChange(true);
+        if(isCheck) {
+            mutationNickname.mutate();
+        }
     }
 
 
     return (
-        <StyledModifyNickname className="modify">
+        <StyledModifyNickname className="modify" is_check={`${isCheck}`}>
             {/* 수정 목록 알려줌 */}
             <h4 className="modify__header">
                 <div className="modify__header__container">
@@ -51,7 +87,6 @@ const ModifyNickname = ({data, onClose}: IProfileData) => {
                 </div>
             </h4>
 
-            {/* 현재 닉네임 */}
             <div className="current">
                 <FontAwesomeIcon icon={faStar} /> 
                 <strong>{data.nickname}</strong>
@@ -64,7 +99,10 @@ const ModifyNickname = ({data, onClose}: IProfileData) => {
                         id="nickname" 
                         placeholder="변경할 닉네임 입력" 
                         className="modify-input" 
-                        onChange={(e) => setValue(e.target.value)}
+                        onChange={(e) => {
+                            setValue(e.target.value);
+                            setIsCheck(false);
+                        }}
                     />
                     <button
                         className="check-btn"
@@ -79,7 +117,7 @@ const ModifyNickname = ({data, onClose}: IProfileData) => {
                 <p>변경된 닉네임은 헬스마켓+ 서비스내 본인이 작성한 게시물/상품 등 정보 대부분에 포함됩니다.</p>
             </div>
             
-            { !isCheck && isClick ? 
+            { !isCheck && isChange ? 
                 <div className="check-nickname">
                     <p>닉네임 중복확인을 진행해주세요.</p>
                 </div>
@@ -93,7 +131,7 @@ const ModifyNickname = ({data, onClose}: IProfileData) => {
                 }}>취소</span>
                 <span 
                     className="modify__footer__submit"
-                    onClick={onCLickChange}
+                    onClick={onClickChange}
                 >변경</span>
             </div>
             

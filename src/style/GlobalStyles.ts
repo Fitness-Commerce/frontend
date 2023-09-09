@@ -52,6 +52,13 @@ const GlobalStyles = createGlobalStyle`
         color: var(--color-black-primary);
         background-color: var(--color-white-primary);
         background-color: var(--color-profile-bg-white);
+        
+        /* input type number일 때 증감 버튼을 비활성화 */
+        input::-webkit-inner-spin-button {
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+        }
 
         .box-shadow-default {
             border: 1.5px solid var(--color-black-primary);
@@ -69,6 +76,7 @@ const GlobalStyles = createGlobalStyle`
         text-decoration: none;
         color: var(--color-black-primary);
     }
+    
 `;
 
 export default GlobalStyles;

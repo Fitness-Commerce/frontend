@@ -78,8 +78,12 @@ export const UserData = styled.div`
 
     /* 메일주소 */
     .user-data__email {
-        border-bottom: none;
+        border-bottom: 1px solid gray;
+    }
+    /* 패스워드 */
+    .user-data__password {
         padding-bottom: 0;
+        border: none;
     }
 `;
 
@@ -113,7 +117,7 @@ export const Residence = styled.div`
                 justify-content: space-between;
             
                 /* 주소가 적히는 곳 */
-                div {
+                .residence__address__data__show-location {
                     display: flex;
                     flex-direction: row;
                     line-height: 1.2;
@@ -142,9 +146,6 @@ export const Residence = styled.div`
                 justify-content: space-between;
                 align-items: center;
                 padding: var(--padding-default) 0;
-                span {
-                    margin-right: 1rem;
-                }
             }
             .range__current {
                 display: flex;

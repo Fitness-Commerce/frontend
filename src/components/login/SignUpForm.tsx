@@ -250,7 +250,12 @@ const SignUpForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
                         <input 
                             type="password" required 
                             placeholder="Password" id="password" 
-                            onChange={(e) => setPassword1(e.target.value)} 
+                            onChange={(e) => {
+                                setPassword1(e.target.value);
+                                if(password1 === e.target.value) {
+                                    setLeadPassword(false);
+                                } else setLeadPassword(true);
+                            }} 
                         />
                     </div>
                     <div>
@@ -259,7 +264,7 @@ const SignUpForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
                             type="password" required
                             placeholder="Repeat Password" id="repeat-password" 
                             onChange={(e) => {
-                                setPassword2(e.target.value)
+                                setPassword2(e.target.value);
                                 if(password1 === e.target.value) {
                                     setLeadPassword(false);
                                 } else setLeadPassword(true);

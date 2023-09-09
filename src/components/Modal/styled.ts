@@ -16,7 +16,7 @@ export const Modal = styled.div`
         border-radius: var(--button-radius);
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         display: flex;
-        flex-direction: column;
+        flex-direction: column; 
         align-items: flex-end;
     }
 
@@ -31,6 +31,7 @@ export const Modal = styled.div`
         padding-top: 1rem;
         padding-right: 1rem;
     }
+    
 
     .modify {
         line-height: 1.2;
@@ -82,8 +83,6 @@ export const Modal = styled.div`
             margin-left: 4px;
             border-radius: 4px;
             padding: 4px 8px;
-            color: white;
-            background-color: var(--color-accent-dark-green);
             border: none;
         }
     }    
@@ -93,7 +92,7 @@ export const Modal = styled.div`
         padding: 1rem;
     }
 
-    .modify__footer {
+    .modify__footer, .modify-address__footer {
         display: flex;
         flex-direction: row;
         left: 0;
@@ -106,7 +105,7 @@ export const Modal = styled.div`
             text-align: center;
             border-radius: 0px 0px 0px var(--button-radius);
         }
-        .modify__footer__submit {
+        .modify__footer__submit, .modify-address__footer__submit {
             cursor: pointer;
             width: 70%;
             background-color: var(--color-accent-dark-green);

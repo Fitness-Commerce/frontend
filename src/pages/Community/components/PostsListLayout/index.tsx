@@ -1,36 +1,39 @@
-import { useQuery } from "@tanstack/react-query"
-
 import * as S from "./styled";
 
 import PostList from "./PostList";
 
+import pastTimeCalculator from "../../../../util/pastTimeCalculator";
+
 //FIXME: 더미데이터
 // import { dummyPostList } from "../../../../../dummy";
-import getPostsList from "../../../../api/posts_api/getPostsList";
 
-const PostsListLayout = () => {
-    const {data: postList, error, isLoading, isError } = useQuery(["postList"], getPostsList)
+interface PostListLayoutProps {
+    postList: {
+        id: number;
+        memberId: number;
+        postCategoryId: number;
+        postImageUrl: string[];
+        title: string;
+        content: string;
+        viewCount: number;
+        createdAt: string;
+        updatedAt: string;
+ }[];
+}
 
-    if(isLoading) {
-        return <div>Loading...</div>
-    }
-
-    if(isError){
-        const message = (error instanceof Error) ? error.message : 'An error occurred';
-        return <div>{message}</div>
-    }
+const PostsListLayout = (props: PostListLayoutProps) => {
     
     return (
         <S.Wrapper>
-            {postList?.map((post) => {
+            {props.postList?.map((post) => {
                 return (
                     <PostList
-                        key={post.postId}
-                        postId={post.postId}
-                        postTitle={post.postTitle}
-                        author={post.author}
+                        key={post.id}
+                        id={post.id}
+                        title={post.title}
+                        author={post.memberId.toString()}
                         viewCount={post.viewCount}
-                        created_at={post.created_at}
+                        createdAt={pastTimeCalculator(post.createdAt)}
                     />
                 );
             })}

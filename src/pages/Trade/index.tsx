@@ -37,8 +37,8 @@ const Trade = () => {
 
     if (isError) {
         console.log(error);
-        
-        return navigate("error");
+        navigate("/error");
+        return;
     }
 
     return (

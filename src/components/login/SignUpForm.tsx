@@ -10,6 +10,9 @@ import SelectRange from "./SelectRange.tsx";
 // Recoil
 import { rangeListAtom } from "../../recoil/signup/atom.ts";
 import { useRecoilState } from "recoil";
+import axios from "axios";
+import { ILoginModalProp } from "./LoginModal.tsx";
+import { REGISTER } from "../../contance/endPoint.ts";
 
 
 const StyledSignUpForm = styled.div<IProps>`
@@ -146,7 +149,7 @@ const StyledSignUpForm = styled.div<IProps>`
     }
 `;
 
-const SignUpForm = () => {
+const SignUpForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
     // SignForm state
     const [email, setEmail] = useState("");
     const [leadPassword, setLeadPassword] = useState(false);
@@ -203,20 +206,35 @@ const SignUpForm = () => {
             "area_range" : areaRangeList
         }
 
-        return SignUpData;
+        axios.post(REGISTER, SignUpData)
+            .then((response) => {
+                console.log(response);
+                alert('정상적으로 회원가입 되었습니다.');
+                setIsLoginModalOpen(false);
+            })
+            .catch((error) => {
+                if(error.response.data.message === "잘못된 요청입니다.") {
+                    const obj = error.response.data;
+                    const key = Object.keys(obj.validation)[0];
+                    alert(obj.validation[key]);
+                }
+                else {
+                    alert(error.response.data.message);
+                }
+            });
     }
 
     useEffect(() => {
         return () => {
             setAreaRangeList([]);
         }
-    }, [])
+    }, [setAreaRangeList])
 
     return (
         <StyledSignUpForm isshowmessage={`${leadPassword}`}>
             <h1>Sign Up</h1>
             <form onSubmit={onClickSubmit}>
-
+ 
                 {/* EMAIL */}
                 <span className="form__label-wrapper"><label htmlFor="email">email</label><span className="form__required">*</span></span>
                 <input 

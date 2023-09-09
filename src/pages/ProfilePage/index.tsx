@@ -7,9 +7,18 @@ import { faAddressCard, faCommentDots } from "@fortawesome/free-regular-svg-icon
 import { faTableColumns } from "@fortawesome/free-solid-svg-icons";
 
 import profile from "../../assets/profile.jpeg";
+import logo from "../../assets/logo.png";
+import { useLogout } from "../../hooks/useLogout";
+import { useAxios } from "../../hooks/useAxios";
+import { useQuery } from "@tanstack/react-query";
+import { GET_SELF_MEMBER } from "../../contance/endPoint";
+
 
 
 const ProfilePage = () => {
+    const logout = useLogout();
+    const request = useAxios();
+    
     const url = useLocation().pathname.slice(1);
     let isAddNow = false;
     let location = '';
@@ -22,16 +31,29 @@ const ProfilePage = () => {
             location += url[i];
         }
     }
+    
+    // 처음 렌더시 유저 프로필 정보 가져오기
+    const { isLoading, error, data } = useQuery({
+        queryKey: ['myProfile'],
+        queryFn: () => request(GET_SELF_MEMBER)
+    })
 
-    const nickname="닉네임";
-    const email="jsj2505@gmail.com";
+    if(isLoading) return <>Loading...</>
+    if (error) return 'An error has occurred';
 
+    const nickname = data?.data.nickname;
+    const email = data?.data.email;
+
+    
     return (
         <S.ProfilePage>
             {/* profile page left side */}
             <S.ProfilePageLeft>
                 <span className="profile-page__left__title">
-                    <Link to="/">헬스마켓+</Link>    
+                    <Link to="/">
+                        <img src={logo} alt="logo" className="logo" />
+                        <span>헬스마켓+</span>
+                    </Link>
                 </span>
                 
                 <S.UserProfile>
@@ -64,7 +86,7 @@ const ProfilePage = () => {
                 </S.Ul>
 
                 <div className="profile-page__left__logout">
-                    <span>로그아웃</span>
+                    <Link to="/"><span onClick={logout}>로그아웃</span></Link>
                 </div>
             </S.ProfilePageLeft>
 

@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const loginState = atom({
-    key: "login",
-    default: "",
-});
+export const isLogin = atom({
+    key: 'isLogin',
+    default: localStorage.getItem('accessToken') != null
+})

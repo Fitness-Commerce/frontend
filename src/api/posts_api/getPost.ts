@@ -1,7 +1,7 @@
-import { Axios } from "./createPost";
+import axios from "axios";
 
 async function getPost(postId: string) {
-    const res = await Axios.get(`/api/posts/${postId}`);
+    const res = await axios.get(`/api/posts/${postId}`);
     const post = res.data;
     return post;
 }

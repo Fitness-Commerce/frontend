@@ -1,6 +1,13 @@
+import axios from "axios";
+import { useState } from "react";
 import { styled } from "styled-components";
+import { ILoginModalProp } from "./LoginModal";
+import { useSetRecoilState } from "recoil";
+import { isLogin } from "../../recoil/login/atom";
+import { LOGIN } from "../../contance/endPoint";
 
-const StyledLoginForm = styled.div`
+
+const StyledLoginForm = styled.div<IShowError>`
     width: 100%;
     height: max-content;
     h1 {
@@ -41,22 +48,78 @@ const StyledLoginForm = styled.div`
             border-radius: var(--button-radius);
             outline: none;
             &:hover {
-                background-color: var(--color-button-hover);
+                background-color: var(--color-button-bg-hover);
             }
+        }
+
+        /* 입력된 정보가 틀렸을 경우 */
+        .email {
+            border-bottom: ${props => props.email === 'true' ? "1px solid red" : "none"};
+        }
+        .password {
+            border-bottom: ${props => props.pass === 'true' ? "1px solid red" : "none"};
         }
     }
 `;
 
-const LoginForm = () => {
+const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
+    
+    // 잘못된 이메일, 패스워스 핸들링 
+    const [isShowEmailError, setIsShowEmailError] = useState(false);
+    const [isShowPassError, setIsShowPassError] = useState(false);
+
+    const setIsLogin = useSetRecoilState(isLogin);
+
+    const onClickLogin = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const Data = {
+            email: email,
+            password: pass
+        };
+        
+        axios.post(LOGIN, Data)
+        .then((response) => {
+            setIsLoginModalOpen(false);
+            localStorage.setItem("accessToken", response.data.accessToken);
+            setIsLogin(true);
+        })
+        .catch((error) => {
+            console.error(error);
+            const errMsg = error.response.data.message;
+            if(errMsg === "해당 이메일을 찾을 수 없습니다.") {
+                setIsShowEmailError(true);
+            }
+            if(errMsg === "비밀번호가 틀립니다.") {
+                setIsShowPassError(true);
+            }
+        });
+    }
+    
     return (
-        <StyledLoginForm>
+        <StyledLoginForm email={`${isShowEmailError}`} pass={`${isShowPassError}`}>
             <h1>Log in</h1>
-            <form>
+            <form onSubmit={onClickLogin}>
                 <label className="form__label-login">Email or Username</label>
-                <input className="form__input-login" type="email" placeholder="Email or Username" />
+                <input className="form__input-login email" type="email"
+                    placeholder="Email or Username"
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        setIsShowEmailError(() => {
+                            return false;            
+                        });
+                    }}
+                />
 
                 <label className="form__label-login">Password</label>
-                <input className="form__input-login" type="password" placeholder="Password" />
+                <input className="form__input-login password" type="password"
+                    placeholder="Password" 
+                    onChange={(e) => {
+                        setPass(e.target.value);
+                        setIsShowPassError(false);
+                    }}
+                />
 
                 <span>
                     <input className="form__input-checkbox" type="checkbox" id="remember-check" />
@@ -70,3 +133,8 @@ const LoginForm = () => {
 }
 
 export default LoginForm;
+
+interface IShowError {
+    email: string,
+    pass: string
+}

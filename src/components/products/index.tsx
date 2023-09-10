@@ -11,7 +11,7 @@ const Products = () => {
             <S.Products>
                 <div className="products__title">
                     <h3>최신매물</h3>
-                    <button>더보기</button>
+                    <button className="product__view-more-btn">더보기</button>
                 </div>
                 <div className="products__box">
                     <div>

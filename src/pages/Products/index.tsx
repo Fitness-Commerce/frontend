@@ -11,10 +11,12 @@ import ViewLayoutButton from "./components/ViewLayoutButton";
 //FIXME: 더미데이터
 import { dummyCategories, dummySortLabel } from "../../../dummy";
 
+
 const Products = () => {
     const [isGridLayout, setGridLayout] = useState<boolean>(true);
     return (
         <SideMarginWrapper>
+            {/* 테스트 코드 */}
             <S.Title>
                 <h3 className="products__title">최신 매물</h3>
             </S.Title>

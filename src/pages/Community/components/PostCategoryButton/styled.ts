@@ -1,18 +1,25 @@
+import { Link } from "react-router-dom";
+
 import { styled } from "styled-components";
 
 export const Wrapper = styled.li`
     display: flex;
     flex-basis: 12%;
-    
-    .community__post-board-btn {
-        all: unset;
+
+    .community__post-category-btn {
+        display: flex;
         width: 100%;
         padding: 8px 24px;
         background-color: #000;
-        color: #fff;
-        border-radius: 8px;
 
-        text-align: center;
-        cursor: pointer;
+        &:hover {
+            filter: brightness(80%);
+        }
     }
-`
+`;
+
+export const CategoryLink = styled(Link)`
+    flex-shrink: 0;
+    color: #fff;
+    text-align: center;
+`;

@@ -14,7 +14,6 @@ interface ISelectRange {
 }
 
 const SelectRange = ({index, setSelectRangeComponentsFn}: ISelectRange) => {
-    console.log(`ADD index: ${index}`);
     // Location
     const [sidoState, setSidoState] = useState("");
     const [sigugunState, setSigugunState] = useState("");
@@ -23,6 +22,7 @@ const SelectRange = ({index, setSelectRangeComponentsFn}: ISelectRange) => {
 
     // Recoil
     const setAreaRangeList = useSetRecoilState(rangeListAtom);
+    
 
     const onClickRemove = () => {
         setSelectRangeComponentsFn((prev) => {

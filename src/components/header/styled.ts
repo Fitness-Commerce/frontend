@@ -12,11 +12,7 @@ export const Header = styled.header`
     .header__logo {
         display: flex;
         align-items: center;
-        .header__logo-img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
+        
         .header__logo-name {
             font-size: 1.5rem;
             font-weight: 700;
@@ -69,7 +65,7 @@ export const Header = styled.header`
         background-color: var(--color-black-primary);
         
         &:hover {
-            background-color: var(--color-button-hover);
+            background-color: var(--color-button-bg-hover);
         }
     }
 `;

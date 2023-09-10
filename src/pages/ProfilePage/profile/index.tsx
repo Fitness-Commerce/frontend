@@ -18,6 +18,7 @@ import ModifyNickname from "./modify/ModifyNickname";
 import ModifyPhoneNumber from "./modify/ModifyPhoneNumber";
 import ModifyPassword from "./modify/ModifyPassword";
 import ModifyAddress from "./modify/ModifyAddress";
+import ModifyRange from "./modify/ModifyRange";
 
 
 
@@ -30,6 +31,8 @@ const Profile = () => {
     const [isModifyPhoneNumber, setIsModifyPhoneNumber] = useState(false); // 전화번호 수정
     const [isModifyPassword, setIsModifyPassword] = useState(false); // 비밀번호 수정
     const [isModifyAddress, setIsModifyAddress] = useState(false) // 주소 수정
+    const [isModifyRange, setIsModifyRange] = useState(false); // 거래가능 지역 수정
+
 
     // 처음 렌더시 유저 프로필 정보 가져오기
     const { isLoading, error, data } = useQuery({
@@ -167,7 +170,16 @@ const Profile = () => {
                     <div className="range">
                         <div className="range__header">
                             <span className="info-text">거래범위</span>
-                            <button className="modify-btn">추가 및 삭제</button>
+                            <button className="modify-btn" onClick={() => {
+                                openModal();
+                                setIsModifyRange(true);
+                            }}>추가 및 삭제</button>
+                            {isOpen && isModifyRange ?
+                                <Modal onClose={closeModal} setter={setIsModifyRange}>
+                                    <ModifyRange data={data?.data} range={data?.data.area_range} onClose={closeModal} />
+                                </Modal>
+                                : null
+                            }
                         </div>
 
                         <div className="range__current">

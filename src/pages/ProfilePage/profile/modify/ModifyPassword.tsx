@@ -85,9 +85,8 @@ const ModifyPassword = ({data, onClose}: IProfileData) => {
             queryClient.invalidateQueries(['myProfile']);
             alert("정상적으로 비밀번호가 변경되었습니다.");
         },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onError: (error: any) => {
-            console.log(error.response.data.message);
+        onError: (error) => {
+            console.error(error);
         }
     });
 

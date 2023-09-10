@@ -47,9 +47,8 @@ const ModifyNickname = ({data, onClose}: IProfileData) => {
         onSuccess: () => {
             queryClient.invalidateQueries(['myProfile']);
         },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onError: (error: any) => {
-            console.log(error.response.data.message);
+        onError: (error) => {
+            console.error(error);
         }
     });
 
@@ -87,6 +86,7 @@ const ModifyNickname = ({data, onClose}: IProfileData) => {
                 </div>
             </h4>
 
+            {/* 현재 닉네임 */}
             <div className="current">
                 <FontAwesomeIcon icon={faStar} /> 
                 <strong>{data.nickname}</strong>
@@ -114,7 +114,7 @@ const ModifyNickname = ({data, onClose}: IProfileData) => {
 
             {/* 닉네임 설명 */}
             <div className="description">
-                <p>변경된 닉네임은 헬스마켓+ 서비스내 본인이 작성한 게시물/상품 등 정보 대부분에 포함됩니다.</p>
+                <p>변경된 닉네임은 헬스마켓+ 서비스 내 본인이 작성한 게시물/상품 등 정보 대부분에 포함됩니다.</p>
             </div>
             
             { !isCheck && isChange ? 

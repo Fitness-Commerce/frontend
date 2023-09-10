@@ -66,6 +66,7 @@ const GlobalStyles = createGlobalStyle`
             padding: var(--padding-default);
             box-shadow: 0 0 5px .1px;
         }
+        
         .logo {
             width: 25px;
             margin-right: 10px;

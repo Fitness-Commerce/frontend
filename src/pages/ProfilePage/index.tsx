@@ -19,8 +19,6 @@ const ProfilePage = () => {
     const logout = useLogout();
     const request = useAxios();
 
-    
-
     const url = useLocation().pathname.slice(1);
     let isAddNow = false;
     let location = '';

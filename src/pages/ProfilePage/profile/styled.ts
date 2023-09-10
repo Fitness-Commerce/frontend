@@ -20,14 +20,13 @@ export const Profile = styled.div`
     }
     .modify-btn {
         cursor: pointer;
-        border: 1px solid gray;
+        border: 1px solid black;
         border-radius: 4px;
-        color: var(--color-black-primary);
-        background-color: var(--color-white-primary);
+        color: white;
+        background-color: rgb(116,116,116);
+        font-weight: 100;
         &:hover {
-            color: var(--color-white-primary);
-            font-weight: 100;
-            background-color: var(--color-black-primary);
+            background-color: rgb(80,80,80);
         }
     }
 `;
@@ -152,15 +151,15 @@ export const Residence = styled.div`
                 .range__current__area-range {
                     /* 거래 지역 */
                     .location-item {
-                        white-space: nowrap; /* 텍스트를 한 줄로 유지 */
-                        display: inline-block; /* 아이템을 가로로 배치 */
+                        white-space: nowrap;
+                        display: inline-block;
                         font-size: var(--text-size-small);
                         margin-right: 10px;
                         padding: 5px;
                         margin-bottom: 5px;
-                        border-radius: 40px;
-                        background-color: var(--color-black-primary);
-                        color: var(--color-white-primary);
+                        border-radius: 5px;
+                        border: 1px solid black;
+                        color: var(--color-black-primary);
                     }
                 }
             }

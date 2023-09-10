@@ -11,6 +11,7 @@ export interface IProfileData {
         };
         area_range: string[];
     },
+    range?: string[],
     onClose: () => void;
 }
 

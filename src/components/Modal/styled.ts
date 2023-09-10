@@ -36,10 +36,13 @@ export const Modal = styled.div`
     .modify {
         line-height: 1.2;
         color: black;
-        width: 300px;
         height: max-content;
+        width: 300px;
         font-size: var(--text-size-semiLarge);  
         font-weight: 300;
+    }
+    .address-modify {
+        width: 350px;
     }
     .bold {
         font-weight: bold;

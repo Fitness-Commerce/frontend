@@ -42,9 +42,8 @@ const ModifyPhoneNumber = ({data, onClose}: IProfileData) => {
         onSuccess: () => {
             queryClient.invalidateQueries(['myProfile']);
         },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onError: (error: any) => {
-            console.log(error.response.data.message);
+        onError: (error) => {
+            console.error(error);
         }
     })
 

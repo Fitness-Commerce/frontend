@@ -1,13 +1,9 @@
 import * as S from "./styled";
 
-interface CategoryButtonProps {
-    children: string;
-}
-
-function CategoryButton({ children }: CategoryButtonProps) {
+function CategoryButton({title}: {title: string}) {
     return (
         <S.Wrapper>
-            <button type="button" className="products__category-btn">{children}</button>
+            <button type="button" className="products__category-btn">{title}</button>
         </S.Wrapper>
     );
 }

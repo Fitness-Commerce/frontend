@@ -19,3 +19,5 @@ export const GET_SELF_MEMBER = '/api/members/myProfile';
 export const GET_OTHER_MEMBER = '/api/members/';
 export const GET_ALL_MEMBERS = '/api/members';
 export const DELETE_MEMBER = '/api/members/myProfile';
+export const CATEGORIES = "/api/categories"
+export const ITEMS = "/api/items"

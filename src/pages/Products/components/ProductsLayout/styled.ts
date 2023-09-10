@@ -17,12 +17,12 @@ export const Wrapper = styled.section<WrapperProps>`
             case true:
                 return css`
                     flex-wrap: wrap;
-                    flex-direction: row-reverse;
+                    flex-direction: row;
                 `;
             default:
                 return css`
                     flex-wrap: nowrap;
-                    flex-direction: column-reverse;
+                    flex-direction: column;
                 `;
         }
     }}

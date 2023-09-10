@@ -32,6 +32,9 @@ export const PostList = styled.li`
     .post-list__author {
         span {
             cursor: pointer;
+            &:hover{
+                text-decoration: underline;
+            }
         }
     }
 `

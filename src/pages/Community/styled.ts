@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 
+
 export const CommunityTitle = styled.div`
     display: flex;
     width: 100%;

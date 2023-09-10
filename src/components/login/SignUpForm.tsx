@@ -195,10 +195,10 @@ const SignUpForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
         const SignUpData = {
             "email" : email,
             "password" : password1,
+            "role": "USER",
             "phoneNumber" : phoneNumber,
             "username" : username,
             "nickname" : nickname,
-            "role": "USER",
             "address" : {
                 "front_address" : address,
                 "detailed_address" : detailAddress

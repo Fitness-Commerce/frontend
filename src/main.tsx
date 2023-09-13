@@ -7,7 +7,7 @@ import { RecoilRoot } from "recoil";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Community from "./pages/Community";
-// import Trade from "./pages/Trade";
+import Trade from "./pages/Trade";
 import ErrorPage from "./pages/Error";
 import Post from "./pages/Post";
 
@@ -82,7 +82,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "trade",
-                // element: <Trade />,
+                element: <Trade />,
             },
             {
                 path: "post",

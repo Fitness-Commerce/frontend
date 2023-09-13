@@ -18,33 +18,36 @@ import { GET_SELF_MEMBER } from "../../contance/endPoint";
 const ProfilePage = () => {
     const logout = useLogout();
     const request = useAxios();
-    
+
     const url = useLocation().pathname.slice(1);
     let isAddNow = false;
     let location = '';
-    for(let i=0; i<url.length; i++) {
-        if(url[i] === "/") {
+    for (let i = 0; i < url.length; i++) {
+        if (url[i] === "/") {
             isAddNow = true;
             continue;
         }
-        if(isAddNow) {
+        if (isAddNow) {
             location += url[i];
         }
     }
-    
+
     // 처음 렌더시 유저 프로필 정보 가져오기
     const { isLoading, error, data } = useQuery({
         queryKey: ['myProfile'],
         queryFn: () => request(GET_SELF_MEMBER)
     })
 
-    if(isLoading) return <>Loading...</>
-    if (error) return 'An error has occurred';
+    
+
+
+    if (isLoading) return <>Loading...</>
+    if (error) return <>An error has occurred</>;
 
     const nickname = data?.data.nickname;
     const email = data?.data.email;
 
-    
+
     return (
         <S.ProfilePage>
             {/* profile page left side */}
@@ -55,7 +58,7 @@ const ProfilePage = () => {
                         <span>헬스마켓+</span>
                     </Link>
                 </span>
-                
+
                 <S.UserProfile>
                     <img src={profile} alt="profile-img" />
                     <span className="nickname">{nickname}</span>

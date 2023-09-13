@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../hooks/useAuth";
 
 import ReactQuill from "react-quill";
 
@@ -13,6 +14,8 @@ import getPostCategories from "../../api/posts_api/getPostCategories";
 
 import base64toFile from "../../util/base64toFile";
 import calculateNumber from "../../util/calculateNumber";
+
+import { IpostCategories } from "../../api/posts_api/getPostCategories";
 
 import * as S from "./styled";
 
@@ -28,6 +31,8 @@ interface PostFormProps {
 
 const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
     const navigate = useNavigate();
+    const excuteCreatePost = useAuth(createPost);
+    const excutePutPost = useAuth(putPost)
     // FIXME: community 페이지하고 비동기 요청 겹침 => 로그인 할 때 목록 받아와야됨
     const {
         data: postCategries,
@@ -93,8 +98,8 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
             const postRequestCall = async () => {
                 try {
                     const postId = modify
-                        ? await putPost(formData, modify.id)
-                        : await createPost(formData);
+                        ? await excutePutPost(formData, modify.id)
+                        : await excuteCreatePost(formData);
 
                     navigate(`/post?post-id=${postId}`);
                 } catch (err) {
@@ -120,7 +125,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
                     value={modify?.category}
                     required
                 >
-                    {postCategries.map((category) => {
+                    {postCategries.map((category: IpostCategories) => {
                         return (
                             <option value={category.title} key={category.id}>
                                 {category.title}

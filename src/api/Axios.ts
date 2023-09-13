@@ -21,7 +21,6 @@ export const Axios = ({accessToken, setIsLogin}: IAxios) => {
     // instance의 interceptors 구성
     instance.interceptors.response.use(
         (response) => {
-            console.log('요청 성공');
             return response;
         },
         async (error) => {
@@ -40,7 +39,7 @@ export const Axios = ({accessToken, setIsLogin}: IAxios) => {
                         console.log('현재 알 수 없는 에러');
                         break;
                     default:
-                        console.error(error);
+                        return error;
                 }
             }
             return Promise.reject(error);

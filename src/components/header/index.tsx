@@ -2,6 +2,7 @@ import * as S from "./styled";
 import logo from "../../assets/logo.png";
 
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 // Recoil
 import { useRecoilValue } from "recoil";
@@ -13,6 +14,7 @@ import ProfileIcon from "../profileIcon";
 
 
 const Header = () => {
+    const navigate = useNavigate();
     // 로그인 로그아웃 위한 상태 값
     const isLoggedIn = useRecoilValue(isLogin);
 
@@ -24,7 +26,7 @@ const Header = () => {
 
     return (
         <S.Header>
-            <div className="header__logo">
+            <div className="header__logo" onClick={() => navigate("/")}>
                 <img src={logo} alt="header log" className="header__logo-img logo" />
                 <h1 className="header__logo-name">헬스마켓+</h1>
             </div>

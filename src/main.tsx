@@ -7,9 +7,9 @@ import { RecoilRoot } from "recoil";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Community from "./pages/Community";
-// import Trade from "./pages/Trade";
 import ErrorPage from "./pages/Error";
 import Post from "./pages/Post";
+import Trade from "./pages/Trade";
 
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
@@ -26,27 +26,6 @@ import Profile from "./pages/ProfilePage/profile";
 // import createCommunity from "./api/test_api/createCummunity";
 // import getMyProfile from "./api/test_api/getMyProfile";
 // import refresh from "./api/test_api/refresh";
-
-// FIXME: 테스트용
-// axios.defaults.headers.common["Authorization"] =
-//     localStorage.getItem("accessToken");
-
-// axios.interceptors.response.use(
-//     (res) => res,
-//     async (err) => {
-//         const originRequest = err.config;
-//         if (err.response.status === 401 && !originRequest._retry) {
-//             originRequest._retry = true;
-
-//             try {
-//                 originRequest.headers["Authorization"] = await refresh();
-//                 return axios(originRequest);
-//             } catch (err) {
-//                 console.log(err);
-//             }
-//         }
-//     }
-// );
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -82,7 +61,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "trade",
-                // element: <Trade />,
+                element: <Trade />,
             },
             {
                 path: "post",
@@ -92,15 +71,6 @@ const router = createBrowserRouter([
             //     path: "test",
             //     element: (
             //         <>
-            //             <button type="button" onClick={login}>
-            //                 로그인
-            //             </button>
-            //             <button type="button" onClick={logout}>
-            //                 로그아웃
-            //             </button>
-            //             <button type="button" onClick={signup}>
-            //                 회원가입
-            //             </button>
             //             <button type="button" onClick={createCommunity}>
             //                 커뮤니티 생성
             //             </button>

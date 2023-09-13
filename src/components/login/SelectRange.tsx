@@ -14,7 +14,6 @@ interface ISelectRange {
 }
 
 const SelectRange = ({index, setSelectRangeComponentsFn}: ISelectRange) => {
-    console.log(`ADD index: ${index}`);
     // Location
     const [sidoState, setSidoState] = useState("");
     const [sigugunState, setSigugunState] = useState("");

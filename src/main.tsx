@@ -19,13 +19,6 @@ import Dashboard from "./pages/ProfilePage/dashboard";
 import Chat from "./pages/ProfilePage/chat";
 import Profile from "./pages/ProfilePage/profile";
 
-// FIXME: 테스트용
-// import login from "./api/test_api/login";
-// import logout from "./api/test_api/logout";
-// import signup from "./api/test_api/signup";
-// import createCommunity from "./api/test_api/createCummunity";
-// import getMyProfile from "./api/test_api/getMyProfile";
-// import refresh from "./api/test_api/refresh";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -67,19 +60,6 @@ const router = createBrowserRouter([
                 path: "post",
                 element: <Post />,
             },
-            // {
-            //     path: "test",
-            //     element: (
-            //         <>
-            //             <button type="button" onClick={createCommunity}>
-            //                 커뮤니티 생성
-            //             </button>
-            //             <button type="button" onClick={getMyProfile}>
-            //                 내 프로필
-            //             </button>
-            //         </>
-            //     ),
-            // },
         ],
         // errorElement: <ErrorPage />,
     },

@@ -20,14 +20,13 @@ export const Profile = styled.div`
     }
     .modify-btn {
         cursor: pointer;
-        border: 1px solid gray;
+        border: 1px solid black;
         border-radius: 4px;
-        color: var(--color-black-primary);
-        background-color: var(--color-white-primary);
+        color: white;
+        background-color: rgb(116,116,116);
+        font-weight: 100;
         &:hover {
-            color: var(--color-white-primary);
-            font-weight: 100;
-            background-color: var(--color-black-primary);
+            background-color: rgb(80,80,80);
         }
     }
 `;
@@ -78,8 +77,12 @@ export const UserData = styled.div`
 
     /* 메일주소 */
     .user-data__email {
-        border-bottom: none;
+        border-bottom: 1px solid gray;
+    }
+    /* 패스워드 */
+    .user-data__password {
         padding-bottom: 0;
+        border: none;
     }
 `;
 
@@ -113,7 +116,7 @@ export const Residence = styled.div`
                 justify-content: space-between;
             
                 /* 주소가 적히는 곳 */
-                div {
+                .residence__address__data__show-location {
                     display: flex;
                     flex-direction: row;
                     line-height: 1.2;
@@ -142,24 +145,21 @@ export const Residence = styled.div`
                 justify-content: space-between;
                 align-items: center;
                 padding: var(--padding-default) 0;
-                span {
-                    margin-right: 1rem;
-                }
             }
             .range__current {
                 display: flex;
                 .range__current__area-range {
                     /* 거래 지역 */
                     .location-item {
-                        white-space: nowrap; /* 텍스트를 한 줄로 유지 */
-                        display: inline-block; /* 아이템을 가로로 배치 */
+                        white-space: nowrap;
+                        display: inline-block;
                         font-size: var(--text-size-small);
                         margin-right: 10px;
                         padding: 5px;
                         margin-bottom: 5px;
-                        border-radius: 40px;
-                        background-color: var(--color-black-primary);
-                        color: var(--color-white-primary);
+                        border-radius: 5px;
+                        border: 1px solid black;
+                        color: var(--color-black-primary);
                     }
                 }
             }

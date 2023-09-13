@@ -16,7 +16,8 @@ export const ProfilePageLeft = styled.div`
     height: 100vh;
     padding: 0 1.5rem;
     border-left: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 5px 1px 8px 0 rgb(0 0 0 / 6%);
+    /* box-shadow: 5px 1px 8px 0 rgb(0 0 0 / 6%); */
+    box-shadow: 5px 1px 8px 0 var(--color-accent-bright-green);
 
     .profile-page__left__title {
         font-size: var(--text-size-large);
@@ -48,7 +49,7 @@ export const UserProfile = styled.div`
     img {
         width: 40%;
         border-radius: 70%;
-        border: 1px solid var(--color-accent-blue);
+        border: 1px solid var(--color-accent-dark-green);
         margin: 1rem 0;
     }
     .nickname {

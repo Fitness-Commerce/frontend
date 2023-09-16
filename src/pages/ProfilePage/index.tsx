@@ -3,7 +3,7 @@ import * as S from "./styled";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard, faCommentDots } from "@fortawesome/free-regular-svg-icons";
+import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import { faTableColumns } from "@fortawesome/free-solid-svg-icons";
 
 import profile from "../../assets/profile.jpeg";
@@ -12,6 +12,8 @@ import { useLogout } from "../../hooks/useLogout";
 import { useAxios } from "../../hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { GET_SELF_MEMBER } from "../../contance/endPoint";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import ErrorPage from "../Error";
 
 
 
@@ -41,8 +43,8 @@ const ProfilePage = () => {
     
 
 
-    if (isLoading) return <>Loading...</>
-    if (error) return <>An error has occurred</>;
+    if (isLoading) return <LoadingSpinner />
+    if (error) return <ErrorPage />
 
     const nickname = data?.data.nickname;
     const email = data?.data.email;
@@ -77,13 +79,6 @@ const ProfilePage = () => {
                         <Link to="/user/dashboard">
                             <FontAwesomeIcon icon={faTableColumns} />
                             <span>대시보드</span>
-                        </Link>
-                    </li>
-
-                    <li className="chat">
-                        <Link to="/user/chat">
-                            <FontAwesomeIcon icon={faCommentDots} />
-                            <span>채팅</span>
                         </Link>
                     </li>
                 </S.Ul>

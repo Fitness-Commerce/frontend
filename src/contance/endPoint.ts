@@ -13,6 +13,9 @@
 
 // 회원탈퇴 - DELETE_MEMBER
 
+// 대시보드 상품리스트 - DASHBOARD_PRODUCT
+// 대시보드 게시글 리스트 - DASHBOARD_POST
+
 export const REGISTER = '/api/members/signup';
 export const LOGIN = '/api/auth/login';
 export const LOGOUT = '/api/auth/logout';
@@ -24,3 +27,5 @@ export const VALIDATE_MEMBER_INFO = '/api/members/myProfile/validate';
 export const GET_OTHER_MEMBER = '/api/members/';
 export const GET_ALL_MEMBERS = '/api/members';
 export const DELETE_MEMBER = '/api/members/myProfile';
+export const DASHBOARD_PRODUCT = '/api/dashboard/mySales';
+export const DASHBOARD_POST = '/api/dashboard/myPost';

@@ -7,7 +7,7 @@ export const Header = styled.header`
     padding: 50px 5vw;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--color-bg-primary);
+    background-color: var(--color-bg-white);
     
     .header__logo {
         display: flex;

@@ -16,7 +16,6 @@ import Header from "./components/header";
 import Navigation from "./components/Navigation";
 import ProfilePage from "./pages/ProfilePage";
 import Dashboard from "./pages/ProfilePage/dashboard";
-import Chat from "./pages/ProfilePage/chat";
 import Profile from "./pages/ProfilePage/profile";
 
 // FIXME: 테스트용
@@ -85,7 +84,7 @@ const router = createBrowserRouter([
                 // element: <Trade />,
             },
             {
-                path: "post",
+                path: "post/:postId",
                 element: <Post />,
             },
             // {
@@ -130,17 +129,18 @@ const router = createBrowserRouter([
                 path: "profile",
                 element: <Profile />,
             },
-            {
-                path: "dashboard",
-                element: <Dashboard />,
-            },
-            {
-                path: "chat",
-                element: <Chat />,
-            },
         ],
         errorElement: <ErrorPage />,
     },
+    {
+        path: "/user/dashboard",
+        element: (
+            <>
+                <Dashboard />
+            </>
+        ),
+        errorElement: <ErrorPage />,
+    }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

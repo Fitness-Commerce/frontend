@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 
@@ -15,7 +15,7 @@ import * as S from "./styled";
 
 const Post = () => {
     const navigate = useNavigate();
-    const postId = useSearchParams()[0].get("post-id");
+    const {postId} = useParams();
     const {
         data: postData,
         isLoading,
@@ -56,7 +56,7 @@ const Post = () => {
     if (isError) {
         console.log(error);
         navigate("/error");
-        return;
+        return <></>;
     }
 
     // 게시글 수정

@@ -6,3 +6,5 @@ git push origin mypage:mypage
 + 질문 내용 
 회원 정보 수정시 서버측에서 결정한 조건
 실패시 응답 형태
+
+ {`${dashboardInfo?.itemPrice.toLocaleString("ko-KR")}원`}

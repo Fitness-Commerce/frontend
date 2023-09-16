@@ -3,7 +3,7 @@ import { useState } from "react";
 import SideMarginWrapper from "../../style/SideMarginWrapper";
 import * as S from "./styled";
 
-import ProductsLayout from "./components/ProductsLayout";
+import ProductsLayout from "../../components/ProductsLayout";
 import CategoryButton from "./components/CategoryButton";
 import SortDropdown from "./components/SortDropdown";
 import ViewLayoutButton from "./components/ViewLayoutButton";

@@ -91,7 +91,6 @@ export const ProductCard = styled.article<ProductCardProps>`
             height: 28px;
             font-weight: 500;
         }
-
         .product-card__name-price-wrapper {
             display: flex;
             width: 100%;
@@ -119,4 +118,44 @@ export const ProductCard = styled.article<ProductCardProps>`
             color: rgba(0, 0, 0, 0.4);
         }
     }
+`;
+
+interface IDashboardProductProp {
+    $itemStatus: string | undefined;
+}
+
+export const DashboardProduct = styled.div<IDashboardProductProp>`
+    padding: 3rem 0;
+    #product-card__local, #product-card__time {
+        color: var(--color-white-primary);
+        font-weight: 400;
+    }
+    #product-card__img-wrapper {
+        width: 150px;
+    }
+    #product-card__status {
+        color: var(--color-black-primary);
+    }
+    ${(props) => {
+        if (props.$itemStatus === "SELLING") {
+            return css `
+            #product-card__status {
+                background-color: rgb(97, 197, 85);
+            }
+            `
+        } else if (props.$itemStatus === "RESERVED") {
+            return css `
+            #product-card__status {
+                background-color: rgb(245, 191, 80);
+                font-size: 14px;
+            }
+            `
+        } else {
+            return css `
+            #product-card__status {
+                background-color: rgb(236, 105, 95);
+            }
+            `
+        }
+    }}
 `;

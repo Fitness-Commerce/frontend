@@ -12,8 +12,13 @@ export const Header = styled.header`
     .header__logo {
         display: flex;
         align-items: center;
+        &:hover {
+            cursor: pointer;
+        }
         
         .header__logo-name {
+            display: inline-block;
+            flex-shrink: 0;
             font-size: 1.5rem;
             font-weight: 700;
         }

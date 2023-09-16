@@ -3,7 +3,6 @@ import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RecoilRoot } from "recoil";
-import axios from "axios";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -21,6 +20,11 @@ import Chat from "./pages/ProfilePage/chat";
 import Profile from "./pages/ProfilePage/profile";
 import ProductForm from "./components/ProductForm";
 
+//FIXME: 테스트용
+import login from "./api/test_api/login";
+import signup from "./api/test_api/signup";
+import createProductsCategory from "./api/test_api/createProductsCategory";
+import testCreateProducts from "./api/test_api/testCreateProducts";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -31,7 +35,7 @@ const queryClient = new QueryClient({
     },
 });
 
-// const preFetch 
+// const preFetch
 // queryClient.prefetchQuery({
 //     queryKey: ["productsCategories"],
 //     queryFn: getCategories
@@ -69,8 +73,27 @@ const router = createBrowserRouter([
                 element: <Trade />,
             },
             {
-                path: "post",
+                path: "post/:postId",
                 element: <Post />,
+            },
+            {
+                path: "test",
+                element: (
+                    <>
+                        <button type="button" onClick={login}>
+                            로그인
+                        </button>
+                        <button type="button" onClick={signup}>
+                            회원가입
+                        </button>
+                        <button type="button" onClick={createProductsCategory}>
+                            카테고리 생성
+                        </button>
+                        <button type="button" onClick={testCreateProducts}>
+                            더미 매물
+                        </button>
+                    </>
+                ),
             },
         ],
         // errorElement: <ErrorPage />,

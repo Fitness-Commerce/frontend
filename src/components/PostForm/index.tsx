@@ -101,7 +101,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
                         ? await excutePutPost(formData, modify.id)
                         : await excuteCreatePost(formData);
 
-                    navigate(`/post?post-id=${postId}`);
+                    navigate(`/post/${postId}`);
                 } catch (err) {
                     console.log(err);
                 }

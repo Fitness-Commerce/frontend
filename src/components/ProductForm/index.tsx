@@ -8,6 +8,7 @@ import calculateNumber from "../../util/calculateNumber";
 import categoriesType from "../../interface/Categories";
 
 import * as S from "./styled";
+import useAuth from "../../hooks/useAuth";
 
 const counter = calculateNumber();
 
@@ -22,6 +23,7 @@ interface Product {
 
 function ProductForm() {
     // const { crud }  = useParams();
+    const excuteCreateProduct = useAuth(createProduct);
     const navigate = useNavigate();
     const categories = useQueryClient().getQueryData<categoriesType[]>([
         "productsCategories",
@@ -75,8 +77,11 @@ function ProductForm() {
         counter.reset();
 
         // formData 서버로 전송 후 해당 매물 페이지로 이동
-        const productId = createProduct(formData);
-        navigate(`/trade/${productId}`);
+        const excuteAndNavigate = async () => {
+            const productId = await excuteCreateProduct(formData);
+            navigate(`/trade/${productId}`);
+        }
+        excuteAndNavigate();
     };
 
     return (

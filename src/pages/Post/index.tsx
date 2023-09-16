@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 
@@ -15,15 +15,13 @@ import * as S from "./styled";
 
 const Post = () => {
     const navigate = useNavigate();
-    const postId = useSearchParams()[0].get("post-id");
+    const { postId } = useParams();
     const {
         data: postData,
         isLoading,
         isError,
         error,
-    } = useQuery(["postData"], () =>
-        getPost(postId as string)
-    );
+    } = useQuery(["postData"], () => getPost(postId as string));
     const [content, setContent] = useState("");
     const [isPostForm, setIsPostForm] = useState(false);
 
@@ -35,7 +33,9 @@ const Post = () => {
                 {
                     urlSanitizer: () => {
                         // FIXME: replace는 임시방편이고 서버에서 :8080을 포함해서 보내줘야됨
-                        return postData.postImageUrl[counter.increase()].replace("/api", ":8080/api");
+                        return postData.postImageUrl[
+                            counter.increase()
+                        ].replace("/api", ":8080/api");
                         // return "http://43.200.32.144:8080/home/ec2-user/imageDir/5dd1269a-d69d-4321-9203-61eef3bcfec3.png"
                     },
                 }

@@ -1,16 +1,17 @@
 import axios from "axios";
 import { ITEMS } from "../../contance/endPoint";
 import { ProductListType } from "../../interface/Products";
+import { filterdOption } from "../../contance/products";
 
-const getProductList = async () => {
-    const instance = axios.create({
-        headers: {
-            Authorization: undefined,
-        },
-    });
 
-    // 전체조회
-    const res = await instance.get(ITEMS + `?page=1&size=10&order=id_DESC`);
+interface IGetProductList {
+    page?: number;
+    size?: number;
+    order?: string;
+}
+
+const getProductList = async ({page = 1, size = 10, order = filterdOption[0]}: IGetProductList) => {
+    const res = await axios.get(ITEMS + `?page=${page}&size=${size}&order=${order}`);
     const product: ProductListType = res.data;
 
     console.log(product);

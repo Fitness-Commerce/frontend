@@ -1,16 +1,22 @@
+import { useNavigate } from "react-router-dom";
+
+import { TRADE } from "../../../../contance/routeURL";
+import ProductType from "../../../../interface/Products";
+
 import * as S from "./styled";
 import dummyImage from "../../../../assets/product1.webp";
-import ProductType from "../../../../interface/Products";
 
 interface ProductCardProps {
     product: ProductType;
     layout: boolean;
 }
 
-// info: 상품 정보, layout: 그리드 or 리스트
+// product: 상품 정보, layout: 그리드 or 리스트
 const ProductCard = ({ product, layout }: ProductCardProps) => {
+    const navigate = useNavigate();
+
     return (
-        <S.ProductCard $isGrid={layout}>
+        <S.ProductCard $isGrid={layout} onClick={() => navigate(TRADE + `/${product.id}`)}>
             <div className="product-card__img-wrapper">
                 <img
                     className="product-card__img"

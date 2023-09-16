@@ -6,7 +6,7 @@ const createProduct = async (formData: FormData) => {
     const productId = res.data.id;
     console.log(productId);
     
-    return Promise.resolve(productId);
+    return productId;
 };
 
 export default createProduct;

@@ -13,7 +13,6 @@ const pastTimeCalculator = (created_at: string) => {
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const mins = Math.floor(diff / (1000 * 60));
-    console.log(diff);
 
     if(days > 0) return days + '일 전';
     if(hours > 0) return hours + '시간 전';

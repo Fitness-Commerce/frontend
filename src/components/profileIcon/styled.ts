@@ -93,15 +93,15 @@ export const Profile = styled.div`
         border-radius: var(--button-radius);
         padding: 0 24px;
         margin-left: 2rem;
-        background-color: transparent;
+        background-color: var(--color-black-primary);
+        color: var(--color-white-primary);
         height: 48px;
         font-size: medium;
         font-weight: 200;
         transition: .3s;
 
         &:hover {
-            color: var(--color-white-primary);
-            background-color: var(--color-black-primary);
+            background-color: var(--color-button-bg-hover);
         }
     }
 `;

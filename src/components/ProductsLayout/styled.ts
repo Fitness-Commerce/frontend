@@ -1,4 +1,3 @@
-import InfiniteScroll from "react-infinite-scroller";
 import styled, { css } from "styled-components";
 
 interface WrapperProps {
@@ -9,7 +8,7 @@ interface ProductCardProps {
     $isGrid: boolean;
 }
 
-export const Scroll = styled(InfiniteScroll)<WrapperProps>`
+export const Wrapper = styled.section<WrapperProps>`
     display: flex;
     width: 100%;
 
@@ -18,12 +17,12 @@ export const Scroll = styled(InfiniteScroll)<WrapperProps>`
             case true:
                 return css`
                     flex-wrap: wrap;
-                    flex-direction: row;
+                    flex-direction: row-reverse;
                 `;
             default:
                 return css`
                     flex-wrap: nowrap;
-                    flex-direction: column;
+                    flex-direction: column-reverse;
                 `;
         }
     }}
@@ -32,7 +31,6 @@ export const Scroll = styled(InfiniteScroll)<WrapperProps>`
 export const ProductCard = styled.article<ProductCardProps>`
     display: flex;
     padding: 8px;
-    cursor: pointer;
 
     /* 그리드/리스트 레이아웃 */
     ${(props) => {
@@ -93,7 +91,6 @@ export const ProductCard = styled.article<ProductCardProps>`
             height: 28px;
             font-weight: 500;
         }
-
         .product-card__name-price-wrapper {
             display: flex;
             width: 100%;
@@ -121,4 +118,44 @@ export const ProductCard = styled.article<ProductCardProps>`
             color: rgba(0, 0, 0, 0.4);
         }
     }
+`;
+
+interface IDashboardProductProp {
+    $itemStatus: string | undefined;
+}
+
+export const DashboardProduct = styled.div<IDashboardProductProp>`
+    padding: 3rem 0;
+    #product-card__local, #product-card__time {
+        color: var(--color-white-primary);
+        font-weight: 400;
+    }
+    #product-card__img-wrapper {
+        width: 150px;
+    }
+    #product-card__status {
+        color: var(--color-black-primary);
+    }
+    ${(props) => {
+        if (props.$itemStatus === "SELLING") {
+            return css `
+            #product-card__status {
+                background-color: rgb(97, 197, 85);
+            }
+            `
+        } else if (props.$itemStatus === "RESERVED") {
+            return css `
+            #product-card__status {
+                background-color: rgb(245, 191, 80);
+                font-size: 14px;
+            }
+            `
+        } else {
+            return css `
+            #product-card__status {
+                background-color: rgb(236, 105, 95);
+            }
+            `
+        }
+    }}
 `;

@@ -4,6 +4,7 @@ import * as S from "./styled.ts";
 
 // Temp
 import { dummyItems } from "../../../dummy.ts";
+import { Link } from "react-router-dom";
 
 const Products = () => {
     return (
@@ -11,7 +12,7 @@ const Products = () => {
             <S.Products>
                 <div className="products__title">
                     <h3>최신매물</h3>
-                    <button className="product__view-more-btn">더보기</button>
+                    <Link to="/products"><button className="product__view-more-btn">더보기</button></Link>
                 </div>
                 <div className="products__box">
                     <div>

@@ -13,11 +13,25 @@ import { useRecoilState } from "recoil";
 import axios from "axios";
 import { ILoginModalProp } from "./LoginModal.tsx";
 import { REGISTER } from "../../contance/endPoint.ts";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 const StyledSignUpForm = styled.div<IProps>`
     width: 100%;
     height: max-content;
+    .form__close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: large;
+        background-color: transparent;
+        border: none;
+        padding: 5px;
+        &:hover {
+            color: gray;
+        }
+    }
     h1 {
         font-size: var(--text-size-large);
         margin-bottom: 3rem;
@@ -147,9 +161,45 @@ const StyledSignUpForm = styled.div<IProps>`
             }
         }
     }
+    .container__left__guide {
+        display: none;
+    }
+    @media (max-width: 1024px) { 
+	    /* 테블릿 크기에서의 스타일 */
+        .container__left__guide {
+            display: block;
+            .container__left__guide__btn {
+                cursor: pointer;
+                position: relative;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+                font-size: var(--text-size-medium);
+                width: max-content;
+                margin-left: 1rem;
+            }
+            .container__left__guide__btn::before {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0%;
+                height: 2px;
+                background-color: var(--color-accent-blue);
+                transition: all 0.5s;
+            }
+            .container__left__guide__btn:hover::before {
+                width: 100%;
+            }
+        }
+    }
+
+    @media (max-width: 768px) { 
+        /* 모바일 크기에서의 스타일 */ 
+    }
 `;
 
-const SignUpForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
+const SignUpForm = ({setIsLoginModalOpen, onClickFn}: ILoginModalProp) => {
     // SignForm state
     const [email, setEmail] = useState("");
     const [leadPassword, setLeadPassword] = useState(false);
@@ -232,6 +282,7 @@ const SignUpForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
 
     return (
         <StyledSignUpForm isshowmessage={`${leadPassword}`}>
+            <FontAwesomeIcon icon={faXmark} className="form__close" onClick={() => setIsLoginModalOpen(false)} />
             <h1>Sign Up</h1>
             <form onSubmit={onClickSubmit}>
  
@@ -358,6 +409,9 @@ const SignUpForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
                 {/* 제출하기 */}
                 <input className="form__input-submit" type="submit" value="제출하기" />
             </form>
+            <span className="container__left__guide">
+                이미 회원이신가요? <button onClick={() => { onClickFn(true) }} className="container__left__guide__btn">로그인</button>
+            </span>
         </StyledSignUpForm>
     );
 }

@@ -92,10 +92,10 @@ const Dashboard = () => {
                     <table>
                         <thead className="table__head">
                             <tr>
-                                <td>판매완료</td>
-                                <td>판매 중</td>
-                                <td>예약 중</td>
-                                <td>게시글</td>
+                                <td className="table__head__td">판매완료</td>
+                                <td className="table__head__td">판매 중</td>
+                                <td className="table__head__td">예약 중</td>
+                                <td className="table__head__td">게시글</td>
                             </tr>
                         </thead>
                         <tfoot className="table__count">

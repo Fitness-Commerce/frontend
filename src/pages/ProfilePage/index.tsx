@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GET_SELF_MEMBER } from "../../contance/endPoint";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ErrorPage from "../Error";
+import Header from "../../components/header";
 
 
 
@@ -53,7 +54,7 @@ const ProfilePage = () => {
     return (
         <S.ProfilePage>
             {/* profile page left side */}
-            <S.ProfilePageLeft>
+            <S.ProfilePageLeft className="profile-left">
                 <span className="profile-page__left__title">
                     <Link to="/">
                         <img src={logo} alt="logo" className="logo" />
@@ -87,6 +88,8 @@ const ProfilePage = () => {
                     <Link to="/"><span onClick={logout}>로그아웃</span></Link>
                 </div>
             </S.ProfilePageLeft>
+
+            <Header padding="0" />
 
             <Outlet />
 

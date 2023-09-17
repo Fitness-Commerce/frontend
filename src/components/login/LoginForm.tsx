@@ -5,11 +5,25 @@ import { ILoginModalProp } from "./LoginModal";
 import { useSetRecoilState } from "recoil";
 import { isLogin } from "../../recoil/login/atom";
 import { LOGIN } from "../../contance/endPoint";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 
 const StyledLoginForm = styled.div<IShowError>`
     width: 100%;
     height: max-content;
+    .form__close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: large;
+        background-color: transparent;
+        border: none;
+        padding: 5px;
+        &:hover {
+            color: gray;
+        }
+    }
     h1 {
         font-size: var(--text-size-large);
         margin-bottom: 3rem;
@@ -60,12 +74,48 @@ const StyledLoginForm = styled.div<IShowError>`
             border-bottom: ${props => props.pass === 'true' ? "1px solid red" : "none"};
         }
     }
+    .container__left__guide {
+        display: none;
+    }
+    @media (max-width: 1024px) { 
+        /* 테블릿 크기에서의 스타일 */ 
+        .container__left__guide {
+            display: block;
+            .container__left__guide__btn {
+                cursor: pointer;
+                position: relative;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+                font-size: var(--text-size-medium);
+                width: max-content;
+                margin-left: 1rem;
+            }
+            .container__left__guide__btn::before {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0%;
+                height: 2px;
+                background-color: var(--color-accent-blue);
+                transition: all 0.5s;
+            }
+            .container__left__guide__btn:hover::before {
+                width: 100%;
+            }
+        }
+    }
+
+    @media (max-width: 768px) { 
+        /* 모바일 크기에서의 스타일 */ 
+    }
 `;
 
-const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
+const LoginForm = ({ setIsLoginModalOpen, onClickFn }: ILoginModalProp) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    
+
     // 잘못된 이메일, 패스워스 핸들링 
     const [isShowEmailError, setIsShowEmailError] = useState(false);
     const [isShowPassError, setIsShowPassError] = useState(false);
@@ -78,28 +128,30 @@ const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
             email: email,
             password: pass
         };
-        
+
         axios.post(LOGIN, Data)
-        .then((response) => {
-            setIsLoginModalOpen(false);
-            localStorage.setItem("accessToken", response.data.accessToken);
-            setIsLogin(true);
-        })
-        .catch((error) => {
-            console.error(error);
-            const errMsg = error.response.data.message;
-            if(errMsg === "해당 이메일을 찾을 수 없습니다.") {
-                setIsShowEmailError(true);
-            }
-            if(errMsg === "비밀번호가 틀립니다.") {
-                setIsShowPassError(true);
-            }
-        });
+            .then((response) => {
+                setIsLoginModalOpen(false);
+                localStorage.setItem("accessToken", response.data.accessToken);
+                setIsLogin(true);
+            })
+            .catch((error) => {
+                console.error(error);
+                const errMsg = error.response.data.message;
+                if (errMsg === "해당 이메일을 찾을 수 없습니다.") {
+                    setIsShowEmailError(true);
+                }
+                if (errMsg === "비밀번호가 틀립니다.") {
+                    setIsShowPassError(true);
+                }
+            });
     }
     
     return (
         <StyledLoginForm email={`${isShowEmailError}`} pass={`${isShowPassError}`}>
+            <FontAwesomeIcon icon={faXmark} className="form__close" onClick={() => setIsLoginModalOpen(false)} />
             <h1>Log in</h1>
+
             <form onSubmit={onClickLogin}>
                 <label className="form__label-login">Email or Username</label>
                 <input className="form__input-login email" type="email"
@@ -107,14 +159,14 @@ const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
                     onChange={(e) => {
                         setEmail(e.target.value);
                         setIsShowEmailError(() => {
-                            return false;            
+                            return false;
                         });
                     }}
                 />
 
                 <label className="form__label-login">Password</label>
                 <input className="form__input-login password" type="password"
-                    placeholder="Password" 
+                    placeholder="Password"
                     onChange={(e) => {
                         setPass(e.target.value);
                         setIsShowPassError(false);
@@ -125,9 +177,12 @@ const LoginForm = ({setIsLoginModalOpen}: ILoginModalProp) => {
                     <input className="form__input-checkbox" type="checkbox" id="remember-check" />
                     <label htmlFor="remember-check">Remember</label>
                 </span>
-                
+
                 <input className="form__input-submit" type="submit" value="Log In" />
             </form>
+            <span className="container__left__guide">
+                아직 회원이 아니신가요? <button onClick={() => { onClickFn(false) }} className="container__left__guide__btn">회원가입</button>
+            </span>
         </StyledLoginForm>
     );
 }

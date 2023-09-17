@@ -153,7 +153,7 @@ const Profile = () => {
                                     <span className="address-detail">{data?.data.address.detailed_address}</span>
                                 </div>
                             </div>
-                            <button className="modify-btn" onClick={() => {
+                            <button className="modify-btn modify-btn-address" onClick={() => {
                                 openModal();
                                 setIsModifyAddress(true);
                             }}>주소변경</button>

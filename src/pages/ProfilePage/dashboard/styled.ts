@@ -179,4 +179,35 @@ export const Dashboard = styled.div`
 			}
 		}
 	}
+	@media (max-width: 1024px) { 
+		/* 테블릿 크기에서의 스타일 */
+		/* table */
+		table {
+			td {
+				padding: 10px !important;
+			}
+		}
+	}
+
+	@media (max-width: 768px) { 
+		/* 모바일 크기에서의 스타일 */ 
+		.dashboard__container {
+			.dashboard__container__head {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+			.dashboard__container__content {
+				flex-direction: column;
+				margin-top: 3rem;
+				.dashboard__container__content__product {
+					width: 100%;
+					margin-bottom: 3rem;
+				}
+				.dashboard__container__content__post {
+					width: 100%;
+					margin-bottom: 3rem;
+				}
+			}
+		}
+	}
 `;

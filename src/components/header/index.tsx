@@ -13,7 +13,7 @@ import ProfileIcon from "../profileIcon";
 import { Link } from "react-router-dom";
 
 
-const Header = () => {
+const Header = ({padding = "5vw"}) => {
     // 로그인 로그아웃 위한 상태 값
     const isLoggedIn = useRecoilValue(isLogin);
 
@@ -24,14 +24,14 @@ const Header = () => {
     }
 
     return (
-        <S.Header>
+        <S.Header className="header" padding={padding}>
             <Link to="/">
                 <div className="header__logo">
                     <img src={logo} alt="header log" className="header__logo-img logo" />
                     <h1 className="header__logo-name">헬스마켓+</h1>
                 </div>
             </Link>
-
+            
             <div className="header__search">
                 <form className="header__search__form">
                     <input type="text" placeholder="찾고 싶은 헬스용품을 검색해 보세요" className="header__search__form__input" />

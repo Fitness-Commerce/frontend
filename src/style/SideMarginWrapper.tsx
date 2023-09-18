@@ -4,6 +4,15 @@ import { styled } from "styled-components";
 
 const StyledSideMarginWrapper = styled.div`
     margin: 0 5vw;
+    @media (max-width: 1024px) { 
+        /* 테블릿 크기에서의 스타일 */ 
+        margin: 0 3vw;
+    }
+
+    @media (max-width: 768px) { 
+        /* 모바일 크기에서의 스타일 */ 
+        margin: 0 2vw;
+    }
 `;
 
 /**

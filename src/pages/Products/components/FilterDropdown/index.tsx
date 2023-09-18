@@ -1,19 +1,17 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect,  useState } from "react";
 
-import { useRecoilState, useRecoilValue } from "recoil";
-import { viewModeState } from "../../../../recoil/products/atom";
-import { isLogin } from "../../../../recoil/login/atom";
+import { useRecoilState } from "recoil";
+import { sortOptionState } from "../../../../recoil/products/atom";
 
 import * as S from "./styled";
 import ArrowSVG from "../../../../assets/guide_arrow.svg";
 
-import { sortLabel } from "../../../../contance/products";
+import { filterLabel } from "../../../../contance/products";
 
 function SortDropdown() {
-    const [viewMode, setViewMode] = useRecoilState(viewModeState);
+    const [filter, setFilter] = useRecoilState(sortOptionState);
     const [isOpen, setIsOpen] = useState(false);
     const modalRef = useRef<HTMLButtonElement | null>(null);
-    const login = useRecoilValue(isLogin);
 
     useEffect(() => {
         const modalHandler = (event: MouseEvent) => {
@@ -30,9 +28,13 @@ function SortDropdown() {
 
         return () => {
             document.removeEventListener("click", modalHandler);
+        };
+    }, []);
 
-            // 전역상태값 초기화
-            setViewMode(sortLabel[0]);
+    // 전역상태값들 초기화
+    useEffect(() => {
+        return () => {
+            setFilter(filterLabel[0]);
         };
     }, []);
 
@@ -43,9 +45,8 @@ function SortDropdown() {
                 type="button"
                 className="products__category-dropdown"
                 onClick={() => setIsOpen(!isOpen)}
-                disabled={!login}
             >
-                {viewMode}
+                {filter}
                 <img
                     className="products__category-dropdown__arrow-svg"
                     src={ArrowSVG}
@@ -53,13 +54,13 @@ function SortDropdown() {
             </button>
             {isOpen && (
                 <S.SortModal>
-                    {sortLabel.map((label) => (
+                    {filterLabel.map((label) => (
                         <button
                             key={label}
                             type="button"
                             className="view-mode-btn"
-                            onClick={() => setViewMode(label)}
-                            disabled={viewMode === label}
+                            onClick={() => setFilter(label)}
+                            disabled={filter === label}
                         >
                             {label}
                         </button>

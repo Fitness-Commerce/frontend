@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth.js";
 
 import ReactQuill from "react-quill";
 
@@ -101,7 +101,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
                         ? await excutePutPost(formData, modify.id)
                         : await excuteCreatePost(formData);
 
-                    navigate(`/post?post-id=${postId}`);
+                    navigate(`/post/${postId}`);
                 } catch (err) {
                     console.log(err);
                 }

@@ -19,7 +19,7 @@ import PostPagination from "./components/PostPageButtonLayout";
 const Community = () => {
     const categoryId = useSearchParams()[0].get("category-id");
     const [size, setSize] = useState(10);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const { data: postCategories, isLoading: isCategoriesLoading } = useQuery(
         ["postCategory"],
         getPostCategories

@@ -32,7 +32,7 @@ export const Image = styled.div<ImageProps>`
         border: none;
         border-radius: var(--button-radius);
         box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.3);
-        background-color: transparent;
+        background-color: var(--color-accent-bright-green);
         transition: opacity 0.4s ease;
         cursor: pointer;
 
@@ -62,7 +62,7 @@ export const Image = styled.div<ImageProps>`
         justify-content: center;
         background: linear-gradient(
             to top,
-            rgba(50, 50, 50, 0.6),
+            rgba(50, 50, 50, 0.8),
             rgba(50, 50, 50, 0)
         );
         box-shadow: none;

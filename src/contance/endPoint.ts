@@ -27,5 +27,7 @@ export const VALIDATE_MEMBER_INFO = '/api/members/myProfile/validate';
 export const GET_OTHER_MEMBER = '/api/members/';
 export const GET_ALL_MEMBERS = '/api/members';
 export const DELETE_MEMBER = '/api/members/myProfile';
+export const CATEGORIES = "/api/categories"
+export const ITEMS = "/api/items"
 export const DASHBOARD_PRODUCT = '/api/dashboard/mySales';
 export const DASHBOARD_POST = '/api/dashboard/myPost';

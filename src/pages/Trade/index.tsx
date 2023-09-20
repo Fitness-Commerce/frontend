@@ -1,18 +1,29 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
+import { useRecoilValue } from "recoil";
+import { isLogin } from "../../recoil/login/atom";
+
+import ChatContainer from "../../components/Chat/components/ChatContainer";
+import Modal from "../../components/Modal";
+
+import useChatRoomState from "../../hooks/useChatRoomState";
+import useModal from "../../hooks/useModal";
+
+import * as S from "./styled";
+import SideMarginWrapper from "../../style/SideMarginWrapper";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
-import SideMarginWrapper from "../../style/SideMarginWrapper";
 import ImageSlide from "./components/ImageSlide";
 import visibillityIcon from "../../assets/visibility.svg";
 import locationIcon from "../../assets/location.svg";
 import reportIcon from "../../assets/report.svg";
-import * as S from "./styled";
 
 // 비동기 요청
 import getProduct from "../../api/products_api/getProduct";
 import getMemberProfile from "../../api/test_api/getMemberProfile";
+import createChat from "../../api/webSocket/createChat";
 
 // 날짜 계산기
 import pastTimeCalculator from "../../util/pastTimeCalculator";
@@ -20,6 +31,23 @@ import pastTimeCalculator from "../../util/pastTimeCalculator";
 // 매물 상세 페이지(거래 페이지)
 const Trade = () => {
     const { itemId: productId } = useParams();
+    const { isOpen, openModal, closeModal } = useModal();
+    const { onChatSelect } = useChatRoomState();
+    const login = useRecoilValue(isLogin);
+    // const [isSocketLoading, setIsSocketLoading] = useState();
+
+    // 헬스톡 핸들러
+    const onOpenHealthTalk = () => {
+        //     const chatParameter = {
+        //         roomName: self.crypto.randomUUID(),
+        // itemId: productId,
+        // message:
+        // setIsLoading:
+        //     }
+        //     createChat();
+        onChatSelect(productId as string);
+        openModal();
+    };
 
     // 매물 요청
     const {
@@ -78,9 +106,7 @@ const Trade = () => {
                                 aria-label="visibillity icon"
                                 alt="visibillity icon"
                             />
-                            <span>
-                                {product.viewCount}
-                            </span>
+                            <span>{product.viewCount}</span>
                         </div>
                         <span className="trade__details__created-at">
                             {product.updatedAt || product.createdAt}
@@ -120,11 +146,21 @@ const Trade = () => {
                         <button type="button" className="trade__consider-btn">
                             찜하기
                         </button>
-                        <button type="button" className="trade__chat-btn">
+                        <button
+                            type="button"
+                            className="trade__chat-btn"
+                            onClick={() => onOpenHealthTalk()}
+                            disabled={!login}
+                        >
                             헬스톡
                         </button>
                     </div>
                 </div>
+                {isOpen && (
+                    <Modal onClose={() => closeModal()}>
+                        <ChatContainer />
+                    </Modal>
+                )}
             </S.Wrapper>
         </SideMarginWrapper>
     );

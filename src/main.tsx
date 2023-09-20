@@ -14,10 +14,14 @@ import Trade from "./pages/Trade";
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
 import Navigation from "./components/Navigation";
+import FixedChat from "./components/Chat";
 import ProfilePage from "./pages/ProfilePage";
 import Dashboard from "./pages/ProfilePage/dashboard";
 import Profile from "./pages/ProfilePage/profile";
 import ProductForm from "./components/ProductForm";
+
+// 프리패칭 비동기 함수
+import getCategories from "./api/products_api/getCategories";
 
 //FIXME: 테스트용
 // import login from "./api/test_api/login";
@@ -34,11 +38,11 @@ const queryClient = new QueryClient({
     },
 });
 
-// const preFetch
-// queryClient.prefetchQuery({
-//     queryKey: ["productsCategories"],
-//     queryFn: getCategories
-// })
+// 브라우저 연결시 프리패칭 실행
+queryClient.prefetchQuery({
+    queryKey: ["productsCategories"],
+    queryFn: getCategories
+});
 
 const router = createBrowserRouter([
     {
@@ -47,6 +51,7 @@ const router = createBrowserRouter([
             <>
                 <Header />
                 <Navigation />
+                <FixedChat />
                 <Outlet />
             </>
         ),

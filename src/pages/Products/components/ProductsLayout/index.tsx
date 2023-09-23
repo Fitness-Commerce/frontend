@@ -1,14 +1,10 @@
 import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import {
-    viewModeState,
-    SelectedCategoryState,
-} from "../../../../recoil/products/atom";
+import { viewModeState, SelectedCategoryState } from "../../../../recoil/products/atom";
 import { filteredOptionState } from "../../../../recoil/products/selector";
 import { useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 
 import useAuth from "../../../../hooks/useAuth";
-import ProductCard from "./ProductCard";
 
 import getProductList from "../../../../api/products_api/getProductList";
 import getCategoryItems from "../../../../api/products_api/getCategoryItems";
@@ -20,6 +16,8 @@ import ProductType, { ProductListType } from "../../../../interface/Products";
 import { Scroll as InfiniteScroll } from "./styled";
 import LoadingSpinner from "../../../../components/LoadingSpinner";
 import { sortLabel } from "../../../../contance/products";
+import ProductCard from "../../../../components/ProductsLayout/ProductCard";
+
 
 interface ProductsLayoutProps {
     layout: boolean;
@@ -108,7 +106,7 @@ const ProductsLayout = ({ layout }: ProductsLayoutProps) => {
                 pageData.content.map((product: ProductType) => (
                     <ProductCard
                         key={product.id}
-                        product={product}
+                        info={product}
                         layout={layout}
                     />
                 ))

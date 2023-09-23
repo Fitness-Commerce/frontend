@@ -8,32 +8,27 @@ export const Wrapper = styled.div`
     justify-content: space-between;
 
     .products__view-layout-btn {
+        cursor: pointer;
         all: unset;
         display: inline-block;
-
-        cursor: pointer;
+        svg {
+           fill: black; 
+        }
     }
 `
 
 export const LinkToProductForm = styled.button`
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid white;
     outline: none;
+    border: none;
     border-radius: var(--button-radius);
-    background-color: var(--color-accent-dark-green);
-    box-shadow: 0 0 4px 6px var(--color-accent-bright-green);
-    padding: 4px 8px;
-    transition: filter 0.2s ease;
-    
-    span {
-        display: inline-block;
-        color: var(--color-white-primary);
-    }
-
+    background-color: var(--color-black-primary);
+    padding: 1rem;
+    color: var(--color-white-primary);
     &:hover {
-        filter: brightness(0.95);
+        background-color: var(--color-button-bg-hover);
     }
-    cursor: pointer;
 `

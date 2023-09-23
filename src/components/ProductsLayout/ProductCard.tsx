@@ -1,20 +1,10 @@
 import * as S from "./styled";
 import dummyImage from "../../assets/product1.webp";
+import ProductType from "../../interface/Products";
 
 interface ProductCardProps {
     type?: string,
-    info?: {
-        item_id: number;
-        member_id: number;
-        item_category_id: number;
-        item_name: string;
-        item_detail: string;
-        item_price: number;
-        item_status: string;
-        item_images?: string;
-        created_at: string;
-        updated_at?: string;
-    };
+    info?: ProductType;
     dashboardInfo?: {
         itemId: number,
         categoryName: string,
@@ -78,20 +68,20 @@ const ProductCard = ({ type = "product", info, dashboardInfo, layout = false }: 
                 <img
                     className="product-card__img"
                     src={dummyImage}
-                    alt={info?.item_name}
+                    alt={info?.itemName}
                 />
             </div>
             <div className="product-card__data">
                 <div className="product-card__status-wrapper">
                     <span className="product-card__status">
-                        {info?.item_status}
+                        {info?.itemStatus}
                     </span>
                 </div>
                 {/* 그리드/리스트 레이아웃 전환시 이름,가격 레이아웃도 변환 */}
                 <div className="product-card__name-price-wrapper">
-                    <span className="product-card__name">{info?.item_name}</span>
+                    <span className="product-card__name">{info?.itemName}</span>
                     <span className="product-card__price">
-                        {`${info?.item_price.toLocaleString("ko-KR")}원`}
+                        {`${info?.itemPrice.toLocaleString("ko-KR")}원`}
                     </span>
                 </div>
                 {/* FIXME: 지역 이름 가져오기
@@ -100,7 +90,7 @@ const ProductCard = ({ type = "product", info, dashboardInfo, layout = false }: 
                 <div>
                     <span className="product-card__local">전국</span>
                     <span className="product-card__time">
-                        {info?.created_at}
+                        {info?.createdAt}
                     </span>
                 </div>
             </div>

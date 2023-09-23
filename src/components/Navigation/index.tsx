@@ -1,3 +1,4 @@
+import Categories from "../../pages/Products/components/Categories";
 import SideMarginWrapper from "../../style/SideMarginWrapper";
 import * as S from "./styled";
 
@@ -26,6 +27,9 @@ function Navigation() {
                             카테고리
                         </span>
                     </button>
+
+                    {/* 호버시 카테고리 목록 grid로 보여줌 */}
+                    <Categories />
 
                     <S.Link
                         to={"/products"}

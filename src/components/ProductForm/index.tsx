@@ -9,6 +9,8 @@ import categoriesType from "../../interface/Categories";
 
 import * as S from "./styled";
 import useAuth from "../../hooks/useAuth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFolderOpen } from "@fortawesome/free-solid-svg-icons";
 
 const counter = calculateNumber();
 
@@ -89,13 +91,13 @@ function ProductForm() {
             <S.Input
                 type="text"
                 name="itemName"
-                placeholder="Name"
+                placeholder="상품판매 제목"
                 onChange={handleInputChange}
                 required
             />
             <S.Textarea
                 name="itemDetail"
-                placeholder="Description"
+                placeholder="상품에 대한 정보를입력해주세요."
                 onChange={handleInputChange}
                 required
             />
@@ -116,18 +118,28 @@ function ProductForm() {
             <S.Input
                 type="number"
                 name="itemPrice"
-                placeholder="Price"
+                placeholder="판매 가격"
                 onChange={handleInputChange}
                 required
             />
-            <S.FileInput
-                type="file"
-                name="images"
-                accept="image/*"
-                multiple
-                onChange={handleImagesChange}
-                required
-            />
+
+            <S.FileInput>
+                <label className="product-upload" htmlFor="images">
+                    <FontAwesomeIcon icon={faFolderOpen} />
+                    파일 선택
+                </label>
+                <input 
+                    id="images"
+                    type="file"
+                    name="images"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImagesChange}
+                    required />
+            </S.FileInput>
+            
+            
+            <p>등록하신 첫 번째 이미지가 상품 대표 이미지로 결정됩니다.</p>
             <S.Button type="submit">Submit</S.Button>
         </S.Form>
     );

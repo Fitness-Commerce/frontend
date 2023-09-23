@@ -13,24 +13,28 @@ function Categories() {
         error,
     } = useQuery(["productsCategories"], getCategories);
 
+    const filtered = categories?.filter((e) => {
+        return e.title !== "기타";
+    })
+    const etc = categories?.filter(e => e.title === "기타");
+
     if (isLoading) return <LoadingSpinner />;
     if (isError) throw error;
 
     return (
-        <nav>
-            <ul className="category__nav-wrapper">
-                {categories &&
-                    categories.map((category) => {
-                        return (
-                            <CategoryButton
-                                key={category.id}
-                                id={category.id}
-                                title={category.title}
-                            />
-                        );
-                    })}
-            </ul>
-        </nav>
+        <ul className="category__nav-wrapper">
+            {filtered &&
+                filtered.map((category) => {
+                    return (
+                        <CategoryButton
+                            key={category.id}
+                            id={category.id}
+                            title={category.title}
+                        />
+                    );
+                })}
+                {etc && <CategoryButton id={etc[0].id} title={etc[0].title} /> }
+        </ul>
     );
 }
 

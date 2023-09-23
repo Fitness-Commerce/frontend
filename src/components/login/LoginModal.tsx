@@ -72,5 +72,5 @@ export default LoginModal;
 
 export interface ILoginModalProp {
     setIsLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    onClickFn?: React.Dispatch<React.SetStateAction<boolean>>;
+    onClickFn: React.Dispatch<React.SetStateAction<boolean>>;
 }

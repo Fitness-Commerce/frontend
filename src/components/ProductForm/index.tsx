@@ -9,6 +9,8 @@ import categoriesType from "../../interface/Categories";
 
 import * as S from "./styled";
 import useAuth from "../../hooks/useAuth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFolderOpen } from "@fortawesome/free-solid-svg-icons";
 
 const counter = calculateNumber();
 
@@ -35,12 +37,20 @@ function ProductForm() {
         categoryTitle: "",
         itemPrice: "",
     });
+    // input으로 숫자만 입력 받게하고 그 값으로 원화 표기 변수를 생성 후
+    // 해당 값을 보여줌
 
     const handleInputChange = (
         e: React.ChangeEvent<
             HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
         >
     ) => {
+        if (e.target.name === "itemPrice") {
+            let price = e.target.value.replace(/,/g, "");
+            console.log(price);
+            price = Number(price).toLocaleString();
+            e.target.value = price;
+        }
         setProduct({ ...product, [e.target.name]: e.target.value });
     };
 
@@ -56,8 +66,8 @@ function ProductForm() {
         e.preventDefault();
 
         // 유효성 검사
-        for(const value of Object.values(product)) {
-            if(!value) return alert("모든 정보를 기입해주세요")
+        for (const value of Object.values(product)) {
+            if (!value) return alert("모든 정보를 기입해주세요");
         }
 
         const formData = new FormData();
@@ -65,10 +75,18 @@ function ProductForm() {
         for (const [key, value] of Object.entries(product)) {
             switch (key) {
                 case "images":
-                    for(const image of Object.values(value)) {
-                        formData.append(`images[${counter.increase()}]`, image as File);
+                    for (const image of Object.values(value)) {
+                        formData.append(
+                            `images[${counter.increase()}]`,
+                            image as File
+                        );
                     }
                     break;
+                case "itemPrice": {
+                    const price = value.replace(/,/g, "");
+                    formData.append(key, price);
+                    break;
+                }
                 default:
                     formData.append(key, value);
                     break;
@@ -80,7 +98,7 @@ function ProductForm() {
         const excuteAndNavigate = async () => {
             const productId = await excuteCreateProduct(formData);
             navigate(`/trade/${productId}`);
-        }
+        };
         excuteAndNavigate();
     };
 
@@ -89,13 +107,13 @@ function ProductForm() {
             <S.Input
                 type="text"
                 name="itemName"
-                placeholder="Name"
+                placeholder="상품판매 제목"
                 onChange={handleInputChange}
                 required
             />
             <S.Textarea
                 name="itemDetail"
-                placeholder="Description"
+                placeholder="상품에 대한 정보를입력해주세요."
                 onChange={handleInputChange}
                 required
             />
@@ -105,7 +123,9 @@ function ProductForm() {
                 onChange={handleInputChange}
                 required
             >
-                <option key={"index"} value={""}>카테고리를 선택해주세요</option>
+                <option key={"index"} value={""}>
+                    카테고리를 선택해주세요
+                </option>
                 {categories &&
                     categories.map((category) => (
                         <option key={category.id} value={category.title}>
@@ -113,21 +133,33 @@ function ProductForm() {
                         </option>
                     ))}
             </S.Select>
+
             <S.Input
-                type="number"
+                type="text"
                 name="itemPrice"
-                placeholder="Price"
+                placeholder="판매 가격"
+                value={product.itemPrice}
                 onChange={handleInputChange}
                 required
             />
-            <S.FileInput
-                type="file"
-                name="images"
-                accept="image/*"
-                multiple
-                onChange={handleImagesChange}
-                required
-            />
+
+            <S.FileInput>
+                <label className="product-upload" htmlFor="images">
+                    <FontAwesomeIcon icon={faFolderOpen} />
+                    파일 선택
+                </label>
+                <input
+                    id="images"
+                    type="file"
+                    name="images"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImagesChange}
+                    required
+                />
+            </S.FileInput>
+
+            <p>등록하신 첫 번째 이미지가 상품 대표 이미지로 결정됩니다.</p>
             <S.Button type="submit">Submit</S.Button>
         </S.Form>
     );

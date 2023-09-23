@@ -2,22 +2,20 @@ import { styled } from "styled-components";
 
 export const Wrapper = styled.li`
     display: inline-block;
-
-    margin-right: 16px;
-
+    padding: 10px;
     .products__category-btn {
         all: unset;
-
-        font-size: 1rem;
-        font-weight: bold;
-        color: var(--color-black-primary);
-
+        width: max-content;
+        font-size: var(--text-size-medium);
+        font-weight: 100;
         transition: color 0.2s; 
-
+        padding: 5px 8px;
+        border: 1px solid black;
+        border-radius: 70px;
         &:hover {
-            color: rgb(200, 200, 200);
+            background-color: var(--color-white-primary);
+            color: black;
         };
-
         cursor: pointer;
     }
 `

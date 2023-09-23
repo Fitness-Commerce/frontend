@@ -31,6 +31,11 @@ export const Wrapper = styled.section<WrapperProps>`
 export const ProductCard = styled.article<ProductCardProps>`
     display: flex;
     padding: 8px;
+    background-color: white;
+    border-radius: 4px;
+    span {
+        padding: 2px 0;
+    }
 
     /* 그리드/리스트 레이아웃 */
     ${(props) => {
@@ -105,8 +110,8 @@ export const ProductCard = styled.article<ProductCardProps>`
             }
 
             .product-card__price {
-                font-size: 1.6rem;
-                font-weight: 900;
+                font-size: 1.3rem;
+                font-weight: 600;
             }
         }
 

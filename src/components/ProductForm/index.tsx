@@ -155,10 +155,8 @@ function ProductForm() {
                     accept="image/*"
                     multiple
                     onChange={handleImagesChange}
-                    required
-                />
+                    required />
             </S.FileInput>
-
             <p>등록하신 첫 번째 이미지가 상품 대표 이미지로 결정됩니다.</p>
             <S.Button type="submit">Submit</S.Button>
         </S.Form>

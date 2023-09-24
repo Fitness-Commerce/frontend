@@ -24,10 +24,10 @@ import ProductForm from "./components/ProductForm";
 import getCategories from "./api/products_api/getCategories";
 
 //FIXME: 테스트용
-// import login from "./api/test_api/login";
-// import signup from "./api/test_api/signup";
-// import createProductsCategory from "./api/test_api/createProductsCategory";
-// import testCreateProducts from "./api/test_api/testCreateProducts";
+import login from "./api/test_api/login";
+import signup from "./api/test_api/signup";
+import createProductsCategory from "./api/test_api/createProductsCategory";
+import testCreateProducts from "./api/test_api/testCreateProducts";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -80,25 +80,25 @@ const router = createBrowserRouter([
                 path: "post/:postId",
                 element: <Post />,
             },
-            // {
-            //     path: "test",
-            //     element: (
-            //         <>
-            //             <button type="button" onClick={login}>
-            //                 로그인
-            //             </button>
-            //             <button type="button" onClick={signup}>
-            //                 회원가입
-            //             </button>
-            //             <button type="button" onClick={createProductsCategory}>
-            //                 카테고리 생성
-            //             </button>
-            //             <button type="button" onClick={testCreateProducts}>
-            //                 더미 매물
-            //             </button>
-            //         </>
-            //     ),
-            // },
+            {
+                path: "test",
+                element: (
+                    <>
+                        <button type="button" onClick={login}>
+                            로그인
+                        </button>
+                        <button type="button" onClick={signup}>
+                            회원가입
+                        </button>
+                        <button type="button" onClick={createProductsCategory}>
+                            카테고리 생성
+                        </button>
+                        <button type="button" onClick={testCreateProducts}>
+                            더미 매물
+                        </button>
+                    </>
+                ),
+            },
         ],
         // errorElement: <ErrorPage />,
     },

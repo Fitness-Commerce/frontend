@@ -46,6 +46,8 @@ export const FileInput = styled.div`
     label {
         padding: 20px;
         display: flex;
+        flex-direction: column;
+        gap: 6px;
         width: 100%;
         color: gray;
         &:hover { cursor: pointer;}        

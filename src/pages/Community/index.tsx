@@ -28,7 +28,7 @@ const Community = () => {
         ["postList", size, page],
         categoryId
             ? () => {
-                  setPage(0);
+                  setPage(1);
                   return getCategoryPostList(categoryId, page, size);
               }
             : () => getPostsList(page, size) // 순서 중요!

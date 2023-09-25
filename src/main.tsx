@@ -24,6 +24,7 @@ import login from "./api/test_api/login";
 import signup from "./api/test_api/signup";
 import createProductsCategory from "./api/test_api/createProductsCategory";
 import testCreateProducts from "./api/test_api/testCreateProducts";
+import createCommunity from "./api/test_api/createCummunity";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -90,6 +91,9 @@ const router = createBrowserRouter([
                         </button>
                         <button type="button" onClick={testCreateProducts}>
                             더미 매물
+                        </button>
+                        <button type="button" onClick={createCommunity}>
+                            게시판 생성
                         </button>
                     </>
                 ),

@@ -21,13 +21,11 @@ interface Product {
     itemDetail: string;
     categoryTitle: string;
     itemPrice: string;
-    images?: FileList;
-    // [key: string]: string | File;
 }
 
 function ProductForm() {
     // FIXME: 임시
-    const [fileArray, setFileArray] = useState([]);
+    const [fileArray, setFileArray] = useState<File[]>([]);
     // const { crud }  = useParams();
     const excuteCreateProduct = useAuth(createProduct);
     const navigate = useNavigate();
@@ -61,46 +59,45 @@ function ProductForm() {
 
     const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            console.log(e.target.files);
+            console.dir(e.target);
 
-            const tmp: never[] = [];
-            for (let i = 0; i < e.target.files?.length; i++) {
-                tmp.push(e.target.files.item(i)?.name as never);
+            const tmp: File[] = [];
+            for (let i = e.target.files?.length - 1; i >= 0; i--) {
+                tmp.push(e.target.files.item(i) as File);
             }
             setFileArray((prev) => [...prev, ...tmp]);
-            setProduct({ ...product, images: e.target.files });
         }
-        
+
+        console.log(fileArray);
     };
-    
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        
         // 유효성 검사
         for (const value of Object.values(product)) {
             if (!value) return alert("모든 정보를 기입해주세요");
         }
 
+        // product(상품 정보)와 fileArray(이미지들)을 request에 담기
+        const request = { ...product, images: fileArray };
+
         const formData = new FormData();
 
-        for (const [key, value] of Object.entries(product)) {
+        for (const [key, value] of Object.entries(request)) {
             switch (key) {
                 case "images":
-                    for (const image of Object.values(value)) {
-                        formData.append(
-                            `images[${counter.increase()}]`,
-                            image as File
-                        );
+                    for (const image of value) {
+                        formData.append(`images[${counter.increase()}]`, image);
                     }
                     break;
                 case "itemPrice": {
-                    const price = value.replace(/,/g, "");
+                    const price = (value as string).replace(/,/g, "");
                     formData.append(key, price);
                     break;
                 }
                 default:
-                    formData.append(key, value);
+                    formData.append(key, value as string);
                     break;
             }
         }
@@ -158,10 +155,13 @@ function ProductForm() {
             <S.FileInput>
                 <label className="product-upload" htmlFor="images">
                     {fileArray.length > 0
-                        ? fileArray.map((fileName) => (
-                              <div style={{display: "block"}} key={self.crypto.randomUUID()}>
+                        ? fileArray.map((file) => (
+                              <div
+                                  style={{ display: "block" }}
+                                  key={self.crypto.randomUUID()}
+                              >
                                   <FontAwesomeIcon icon={faFolderOpen} />
-                                  <span>{fileName}</span>
+                                  <span>{file.name}</span>
                               </div>
                           ))
                         : "파일 선택"}

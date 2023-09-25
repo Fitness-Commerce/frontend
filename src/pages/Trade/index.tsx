@@ -27,7 +27,7 @@ const Trade = () => {
         error: productError,
         isLoading: isProductLoading,
         isError: isProductError,
-    } = useQuery(["productInfo"], () => getProduct(productId as string), {
+    } = useQuery(["productInfo", productId], () => getProduct(productId as string), {
         select: (data) => ({
             ...data,
             createdAt: pastTimeCalculator(data.createdAt),

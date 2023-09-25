@@ -11,7 +11,7 @@ import * as S from "./styled";
 import dummyProductImg from "../../../../assets/product1.webp";
 
 interface ImageSlideProps {
-    itemImagesUrl: URL[];
+    itemImagesUrl: string[];
 }
 
 // 매물 이미지 슬라이드
@@ -84,7 +84,7 @@ const ImageSlide = ({ itemImagesUrl }: ImageSlideProps) => {
                 {itemImagesUrl.map((url, index) => (
                     <img
                         key={self.crypto.randomUUID()}
-                        src={url.toString() || dummyProductImg}
+                        src={url || dummyProductImg}
                         alt={`image ${index}`}
                     />
                 ))}

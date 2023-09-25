@@ -12,6 +12,8 @@ import useAuth from "../../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderOpen } from "@fortawesome/free-solid-svg-icons";
 
+// FIXME: 테스트용
+
 const counter = calculateNumber();
 
 interface Product {
@@ -20,10 +22,12 @@ interface Product {
     categoryTitle: string;
     itemPrice: string;
     images?: FileList;
-    // [key: string]: string | FileList;
+    // [key: string]: string | File;
 }
 
 function ProductForm() {
+    // FIXME: 임시
+    const [fileArray, setFileArray] = useState([]);
     // const { crud }  = useParams();
     const excuteCreateProduct = useAuth(createProduct);
     const navigate = useNavigate();
@@ -37,6 +41,7 @@ function ProductForm() {
         categoryTitle: "",
         itemPrice: "",
     });
+
     // input으로 숫자만 입력 받게하고 그 값으로 원화 표기 변수를 생성 후
     // 해당 값을 보여줌
 
@@ -58,13 +63,20 @@ function ProductForm() {
         if (e.target.files) {
             console.log(e.target.files);
 
+            const tmp: never[] = [];
+            for (let i = 0; i < e.target.files?.length; i++) {
+                tmp.push(e.target.files.item(i)?.name as never);
+            }
+            setFileArray((prev) => [...prev, ...tmp]);
             setProduct({ ...product, images: e.target.files });
         }
+        
     };
-
+    
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        
         // 유효성 검사
         for (const value of Object.values(product)) {
             if (!value) return alert("모든 정보를 기입해주세요");
@@ -145,8 +157,14 @@ function ProductForm() {
 
             <S.FileInput>
                 <label className="product-upload" htmlFor="images">
-                    <FontAwesomeIcon icon={faFolderOpen} />
-                    파일 선택
+                    {fileArray.length > 0
+                        ? fileArray.map((fileName) => (
+                              <div style={{display: "block"}} key={self.crypto.randomUUID()}>
+                                  <FontAwesomeIcon icon={faFolderOpen} />
+                                  <span>{fileName}</span>
+                              </div>
+                          ))
+                        : "파일 선택"}
                 </label>
                 <input
                     id="images"
@@ -155,7 +173,8 @@ function ProductForm() {
                     accept="image/*"
                     multiple
                     onChange={handleImagesChange}
-                    required />
+                    required
+                />
             </S.FileInput>
             <p>등록하신 첫 번째 이미지가 상품 대표 이미지로 결정됩니다.</p>
             <S.Button type="submit">Submit</S.Button>

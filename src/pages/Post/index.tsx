@@ -56,7 +56,6 @@ const Post = () => {
     if (isError) {
         console.log(error);
         navigate("/error");
-        return <></>;
     }
 
     // 게시글 수정

@@ -85,7 +85,7 @@ const ProductCard = ({
             <div className="product-card__img-wrapper">
                 <img
                     className="product-card__img"
-                    src={info?.itemImagesUrl[0].toString() || dummyImage}
+                    src={info?.itemImagesUrl[0]?.toString() || dummyImage}
                     alt={info?.itemName}
                 />
             </div>

@@ -3,10 +3,9 @@ import axios from "axios";
 const getPostsList = async (
     page: number,
     size: number,
-    // orderBy: string,
-    // directrion: string
+    // order: string,
 ) => {
-    const res = await axios.get(`/api/posts?page=${page}&size=${size}`);
+    const res = await axios.get(`/api/posts?page=${page}&size=${size}&order=id_ASC`);
     const newPostsList = res.data;
     return newPostsList;
 };

@@ -7,7 +7,7 @@ export default interface ProductType {
     itemPrice: number;
     itemStatus: string;
     buyerId: number;
-    itemImagesUrl: URL[];
+    itemImagesUrl: string[];
     viewCount: number;
     transactionArea: string[];
     createdAt: string;

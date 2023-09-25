@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAxios } from "../../../../hooks/useAxios";
 
 import { IProfileData } from "../../../../interface/Profile";
-import { useAxios } from "../../../../hooks/useAxios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UPDATE_PROFILE } from "../../../../contance/endPoint";
 import AddressSelect from "./AddressSelect";
 

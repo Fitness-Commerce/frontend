@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import LoadingSpinner from "../../components/LoadingSpinner";
 
@@ -10,47 +10,63 @@ import locationIcon from "../../assets/location.svg";
 import reportIcon from "../../assets/report.svg";
 import * as S from "./styled";
 
-// 매물 단건 조회 비동기 요청
+// 비동기 요청
 import getProduct from "../../api/products_api/getProduct";
+import getMemberProfile from "../../api/test_api/getMemberProfile";
 
 // 날짜 계산기
 import pastTimeCalculator from "../../util/pastTimeCalculator";
 
 // 매물 상세 페이지(거래 페이지)
 const Trade = () => {
-    const navigate = useNavigate();
+    const { itemId: productId } = useParams();
+
+    // 매물 요청
     const {
         data: product,
-        error,
-        isLoading,
-        isError,
-    } = useQuery(["productInfo"], getProduct, {
+        error: productError,
+        isLoading: isProductLoading,
+        isError: isProductError,
+    } = useQuery(["productInfo", productId], () => getProduct(productId as string), {
         select: (data) => ({
             ...data,
-            created_at: pastTimeCalculator(data.created_at),
+            createdAt: pastTimeCalculator(data.createdAt),
         }),
     });
 
-    if (isLoading) {
+    // 매물 요청 완료되면 거래가능 지역 가져오기위해 멤버 정보 요청
+    const {
+        data: member,
+        error: memberError,
+        isLoading: isMemberLoading,
+        isError: isMemberError,
+    } = useQuery(
+        ["tradeProfile"],
+        () => getMemberProfile(product?.memberId as number),
+        {
+            enabled: !!product, // product가 선행되어야 함
+        }
+    );
+
+    if (isProductLoading || isMemberLoading) {
         return <LoadingSpinner />;
     }
 
-    if (isError) {
-        console.log(error);
-        navigate("/error");
-        return;
+    if (isProductError || isMemberError) {
+        console.log(productError || memberError);
+        throw productError || memberError;
     }
 
     return (
         <SideMarginWrapper>
             <S.Wrapper>
-                <ImageSlide item_images_url={product.item_images_url} />
+                <ImageSlide itemImagesUrl={product.itemImagesUrl} />
                 <div className="trade__info-wrapper">
                     {/* 매물 제목 */}
-                    <h1 className="trade__title">{product.item_name}</h1>
+                    <h1 className="trade__title">{product.itemName}</h1>
                     {/* 매물 가격 */}
                     <span className="trade__price">
-                        {product.item_price.toLocaleString()}
+                        {product.itemPrice.toLocaleString()}
                         <span className="trade__price__won">원</span>
                     </span>
                     {/* 매물 디테일 */}
@@ -62,10 +78,12 @@ const Trade = () => {
                                 aria-label="visibillity icon"
                                 alt="visibillity icon"
                             />
-                            <span>api 명세에 아직 추가 안됨</span>
+                            <span>
+                                {product.viewCount}
+                            </span>
                         </div>
                         <span className="trade__details__created-at">
-                            {product.created_at}
+                            {product.updatedAt || product.createdAt}
                         </span>
                         <button
                             type="button"
@@ -81,7 +99,7 @@ const Trade = () => {
                         </button>
                     </div>
                     {/* 매물 컨텐츠 */}
-                    <pre className="trade__content">{product.item_detail}</pre>
+                    <pre className="trade__content">{product.itemDetail}</pre>
                     {/* 매물 거래 지역 */}
                     <div className="trade__area-range">
                         <img
@@ -90,7 +108,13 @@ const Trade = () => {
                             aria-label="location icon"
                             alt="location icon"
                         />
-                         멤버 단건 조회로 가져와야됨
+                        <ul>
+                            {member.area_range.map(
+                                (area: string, index: number) => (
+                                    <li key={index}>{area}</li>
+                                )
+                            )}
+                        </ul>
                     </div>
                     <div className="trade__btn-container">
                         <button type="button" className="trade__consider-btn">

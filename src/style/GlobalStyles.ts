@@ -5,15 +5,19 @@ const GlobalStyles = createGlobalStyle`
     ${reset}
     :root {
         /* color */
+        --color-bg-white: rgb(248, 248, 248);
         --color-white-primary: rgb(233,233,233);
         --color-black-primary: rgb(34,34,34);
         --color-bright-black: rgb(50,50,50);
         --color-gray: rgb(210,210,210);
+        --color-bright-gray: rgb(77,77,77);
         --color-accent-bright-green: rgba(213, 243, 231);
         --color-accent-dark-green: rgb(19, 189, 126);
         --color-accent-blue: #47a1e5;
         --color-opacity-white: rgba(255,255,255, 0.1);
-        --color-profile-bg-white: rgb(248, 248, 248);
+        /* 거래가능 */
+        /* 판매완료 */
+        /* 예약중 */
 
         /* text */
         --text-size-small: 12px;
@@ -50,8 +54,7 @@ const GlobalStyles = createGlobalStyle`
     }
     body {
         color: var(--color-black-primary);
-        background-color: var(--color-white-primary);
-        background-color: var(--color-profile-bg-white);
+        background-color: var(--color-bg-white);
         
         /* input type number일 때 증감 버튼을 비활성화 */
         input::-webkit-inner-spin-button {

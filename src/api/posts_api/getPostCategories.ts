@@ -1,6 +1,6 @@
 import axios from "axios";
 
-interface IpostCategories {
+export interface IpostCategories {
     id: number;
     title: string;
     post_ids: number[];

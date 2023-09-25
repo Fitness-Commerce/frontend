@@ -6,6 +6,25 @@ export const ProfilePage = styled.div`
     background-color: var(--color-profile-bg-white);
     margin: 0 15%;
     color: var(--color-black-primary);
+    .header {
+        display: none;
+    }
+    @media (max-width: 1024px) { 
+	    /* 테블릿 크기에서의 스타일 */ 
+        flex-direction: column;
+        margin: 0 10%;
+        .profile-left {
+            display: none;
+        }
+        .header {
+            display: flex;
+        }
+        
+    }
+
+    @media (max-width: 768px) { 
+	    /* 모바일 크기에서의 스타일 */ 
+    }
 `;
 
 
@@ -16,8 +35,7 @@ export const ProfilePageLeft = styled.div`
     height: 100vh;
     padding: 0 1.5rem;
     border-left: 1px solid rgba(0, 0, 0, 0.08);
-    /* box-shadow: 5px 1px 8px 0 rgb(0 0 0 / 6%); */
-    box-shadow: 5px 1px 8px 0 var(--color-accent-bright-green);
+    box-shadow: 5px 1px 8px 0 rgb(0 0 0 / 6%);
 
     .profile-page__left__title {
         font-size: var(--text-size-large);

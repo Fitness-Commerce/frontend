@@ -11,11 +11,11 @@ import * as S from "./styled";
 import dummyProductImg from "../../../../assets/product1.webp";
 
 interface ImageSlideProps {
-    item_images_url: string[];
+    itemImagesUrl: string[];
 }
 
 // 매물 이미지 슬라이드
-const ImageSlide = ({ item_images_url }: ImageSlideProps) => {
+const ImageSlide = ({ itemImagesUrl }: ImageSlideProps) => {
     const [sliderX, setSliderX] = useState(0);
     const [navDotIndex, setNavDotIndex] = useState(0);
     const sliderRef = useRef<HTMLDivElement>(null);
@@ -35,7 +35,7 @@ const ImageSlide = ({ item_images_url }: ImageSlideProps) => {
     //         const deltaX = startRef.current - currentX;
     //         startRef.current = currentX;
     //         setSliderX((old) =>
-    //             clamp(old - deltaX, -(item_images_url.length - 1) * width, 0)
+    //             clamp(old - deltaX, -(itemImagesUrl.length - 1) * width, 0)
     //         );
     //     }
     // }
@@ -53,20 +53,20 @@ const ImageSlide = ({ item_images_url }: ImageSlideProps) => {
 
     const handlePrevClick = () => {
         setSliderX((old) =>
-            clamp(old + width, -(item_images_url.length - 1) * width, 0)
+            clamp(old + width, -(itemImagesUrl.length - 1) * width, 0)
         );
         setNavDotIndex((idx) => idx - 1);
     };
     const handleNextClick = () => {
         setSliderX((old) =>
-            clamp(old - width, -(item_images_url.length - 1) * width, 0)
+            clamp(old - width, -(itemImagesUrl.length - 1) * width, 0)
         );
         setNavDotIndex((idx) => idx + 1);
     };
 
     return (
         <S.Image
-            $img_length={item_images_url.length}
+            $img_length={itemImagesUrl.length}
             $width={width}
             $height={heigth}
             // onMouseMove={handleMouseMove}
@@ -77,11 +77,11 @@ const ImageSlide = ({ item_images_url }: ImageSlideProps) => {
         >
             <S.Slider
                 $slideX={sliderX}
-                $img_length={item_images_url.length}
+                $img_length={itemImagesUrl.length}
                 $width={width}
                 $height={heigth}
             >
-                {item_images_url.map((url, index) => (
+                {itemImagesUrl.map((url, index) => (
                     <img
                         key={self.crypto.randomUUID()}
                         src={url || dummyProductImg}
@@ -105,7 +105,7 @@ const ImageSlide = ({ item_images_url }: ImageSlideProps) => {
                 className="trade__img-slide right-btn"
                 type="button"
                 onClick={handleNextClick}
-                disabled={sliderX === -(item_images_url.length - 1) * width}
+                disabled={sliderX === -(itemImagesUrl.length - 1) * width}
             >
                 <img
                     src={guide_arrow}
@@ -113,7 +113,7 @@ const ImageSlide = ({ item_images_url }: ImageSlideProps) => {
                     alt="right arrow"
                 />
             </button>
-            <SliderNavDot active_dot={navDotIndex} len={item_images_url.length} />
+            <SliderNavDot active_dot={navDotIndex} len={itemImagesUrl.length} />
         </S.Image>
     );
 };

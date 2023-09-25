@@ -1,3 +1,4 @@
+import InfiniteScroll from "react-infinite-scroller";
 import styled, { css } from "styled-components";
 
 interface WrapperProps {
@@ -8,7 +9,7 @@ interface ProductCardProps {
     $isGrid: boolean;
 }
 
-export const Wrapper = styled.section<WrapperProps>`
+export const Scroll = styled(InfiniteScroll)<WrapperProps>`
     display: flex;
     width: 100%;
 
@@ -17,12 +18,12 @@ export const Wrapper = styled.section<WrapperProps>`
             case true:
                 return css`
                     flex-wrap: wrap;
-                    flex-direction: row-reverse;
+                    flex-direction: row;
                 `;
             default:
                 return css`
                     flex-wrap: nowrap;
-                    flex-direction: column-reverse;
+                    flex-direction: column;
                 `;
         }
     }}
@@ -31,6 +32,7 @@ export const Wrapper = styled.section<WrapperProps>`
 export const ProductCard = styled.article<ProductCardProps>`
     display: flex;
     padding: 8px;
+    cursor: pointer;
 
     /* 그리드/리스트 레이아웃 */
     ${(props) => {

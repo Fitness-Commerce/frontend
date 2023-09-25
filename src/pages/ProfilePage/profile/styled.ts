@@ -29,12 +29,21 @@ export const Profile = styled.div`
             background-color: rgb(80,80,80);
         }
     }
+    @media (max-width: 1024px) { 
+	    /* 테블릿 크기에서의 스타일 */ 
+        width: 100%;
+        padding: 0;
+        margin-top: 3rem;
+    }
+
+    @media (max-width: 768px) { 
+        /* 모바일 크기에서의 스타일 */ 
+    }
 `;
 
 export const UserData = styled.div`
     display: flex;
     flex-direction: column;
-
     /* 사진, 이름, 메일주소 */
     .user-data__name {
         display: flex;
@@ -163,6 +172,21 @@ export const Residence = styled.div`
                     }
                 }
             }
+        }
+    }
+
+    @media (max-width: 1024px) { 
+	    /* 테블릿 크기에서의 스타일 */ 
+    }
+
+    @media (max-width: 768px) { 
+        /* 모바일 크기에서의 스타일 */ 
+        .address-main {
+            font-size: 14px;
+        }
+        .modify-btn-address {
+            font-size: small;
+            white-space: nowrap;
         }
     }
 `;

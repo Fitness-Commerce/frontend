@@ -1,13 +1,19 @@
+import { useSetRecoilState } from "recoil";
+import { SelectedCategoryState } from "../../../../recoil/products/atom";
+
 import * as S from "./styled";
 
-interface CategoryButtonProps {
-    children: string;
-}
-
-function CategoryButton({ children }: CategoryButtonProps) {
+function CategoryButton({ title, id }: { title: string; id: number }) {
+    const selectCategory = useSetRecoilState(SelectedCategoryState);
     return (
         <S.Wrapper>
-            <button type="button" className="products__category-btn">{children}</button>
+            <button
+                type="button"
+                className="products__category-btn"
+                onClick={() => selectCategory(id.toString())}
+            >
+                {title}
+            </button>
         </S.Wrapper>
     );
 }

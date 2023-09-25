@@ -10,7 +10,7 @@ export const Title = styled.div`
     .products__title {
         color: var(--color-bright-black);
         font-size: 24px;
-        font-weight: bold;
+        font-weight: 500;
     }
 
     .products__more-items-btn {
@@ -26,13 +26,6 @@ export const Title = styled.div`
 export const Category = styled.div`
     display: flex;
     flex-direction: column;
-
-    .category__nav-wrapper {
-        display: flex;
-        height: 48px;
-        overflow-x: hidden;
-        align-items: center;
-    }
 
     .category__sort-wrapper {
         display: flex;

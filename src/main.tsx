@@ -25,6 +25,7 @@ import signup from "./api/test_api/signup";
 import createProductsCategory from "./api/test_api/createProductsCategory";
 import testCreateProducts from "./api/test_api/testCreateProducts";
 import createCommunity from "./api/test_api/createCummunity";
+import getCategories from "./api/products_api/getCategories";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -35,11 +36,10 @@ const queryClient = new QueryClient({
     },
 });
 
-// const preFetch
-// queryClient.prefetchQuery({
-//     queryKey: ["productsCategories"],
-//     queryFn: getCategories
-// })
+queryClient.prefetchQuery({
+    queryKey: ["productsCategories"],
+    queryFn: getCategories
+})
 
 const router = createBrowserRouter([
     {

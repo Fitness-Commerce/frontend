@@ -5,6 +5,18 @@ export const Form = styled.form`
     flex-direction: column;
     width: 50vw;
     margin: auto;
+
+    label {
+        margin-top: 6px;
+        display: inline-block;
+        width: fit-content;
+        padding: 6px 8px;
+        color: white;
+        background-color: var(--color-black-primary);
+        border-radius: var(--button-radius);
+
+        cursor: pointer;
+    }
 `;
 
 export const Input = styled.input`
@@ -32,10 +44,47 @@ export const Textarea = styled.textarea`
     outline: none;
 `;
 
+export const UploadLabelContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    label {
+        margin-top: 6px;
+        display: flex;
+        width: fit-content;
+        padding: 6px 8px;
+        color: white;
+        gap: 4px;
+        background-color: var(--color-black-primary);
+        border-radius: var(--button-radius);
+
+        &:hover {
+            filter: brightness(0.9);
+        }
+
+        cursor: pointer;
+    }
+
+    p {
+        color: gray;
+        font-size: 0.9rem;
+        display: inline-block;
+    }
+`;
+
 export const FileInput = styled.div`
     border: 1px solid var(--color-accent-blue);
     border-radius: 4px;
     margin-bottom: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    color: gray;
+
     
     input {
         display: none;
@@ -43,14 +92,49 @@ export const FileInput = styled.div`
     svg {
         margin-right: 10px;
     }
-    label {
-        padding: 20px;
+    
+    .product_file-container {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
         gap: 6px;
-        width: 100%;
-        color: gray;
-        &:hover { cursor: pointer;}        
+        
+        &:nth-last-child(1) {
+            border-bottom: none;
+        }
+
+        .product_file-name {
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+                text-underline-offset: 4px;
+            }
+        }
+
+        .product_file-preview {
+            margin-right: 6px;
+            display: inline-block;
+            width: 10vw;
+            height: 10vh;
+            object-fit: contain;
+        }
+
+        .product_file-delete-btn {
+            background-color: transparent;
+            opacity: 0.7;
+            padding: 0px;
+            border: none;
+            color: red;
+            font-size: 1.4rem;
+            font-weight: bold;
+
+            &:hover {
+                cursor: pointer;
+                opacity: 1;
+                filter: brightness(1);
+            }
+        }
     }
 `;
 

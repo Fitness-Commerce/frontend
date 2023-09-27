@@ -33,7 +33,7 @@ function Categories() {
                         />
                     );
                 })}
-                {etc && <CategoryButton id={etc[0].id} title={etc[0].title} /> }
+                {etc && <CategoryButton id={etc[0]?.id} title={etc[0]?.title} /> }
         </ul>
     );
 }

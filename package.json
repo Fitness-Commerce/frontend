@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "issue": "#64",
+  "issue": "#69",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

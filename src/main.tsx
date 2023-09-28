@@ -20,14 +20,13 @@ import Dashboard from "./pages/ProfilePage/dashboard";
 import Profile from "./pages/ProfilePage/profile";
 import ProductForm from "./components/ProductForm";
 
-// 프리패칭 비동기 함수
-import getCategories from "./api/products_api/getCategories";
-
 //FIXME: 테스트용
 import login from "./api/test_api/login";
 import signup from "./api/test_api/signup";
 import createProductsCategory from "./api/test_api/createProductsCategory";
 import testCreateProducts from "./api/test_api/testCreateProducts";
+import createCommunity from "./api/test_api/createCummunity";
+import getCategories from "./api/products_api/getCategories";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -38,11 +37,10 @@ const queryClient = new QueryClient({
     },
 });
 
-// 브라우저 연결시 프리패칭 실행
 queryClient.prefetchQuery({
     queryKey: ["productsCategories"],
     queryFn: getCategories
-});
+})
 
 const router = createBrowserRouter([
     {
@@ -95,6 +93,9 @@ const router = createBrowserRouter([
                         </button>
                         <button type="button" onClick={testCreateProducts}>
                             더미 매물
+                        </button>
+                        <button type="button" onClick={createCommunity}>
+                            게시판 생성
                         </button>
                     </>
                 ),

@@ -28,7 +28,7 @@ const testCreateProducts = async () => {
                 Authorization: localStorage.getItem("accessToken")
             }
         })
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 1; i++) {
             requestArray.push(new Promise(() => instence.post(ITEMS, formData)));
         }
         Promise.all(requestArray);

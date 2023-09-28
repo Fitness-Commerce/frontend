@@ -15,7 +15,7 @@ const PostList = (props: PostListProps) => {
     return (
         <S.PostList>
             <div className="post-list__title">
-                <Link to={`/post?post-id=${props.id}`}>{props.title}</Link>
+                <Link to={`/post/${props.id}`}>{props.title}</Link>
             </div>
             <div className="post-list__author">
                 <span>{props.author}</span>

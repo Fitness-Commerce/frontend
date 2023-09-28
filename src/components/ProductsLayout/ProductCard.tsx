@@ -85,7 +85,11 @@ const ProductCard = ({
             <div className="product-card__img-wrapper">
                 <img
                     className="product-card__img"
+<<<<<<< Updated upstream
                     src={info?.itemImagesUrl[0]?.toString() || dummyImage}
+=======
+                    src={info?.itemImagesUrl[0] || dummyImage}
+>>>>>>> Stashed changes
                     alt={info?.itemName}
                 />
             </div>

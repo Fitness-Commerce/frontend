@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import { Client } from "@stomp/stompjs";
 import socketAuthRefresh from "./socketAuthRefresh";
 
@@ -6,18 +5,18 @@ export interface FirstMessageType {
     roomName: string;
     itemId: number;
     message: string;
-    setIsCreated: Dispatch<SetStateAction<boolean>>
+    setIsCreated: (arg: boolean) => void;
 }
 
 const createChat = ({ roomName, itemId, message, setIsCreated }: FirstMessageType) => {
-    const stompClient = socketAuthRefresh(
+    const client = socketAuthRefresh(
         new Client({
             brokerURL: "ws://43.200.32.144:8080/ws",
         })
     );
 
-    stompClient.onConnect = () => {
-        stompClient.publish({
+    client.onConnect = () => {
+        client.publish({
             destination: "/pub/chat/enter",
             headers: {
                 Authorization: localStorage.getItem("accessToken") as string,
@@ -30,17 +29,17 @@ const createChat = ({ roomName, itemId, message, setIsCreated }: FirstMessageTyp
         });
 
         console.log("헬스톡 생성중...");
-        stompClient.deactivate();
+        setTimeout(() => client.deactivate(), 2000);
     };
 
-    stompClient.onDisconnect = () => {
+    client.onDisconnect = () => {
         console.log("헬스톡 생성!!");
         setIsCreated(true);
     };
 
-    stompClient.onStompError = () => console.log("헬스톡 생성 실패");
+    client.onStompError = () => console.log("헬스톡 생성 실패");
     
-    stompClient.activate();
+    client.activate();
 };
 
 export default createChat;

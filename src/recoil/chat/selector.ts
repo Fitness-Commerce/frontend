@@ -1,11 +1,22 @@
 import { selector } from "recoil";
-import { selectedChatRoomState } from "./atom";
+import { selectedChatRoomState, selectedItemIdState } from "./atom";
 
-export const isSelectedChatRoom = selector<boolean>({
-    key: 'isSelectedChatRoom',
+export const isChatRoomSelector = selector<boolean>({
+    key: 'isChatRoomSelected',
     get: ({get}) => {
-        const isSelectedChatRoom = get(selectedChatRoomState);
+        const selectedChatRoom = get(selectedChatRoomState);
+        const isSelectedChatRoom = !!selectedChatRoom;
 
-        return !!isSelectedChatRoom;
+        return isSelectedChatRoom;
+    }
+})
+
+export const isItemSelector = selector<boolean>({
+    key: 'isItemSelected',
+    get: ({get}) => {
+        const selectedItemId = get(selectedItemIdState);
+        const isSelectedChatRoom = !!selectedItemId;
+
+        return isSelectedChatRoom;
     }
 })

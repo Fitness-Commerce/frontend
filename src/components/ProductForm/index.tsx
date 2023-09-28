@@ -11,8 +11,11 @@ import * as S from "./styled";
 import useAuth from "../../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderOpen } from "@fortawesome/free-solid-svg-icons";
+<<<<<<< Updated upstream
 
 import SpinnerSVG from "../../assets/Spinner.svg"
+=======
+>>>>>>> Stashed changes
 
 const counter = calculateNumber();
 
@@ -39,6 +42,8 @@ function ProductForm() {
         categoryTitle: "",
         itemPrice: "",
     });
+    // input으로 숫자만 입력 받게하고 그 값으로 원화 표기 변수를 생성 후
+    // 해당 값을 보여줌
 
     const [previewSrc, setPreviewSrc] = useState<string[]>([]);
 
@@ -50,7 +55,12 @@ function ProductForm() {
         >
     ) => {
         if (e.target.name === "itemPrice") {
+<<<<<<< Updated upstream
             let price = e.target.value.replace(/\D/g, "");
+=======
+            let price = e.target.value.replace(/,/g, "");
+            console.log(price);
+>>>>>>> Stashed changes
             price = Number(price).toLocaleString();
             e.target.value = price;
         }
@@ -108,12 +118,24 @@ function ProductForm() {
         for (const [key, value] of Object.entries(request)) {
             switch (key) {
                 case "images":
+<<<<<<< Updated upstream
                     for (const image of value) {
                         formData.append(`images[${counter.increase()}]`, image);
                     }
                     break;
                 case "itemPrice": {
                     const price = (value as string).replace(/,/g, "");
+=======
+                    for (const image of Object.values(value)) {
+                        formData.append(
+                            `images[${counter.increase()}]`,
+                            image as File
+                        );
+                    }
+                    break;
+                case "itemPrice": {
+                    const price = value.replace(/,/g, "");
+>>>>>>> Stashed changes
                     formData.append(key, price);
                     break;
                 }
@@ -189,9 +211,17 @@ function ProductForm() {
                 required
             />
 
+<<<<<<< Updated upstream
             {/* 파일 목록 */}
             <S.FileInput>
                 {/* 파일을 실질적으로 가져오는 input (보여지진 않음) */}
+=======
+            <S.FileInput>
+                <label className="product-upload" htmlFor="images">
+                    <FontAwesomeIcon icon={faFolderOpen} />
+                    파일 선택
+                </label>
+>>>>>>> Stashed changes
                 <input
                     id="images"
                     type="file"
@@ -199,6 +229,7 @@ function ProductForm() {
                     accept="image/*"
                     multiple
                     onChange={handleImagesChange}
+<<<<<<< Updated upstream
                     required
                 />
                 {fileArray.length > 0 ?
@@ -255,6 +286,11 @@ function ProductForm() {
                 </label>
                 <p>등록하신 첫 번째 이미지가 상품 대표 이미지로 결정됩니다.</p>
             </S.UploadLabelContainer>
+=======
+                    required />
+            </S.FileInput>
+            <p>등록하신 첫 번째 이미지가 상품 대표 이미지로 결정됩니다.</p>
+>>>>>>> Stashed changes
             <S.Button type="submit">Submit</S.Button>
         </S.Form>
     );

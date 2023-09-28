@@ -89,11 +89,10 @@ export const Slider = styled.div.attrs<SliderProps>((props) => ({
         left: props.$slideX,
     },
 }))`
-    position: absolute;
     display: flex;
     width: ${(props) => props.$width * props.$img_length}px;
     transition: left 0.2s ease-out;
-
+    
     img {
         height: ${(props) => props.$width}px;
         object-fit: contain;

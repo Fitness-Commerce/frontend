@@ -1,8 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
 import CategoryButton from "../CategoryButton";
+<<<<<<< Updated upstream
 import getCategories from "../../../../api/products_api/getCategories";
 import LoadingSpinner from "../../../../components/LoadingSpinner";
+=======
+
+import LoadingSpinner from "../../../../components/LoadingSpinner";
+import getCategories from "../../../../api/products_api/getCategories";
+>>>>>>> Stashed changes
 
 function Categories() {
     const {

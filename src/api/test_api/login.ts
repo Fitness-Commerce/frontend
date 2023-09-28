@@ -2,6 +2,10 @@ import axios from "axios";
 
 async function login() {
     try {
+        // const res = await axios.post("/api/auth/login", {
+        //     email: "same666@naver.com",
+        //     password: "12341234",
+        // });
         const res = await axios.post("/api/auth/login", {
             email: "same555@naver.com",
             password: "12341234",

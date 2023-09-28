@@ -4,16 +4,16 @@ import {
     selectedItemIdState,
 } from "../recoil/chat/atom";
 import { useEffect } from "react";
-import { isSelectedChatRoom } from "../recoil/chat/selector";
+import { isChatRoomSelector, isItemSelector } from "../recoil/chat/selector";
 
 interface selectedChatType {
-    roomId: string;
+    roomId?: string;
     itemId: number;
 }
 
 const useChatRoomState = () => {
     // selectedChatRoomId: 현재 선택된 채팅방 id 반환 (주의! false일때도 false 그대로 반환)
-    const [selectedChatRoomId, setSelectedChatRoom] = useRecoilState(
+    const [selectedChatRoomId, setSelectedChatRoomId] = useRecoilState(
         selectedChatRoomState
     );
 
@@ -23,17 +23,20 @@ const useChatRoomState = () => {
         useRecoilState(selectedItemIdState);
 
     // 채팅방 선택 유무 확인
-    const isSelected = useRecoilValue(isSelectedChatRoom);
+    const isChatRoomSelected = useRecoilValue(isChatRoomSelector);
+
+    // 매물 선택 유무 확인
+    const isItemSelected = useRecoilValue(isItemSelector);
 
     // 채팅방 선택
-    const onChatSelect = ({ roomId, itemId }: selectedChatType) => {
-        setSelectedChatRoom(roomId);
+    const onChatSelect = ({ roomId = "", itemId }: selectedChatType) => {
+        setSelectedChatRoomId(roomId);
         setSelectedItemId(itemId);
     };
 
     // 채팅방 나가기
     const onChatClose = () => {
-        setSelectedChatRoom("");
+        setSelectedChatRoomId("");
         setSelectedItemId(0);
     };
 
@@ -43,7 +46,8 @@ const useChatRoomState = () => {
     }, []);
 
     return {
-        isSelected,
+        isChatRoomSelected,
+        isItemSelected,
         selectedChatRoomId,
         selectedItemId,
         onChatSelect,

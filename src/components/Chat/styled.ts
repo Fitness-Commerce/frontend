@@ -35,20 +35,60 @@ export const ChatButton = styled.button`
 `;
 
 export const ChatContainer = styled.div`
+    background-color: rgba(0, 0, 0, 0.3);
     display: flex;
     gap: 8px;
-`;
+    `;
 
 export const ChatList = styled.div`
+    position: relative;
+    width: 300px;
+    height: 500px;
+    overflow-y: scroll;
+    padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 8px;
+
+    .list-btn {
+        border-radius: var(--button-radius);
+        outline: none;
+        border-color: transparent;
+        box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.7);
+    }
 `;
 
-export const ChatRoom = styled.div`
+export const ChatRoom = styled.form`
+    position: relative;
+    width: 300px;
+    height: 500px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
+/* 
+    .message-container {
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    } */
 `;
 
+interface MessageContainerProps {
+    $isUser: boolean;
+}
 
+export const MessageContainer = styled.div<MessageContainerProps>`
+    justify-content: ${props => props.$isUser ? "end" : "start"};
+
+`
+
+export const Message = styled.p`
+    max-width: 200px;
+    padding: 8px;
+    border-radius: var(--button-radius);
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.5);
+    background-color: yellow;
+`

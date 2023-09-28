@@ -1,6 +1,5 @@
 import { Client } from "@stomp/stompjs";
 import socketAuthRefresh from "./socketAuthRefresh";
-import { Dispatch, SetStateAction } from "react";
 
 export interface ChatMessage {
     nickName: string;
@@ -8,46 +7,36 @@ export interface ChatMessage {
     createdAt: string;
 }
 
-export interface subscribeChatType  {
+export interface subscribeChatType {
     roomName: string;
-    setMessages: Dispatch<SetStateAction<ChatMessage[]>>;
-    setIsLoading: Dispatch<SetStateAction<boolean>>;
+    setMessages: (arg: ChatMessage) => void;
+    setIsLoading: (arg: boolean) => void;
 }
 
-const subscribeChat = ({roomName, setMessages, setIsLoading}: subscribeChatType) => {
+const subscribeChat = ({ roomName, setMessages, setIsLoading }: subscribeChatType) => {
     // 인증 리프레시 기능 넣은 웹소켓 클라이언트 생성
-    const client = socketAuthRefresh(new Client());
+    const client = socketAuthRefresh(
+        new Client({
+            brokerURL: "ws://43.200.32.144:8080/ws",
+        })
+    );
 
-    // 웹소켓 연결
-    client.configure({
-        brokerURL: "ws://43.200.32.144:8080/ws",
-        onConnect: () => {
-            // 구독 시작
-            const subscription = client.subscribe(
-                `/sub/chat/room/${roomName}`,
-                (message) => {
-                    if (message.body) {
-                        const chatMessage: ChatMessage = JSON.parse(
-                            message.body
-                        );
-                        setMessages((prevMessages) => [
-                            ...prevMessages,
-                            chatMessage,
-                        ]);
-                    }
-                }
-            );
+    // 채팅창 구독
+    client.onConnect = () => {
+        client.subscribe(`/sub/chat/room/${roomName}`, (message) => {
+            if (message.body) {
+                const chatMessage: ChatMessage = JSON.parse(message.body);
+                setMessages(chatMessage);
+            }
+            console.log();
+        });
+        console.log("구독 시작!!");
+        setIsLoading(false);
+    };
 
-            setIsLoading(false);
-
-            return () => {
-                // 컴포넌트 언마운트시 구독 취소
-                subscription.unsubscribe();
-            };
-        },
-    });
+    client.activate();
 
     return client;
-}
+};
 
 export default subscribeChat;

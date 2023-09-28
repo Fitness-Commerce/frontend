@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
@@ -23,7 +22,6 @@ import reportIcon from "../../assets/report.svg";
 // 비동기 요청
 import getProduct from "../../api/products_api/getProduct";
 import getMemberProfile from "../../api/test_api/getMemberProfile";
-import createChat from "../../api/webSocket/createChat";
 
 // 날짜 계산기
 import pastTimeCalculator from "../../util/pastTimeCalculator";
@@ -45,7 +43,7 @@ const Trade = () => {
         // setIsLoading:
         //     }
         //     createChat();
-        onChatSelect(productId as string);
+        onChatSelect({ itemId: parseInt(productId as string) });
         openModal();
     };
 

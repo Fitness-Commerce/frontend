@@ -32,3 +32,4 @@ export const ITEMS = "/api/items"
 export const DASHBOARD_PRODUCT = '/api/dashboard/mySales';
 export const DASHBOARD_POST = '/api/dashboard/myPost';
 export const CHAT = '/api/chatRooms';
+export const MESSAGE = '/api/chatRoom';

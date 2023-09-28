@@ -2,6 +2,18 @@ import axios from "axios";
 
 async function signup() {
     try {
+        // const res = await axios.post("/api/members/signup", {
+        //     email: "same666@naver.com",
+        //     password: "12341234",
+        //     phoneNumber: "22222300078",
+        //     username: "동건",
+        //     nickname: "won2",
+        //     role: "USER",
+        //     address: {
+        //         front_address: "경기도 성남시 분당구",
+        //         detailed_address: "xxx동 xxx아파트 000-000",
+        //     },
+        //     area_range: ["경기도 용인시 처인구"],
         const res = await axios.post("/api/members/signup", {
             email: "same555@naver.com",
             password: "12341234",

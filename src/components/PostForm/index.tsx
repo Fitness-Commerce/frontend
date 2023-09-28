@@ -41,6 +41,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
         error,
     } = useQuery(["postCategory"], getPostCategories);
 
+    // 수정사항 있을시
     const titleRef = useRef(modify ? modify.title : "");
     const communityRef = useRef(modify ? modify.category : "");
     const quillRef = useRef<ReactQuill | null>(null);

@@ -44,6 +44,7 @@ export const Textarea = styled.textarea`
     outline: none;
 `;
 
+<<<<<<< Updated upstream
 export const UploadLabelContainer = styled.div`
     display: flex;
     justify-content: center;
@@ -74,10 +75,13 @@ export const UploadLabelContainer = styled.div`
     }
 `;
 
+=======
+>>>>>>> Stashed changes
 export const FileInput = styled.div`
     border: 1px solid var(--color-accent-blue);
     border-radius: 4px;
     margin-bottom: 10px;
+<<<<<<< Updated upstream
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -85,6 +89,8 @@ export const FileInput = styled.div`
     width: 100%;
     color: gray;
 
+=======
+>>>>>>> Stashed changes
     
     input {
         display: none;
@@ -92,6 +98,7 @@ export const FileInput = styled.div`
     svg {
         margin-right: 10px;
     }
+<<<<<<< Updated upstream
     
     .product_file-container {
         display: flex;
@@ -135,6 +142,14 @@ export const FileInput = styled.div`
                 filter: brightness(1);
             }
         }
+=======
+    label {
+        padding: 20px;
+        display: flex;
+        width: 100%;
+        color: gray;
+        &:hover { cursor: pointer;}        
+>>>>>>> Stashed changes
     }
 `;
 

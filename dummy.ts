@@ -57,9 +57,9 @@ export const dummySortLabel = ["지역", "가격", "마켓", "정렬", "결과 �
 
 // 게시판 카테고리
 export const dummyPostCategories = [
-  "feed",
-  "wet",
-  "eight",
+  "자유게시판",
+  "팁 공유",
+  "멸치 양식장",
   "they",
   "whenever",
   "biggest",

@@ -12,8 +12,8 @@ export interface postCommentContentType {
     memberId: number;
     nickname: string;
     content: string;
-    created_at: string;
-    updated_at?: string;
+    createdAt: string;
+    updatedAt?: string;
 }
 
 interface getPostCommentsProps {
@@ -30,7 +30,7 @@ const getPostComments = async ({
     order = "id_ASC",
 }: getPostCommentsProps) => {
     const res = await axios.get(
-        POST_COMMENTS.replace("{itemId}", postId.toString()) +
+        POST_COMMENTS.replace("{postId}", postId.toString()) +
             `?page=${page}&size=${size}&order=${order}`
     );
     const newPostComments: postCommentType = res.data;

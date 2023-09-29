@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import CategoryButton from "../CategoryButton";
 import LoadingSpinner from "../../../../components/LoadingSpinner";
 
-import getCategories from "../../../../api/products_api/getCategories";
+import getCategories from "../../../../api/products_api/getProductCategories";
 
 function Categories() {
     const {

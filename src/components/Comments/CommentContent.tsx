@@ -26,7 +26,7 @@ const CommentContent = ({ comment }: CommentContentType) => {
             "commentProfile",
             comment.memberId,
             comment.id,
-            "postId" in comment ? comment.postId : comment.itemId,
+            "postId" in comment ? comment.postId : comment.itemId, // 댓글을 post하고 product 두 컴포넌트만 고려, 확장성 떨어짐
         ],
         () => getMemberProfile(comment.memberId),
         {
@@ -51,7 +51,7 @@ const CommentContent = ({ comment }: CommentContentType) => {
                         <p>{comment.content}</p>
                         <span>
                             {pastTimeCalculator(
-                                comment.updated_at || comment.created_at
+                                comment.updatedAt || comment.createdAt
                             )}
                         </span>
                     </div>

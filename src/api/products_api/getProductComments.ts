@@ -11,8 +11,8 @@ export interface productCommentContentType {
     itemId: number;
     memberId: number;
     content: string;
-    created_at: string;
-    updated_at?: string;
+    createdAt: string;
+    updatedAt?: string;
 }
 
 interface getProductCommentsProps {

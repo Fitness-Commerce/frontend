@@ -1,0 +1,1 @@
+export const postFilterLabel = ["최신 순", "조회수 낮은 순", "조회수 높은 순", "오래된 순"]

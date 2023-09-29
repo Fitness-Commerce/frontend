@@ -15,7 +15,7 @@ import getPostCategories from "../../api/posts_api/getPostCategories";
 import base64toFile from "../../util/base64toFile";
 import calculateNumber from "../../util/calculateNumber";
 
-import { IpostCategories } from "../../api/posts_api/getPostCategories";
+import { getPostCategoriesType } from "../../api/posts_api/getPostCategories";
 
 import * as S from "./styled";
 
@@ -125,7 +125,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
                     value={modify?.category}
                     required
                 >
-                    {postCategries.map((category: IpostCategories) => {
+                    {postCategries.map((category: getPostCategoriesType) => {
                         return (
                             <option value={category.title} key={category.id}>
                                 {category.title}

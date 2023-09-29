@@ -14,7 +14,7 @@ import PostCategoryButton from "./components/PostCategoryButton";
 import getPostCategories from "../../api/posts_api/getPostCategories";
 import getCategoryPostList from "../../api/posts_api/getCategoryPostList";
 import getPostsList from "../../api/posts_api/getPostsList";
-import PostPagination from "./components/PostPageButtonLayout";
+import Pagination from "../../components/Pagination";
 
 const Community = () => {
     const categoryId = useSearchParams()[0].get("category-id");
@@ -88,7 +88,7 @@ const Community = () => {
                 <option value={30}>30</option>
                 <option value={50}>50</option>
             </select>
-            <PostPagination
+            <Pagination
                 currentPage={page}
                 totalPages={postList.totalPages}
                 onPageChange={(page) => setPage(page)}

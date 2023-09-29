@@ -1,16 +1,16 @@
 import { PageButton, PaginationContainer } from "./styled";
 
-interface PostPaginationProps {
+interface PaginationProps {
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
 }
 
-const PostPagination = ({
+const Pagination = ({
     currentPage,
     totalPages,
     onPageChange,
-}: PostPaginationProps) => {
+}: PaginationProps) => {
     const pagesPerGroup = Math.min(10, totalPages);
     const startPage =
         Math.floor((currentPage - 1) / pagesPerGroup) * pagesPerGroup + 1;
@@ -22,7 +22,7 @@ const PostPagination = ({
 
     return (
         <PaginationContainer>
-            {startPage !== 1 && (
+            {startPage > 1 && (
                 <>
                     <PageButton onClick={() => handlePageChange(startPage - 1)}>
                         Previous
@@ -56,4 +56,4 @@ const PostPagination = ({
     );
 };
 
-export default PostPagination;
+export default Pagination;

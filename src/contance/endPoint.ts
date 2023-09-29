@@ -31,3 +31,5 @@ export const CATEGORIES = "/api/categories"
 export const ITEMS = "/api/items"
 export const DASHBOARD_PRODUCT = '/api/dashboard/mySales';
 export const DASHBOARD_POST = '/api/dashboard/myPost';
+export const PRODUCT_COMMENTS = '/api/items/{itemId}/comments';
+export const POST_COMMENTS = '/api/posts/{postId}/comments';

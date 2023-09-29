@@ -8,12 +8,8 @@ import { isLogin } from "../../recoil/login/atom";
 // 댓글 목록
 import CommentContent from "./CommentContent";
 
-import getProductComments, {
-    productCommentType,
-} from "../../api/products_api/getProductComments";
-import getPostComments, {
-    postCommentType,
-} from "../../api/posts_api/getPostComments";
+import getProductComments from "../../api/products_api/getProductComments";
+import getPostComments from "../../api/posts_api/getPostComments";
 import createProductComment from "../../api/products_api/createProductComment";
 import createPostComment from "../../api/posts_api/createPostComment";
 
@@ -35,9 +31,6 @@ const Comments = ({ route, id }: CommentsProps) => {
     const queryClient = useQueryClient();
     const [page, setPage] = useState(1);
     const login = useRecoilValue(isLogin);
-    const [comments, setComments] = useState<
-        postCommentType | productCommentType
-    >({ totalPages: 0, content: [] });
 
     let query = useQuery(
         ["comments", route],
@@ -45,7 +38,7 @@ const Comments = ({ route, id }: CommentsProps) => {
         {
             keepPreviousData: true,
             enabled: route === "product",
-            onSuccess: (data) => setComments(data),
+            // onSuccess: (data) => setComments(data),
         }
     );
 
@@ -53,7 +46,7 @@ const Comments = ({ route, id }: CommentsProps) => {
         useQuery(["comments", route], () => getPostComments({ postId: id }), {
             keepPreviousData: true,
             enabled: route === "post",
-            onSuccess: (data) => setComments(data),
+            // onSuccess: (data) => setComments(data),
         }) || query;
 
     const commentInputRef = useRef<HTMLTextAreaElement>(null);
@@ -107,8 +100,8 @@ const Comments = ({ route, id }: CommentsProps) => {
                 <span>댓글 목록</span>
             </h2>
             {query.status !== "loading" &&
-                comments.content?.length > 0 &&
-                comments.content.map((comment) => (
+                query.data.content?.length > 0 &&
+                query.data.content.map((comment) => (
                     <S.CommentContent key={comment.id}>
                         <CommentContent comment={comment} />
                     </S.CommentContent>
@@ -118,7 +111,7 @@ const Comments = ({ route, id }: CommentsProps) => {
             {query.status !== "loading" && (
                 <Pagination
                     currentPage={page}
-                    totalPages={comments.totalPages}
+                    totalPages={query.data.totalPages}
                     onPageChange={(selectedPage) => setPage(selectedPage)}
                 />
             )}

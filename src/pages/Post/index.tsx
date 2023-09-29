@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 
 import PostForm from "../../components/PostForm";
+import Comments from "../../components/Comments";
 
 import getPost from "../../api/posts_api/getPost";
 
@@ -13,15 +14,19 @@ import SideMarginWrapper from "../../style/SideMarginWrapper";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import * as S from "./styled";
 
+import { getPostCategoriesType } from "../../api/posts_api/getPostCategories";
+
 const Post = () => {
     const navigate = useNavigate();
     const { postId } = useParams();
+    const queryClient = useQueryClient();
     const {
         data: postData,
         isLoading,
         isError,
         error,
-    } = useQuery(["postData"], () => getPost(postId as string));
+    } = useQuery(["postData", postId], () => getPost(postId as string));
+
     const [content, setContent] = useState("");
     const [isPostForm, setIsPostForm] = useState(false);
 
@@ -43,7 +48,6 @@ const Post = () => {
             counter.reset();
 
             const html = converter.convert();
-            console.log(html);
 
             setContent(html);
         }
@@ -64,9 +68,16 @@ const Post = () => {
             <PostForm
                 modify={{
                     id: postId as string,
-                    title: postData.title,
-                    category: postData.postCategoryId,
-                    content: JSON.parse(postData.content),
+                    title: postData?.title as string,
+                    category: queryClient
+                        .getQueryData<getPostCategoriesType[]>([
+                            "postsCategories",
+                        ])
+                        ?.filter(
+                            (category) =>
+                                category.id === postData?.postCategoryId
+                        )[0].title as string,
+                    content: JSON.parse(postData?.content as string),
                 }}
                 setIsPostForm={setIsPostForm}
             />
@@ -77,9 +88,10 @@ const Post = () => {
         <SideMarginWrapper>
             <S.Wrapper>
                 <S.Container>
-                    <S.Board>{"커뮤니티 " + postData.postCategoryId}</S.Board>
+                    {/* FIXME: 커뮤니티 ID가 아니라 이름을 출력해야됨 */}
+                    <S.Board>{"커뮤니티 " + postData?.postCategoryId}</S.Board>
                     <hr className="post__hr" />
-                    <S.Title>{postData.title}</S.Title>
+                    <S.Title>{postData?.title}</S.Title>
                     <S.Content>
                         <div
                             dangerouslySetInnerHTML={{
@@ -108,6 +120,7 @@ const Post = () => {
                             삭제
                         </button>
                     </div>
+                    <Comments route="post" id={parseInt(postId as string)} />
                 </S.Container>
             </S.Wrapper>
         </SideMarginWrapper>

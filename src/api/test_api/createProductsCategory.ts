@@ -1,11 +1,11 @@
 import axios from "axios";
-import { CATEGORIES } from "../../contance/endPoint";
+import { PRODUCT_CATEGORIES } from "../../contance/endPoint";
 
 // FIXME: 더미데이터
 import { dummyCategories } from "../../../dummy";
 
  const promises = async (category: string) => {
-    await axios.post(CATEGORIES, {title: category})
+    await axios.post(PRODUCT_CATEGORIES, {title: category})
 }
 
 async function createProductsCategory() {

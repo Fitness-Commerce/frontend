@@ -1,4 +1,4 @@
-import { useRef, useEffect,  useState } from "react";
+import { useRef, useEffect, useState } from "react";
 
 import { useRecoilState } from "recoil";
 import { sortOptionState } from "../../../../recoil/products/atom";
@@ -6,9 +6,11 @@ import { sortOptionState } from "../../../../recoil/products/atom";
 import * as S from "./styled";
 import ArrowSVG from "../../../../assets/guide_arrow.svg";
 
-import { filterLabel } from "../../../../contance/products";
+interface FilterDropdownProps {
+    filterLabel: string[];
+}
 
-function SortDropdown() {
+const FilterDropdown = ({filterLabel}: FilterDropdownProps) => {
     const [filter, setFilter] = useRecoilState(sortOptionState);
     const [isOpen, setIsOpen] = useState(false);
     const modalRef = useRef<HTMLButtonElement | null>(null);
@@ -28,15 +30,11 @@ function SortDropdown() {
 
         return () => {
             document.removeEventListener("click", modalHandler);
-        };
-    }, []);
-
-    // 전역상태값들 초기화
-    useEffect(() => {
-        return () => {
+            // 전역상태값 초기화
             setFilter(filterLabel[0]);
         };
     }, []);
+
 
     return (
         <S.Wrapper>
@@ -71,4 +69,4 @@ function SortDropdown() {
     );
 }
 
-export default SortDropdown;
+export default FilterDropdown;

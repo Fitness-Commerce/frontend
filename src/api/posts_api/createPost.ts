@@ -32,7 +32,7 @@ import axios from "axios";
 async function createPost(formData: FormData) {
     const res = await axios.post("/api/posts", formData);
     
-    const postId = res.data;
+    const postId = res.data.id;
     console.log(postId);
     return postId;
 }

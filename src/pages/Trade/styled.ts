@@ -1,8 +1,15 @@
 import { styled } from "styled-components";
 
+export const Container = styled.div`
+    margin: 0 12vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+
 export const Wrapper = styled.div`
     display: flex;
-    margin: 0 12vw;
     width: transparent;
     padding: 24px 0;
     gap: 24px;

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import SideMarginWrapper from "../../style/SideMarginWrapper";
 import * as S from "./styled";
 
 import PostForm from "../../components/PostForm";
@@ -38,14 +37,15 @@ const Community = () => {
     }
 
     return (
-        <SideMarginWrapper>
-            {/* FIXME: 커뮤니티 이름 출력 필요 */}
+        <S.CommunitySideMargin>
+            {/* Title */}
             <S.CommunityTitle>
-                <h1 className="community__title">커뮤니티</h1>
+                <h1 className="community__title">유저 게시글</h1>
             </S.CommunityTitle>
 
+            {/* 카테고리 */}
             <S.CommunityCategory>
-                <ul className="community__post-boards-wrapper">
+                {/* <ul className="community__post-boards-wrapper">
                     {postCategories &&
                         postCategories.map((category) => {
                             return (
@@ -56,12 +56,16 @@ const Community = () => {
                                 ></PostCategoryButton>
                             );
                         })}
-                </ul>
+                </ul> */}
+                <span>전체</span>
+                <span>꿀팁</span>
+                <span>유머</span>
             </S.CommunityCategory>
-            <button type="button" onClick={() => setIsPostForm(true)}>
+
+            {/* <button type="button" onClick={() => setIsPostForm(true)}>
                 글쓰기
-            </button>
-            <select
+            </button> */}
+            {/* <select
                 onChange={(e) => {
                     localStorage.setItem("communitySize", e.target.value);
                     setSize(parseInt(e.target.value));
@@ -71,10 +75,10 @@ const Community = () => {
                 <option value={10}>10</option>
                 <option value={30}>30</option>
                 <option value={50}>50</option>
-            </select>
+            </select> */}
             <FilterDropdown filterLabel={postFilterLabel} />
-            <PostsListLayout size={size}/>
-        </SideMarginWrapper>
+            {/* <PostsListLayout size={size}/> */}
+        </S.CommunitySideMargin>
     );
 };
 

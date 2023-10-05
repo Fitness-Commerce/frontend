@@ -1,27 +1,28 @@
 import { styled } from "styled-components";
 
+export const CommunitySideMargin = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 15%;
+`;
 
 export const CommunityTitle = styled.div`
     display: flex;
     width: 100%;
     padding: 24px 0;
+    justify-content: center;
+    margin-top: 5%;
 
     .community__title {
-        font-size: 32px;
-        font-weight: 900;
+        font-size: 24px;
+        font-weight: 500;
     }
 `
 
 export const CommunityCategory = styled.section`
     display: flex;
-    flex-direction: column;
     width: 100%;
-
-    .community__post-boards-wrapper {
-        display: flex;
-        padding: 24px 0;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
+    justify-content: center;
+    
 `

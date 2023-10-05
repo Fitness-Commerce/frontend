@@ -74,10 +74,10 @@ const router = createBrowserRouter([
                 path: "products/:crud",
                 element: <ProductForm />,
             },
-            {
-                path: "community",
-                element: <Community />,
-            },
+            // {
+            //     path: "community",
+            //     element: <Community />,
+            // },
             {
                 path: "trade/:itemId",
                 element: <Trade />,
@@ -118,6 +118,16 @@ const router = createBrowserRouter([
         path: "*",
         element: <ErrorPage />,
         errorElement: <ErrorPage />,
+    },
+    {
+        path: "/community",
+        element: (
+            <>
+                <Header />
+                <Community />
+            </>
+        ),
+        errorElement: <ErrorPage />
     },
     {
         path: "/user",

@@ -40,7 +40,9 @@ const PostsListLayout = ({ size }: PostsListLayoutProps) => {
                       order: option,
                   });
               }
-            : () => getPostsList({ page, size, order: option })
+            : () => getPostsList({ page, size, order: option }),
+        // FIXME: 최적화 필요
+        { cacheTime: 0 }
     );
 
     if (isListLoading) {

@@ -9,7 +9,7 @@ async function putPost(formData: FormData, id: string) {
     });
     console.dir(res);
     
-    const postId = res.data;
+    const postId = res.data.id;
     console.log(postId);
     return postId;
 }

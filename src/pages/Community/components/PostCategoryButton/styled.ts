@@ -33,6 +33,7 @@ export const CategoryLink = styled(Link)`
         width: 100%;
         height: 2px;
         background-color: black;
+        /* TODO 조건부 */
         opacity: 0;
         transition: .3s;
     }

@@ -15,8 +15,19 @@ export const CommunityTitle = styled.div`
     margin-top: 5%;
 
     .community__title {
-        font-size: 24px;
+        position: relative;
+        font-family: 'Noto Sans KR', sans-serif;
+        font-family: 'Jua', sans-serif;
+        font-size: 2.5rem;
         font-weight: 500;
+        &::before {
+            position: absolute;
+            bottom: -3px;
+            content: "";
+            width: 100%;
+            height: 3px;
+            background-color: black;
+        }
     }
 `
 
@@ -24,7 +35,9 @@ export const CommunityCategory = styled.section`
     display: flex;
     width: 100%;
     justify-content: center;
-    margin: 3rem 0;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    
     .community__post-boards-wrapper {
         display: flex;
         justify-content: space-between;

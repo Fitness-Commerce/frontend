@@ -45,7 +45,7 @@ const Community = () => {
         <S.CommunitySideMargin>
             {/* Title */}
             <S.CommunityTitle>
-                <h1 className="community__title">유저 게시글</h1>
+                <h1 className="community__title">게시판</h1>
             </S.CommunityTitle>
 
             {/* 카테고리 */}
@@ -63,7 +63,6 @@ const Community = () => {
                         })}
                 </ul>
             </S.CommunityCategory>
-                        
             {/* Filter */}
             <FilterDropdown filterLabel={postFilterLabel} />
 

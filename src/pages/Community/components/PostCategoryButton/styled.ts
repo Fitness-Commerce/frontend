@@ -15,5 +15,25 @@ export const Wrapper = styled.li`
 `;
 
 export const CategoryLink = styled(Link)`
+    position: relative;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Jua', sans-serif;
+    font-weight: 100;
+    font-size: 1rem;
     text-align: center;
+    &:hover {
+        &::before {
+            opacity: 100;
+        }
+    }
+    &::before {
+        position: absolute;
+        content: "";
+        bottom: -5px;
+        width: 100%;
+        height: 2px;
+        background-color: black;
+        opacity: 0;
+        transition: .3s;
+    }
 `;

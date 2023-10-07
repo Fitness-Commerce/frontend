@@ -56,7 +56,6 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
     const handleSubmitPost = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // FIXME: 모달창으로 대체
         if (!window.confirm("글을 업로드 하시겠습니까?")) return;
         if (quillRef && quillRef.current) {
             const formData = new FormData();
@@ -90,7 +89,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
             });
 
             // 커뮤니티, 제목, 본문을 formData에 추가
-            formData.append("postCategoryTitle", "테스트 카테고리");
+            formData.append("postCategoryTitle", communityRef.current);
             formData.append("title", titleRef.current);
             formData.append("content", JSON.stringify(postContent));
 
@@ -121,7 +120,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
                     required
                 />
                 <S.CategorySelect
-                    onChange={(e) => (communityRef.current = e.target.value)}
+                    onChange={(e) => communityRef.current = e.target.value}
                     value={modify?.category}
                     required
                 >

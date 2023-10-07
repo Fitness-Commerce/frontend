@@ -4,7 +4,8 @@ import { useRecoilState } from "recoil";
 import { sortOptionState } from "../../../../recoil/products/atom";
 
 import * as S from "./styled";
-import ArrowSVG from "../../../../assets/guide_arrow.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 
 interface FilterDropdownProps {
     filterLabel: string[];
@@ -45,10 +46,11 @@ const FilterDropdown = ({filterLabel}: FilterDropdownProps) => {
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {filter}
-                <img
+                {/* <img
                     className="products__category-dropdown__arrow-svg"
                     src={ArrowSVG}
-                />
+                /> */}
+                <FontAwesomeIcon icon={faSortDown} />
             </button>
             {isOpen && (
                 <S.SortModal>

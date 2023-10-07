@@ -19,6 +19,7 @@ import ProfilePage from "./pages/ProfilePage";
 import Dashboard from "./pages/ProfilePage/dashboard";
 import Profile from "./pages/ProfilePage/profile";
 import ProductForm from "./components/ProductForm";
+import PrefetchComponent from "./api/PrefetchComponent";
 
 //FIXME: 테스트용
 import login from "./api/test_api/login";
@@ -26,7 +27,6 @@ import signup from "./api/test_api/signup";
 import createProductsCategory from "./api/test_api/createProductsCategory";
 import testCreateProducts from "./api/test_api/testCreateProducts";
 import createCommunity from "./api/test_api/createCummunity";
-import getCategories from "./api/products_api/getCategories";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -37,16 +37,12 @@ const queryClient = new QueryClient({
     },
 });
 
-queryClient.prefetchQuery({
-    queryKey: ["productsCategories"],
-    queryFn: getCategories
-})
-
 const router = createBrowserRouter([
     {
         path: "/",
         element: (
             <>
+                <PrefetchComponent />
                 <Header />
                 <Navigation />
                 <FixedChat />
@@ -131,7 +127,7 @@ const router = createBrowserRouter([
             </>
         ),
         errorElement: <ErrorPage />,
-    }
+    },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

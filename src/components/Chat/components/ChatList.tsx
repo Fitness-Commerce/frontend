@@ -1,41 +1,30 @@
-import { useQueryClient } from "@tanstack/react-query";
-
+import { Dispatch, SetStateAction } from "react";
 import { chatListType } from "../../../api/chat_api/getChatList";
 
 import * as S from "../styled";
-import useChatRoomState from "../../../hooks/useChatRoomState";
 
-const ChatList = () => {
-    const queryClient = useQueryClient();
-    const chatList =
-        queryClient.getQueryData<chatListType[]>(["chatRoomList"]) || [];
-    const { onChatSelect } = useChatRoomState();
+interface ChatListProps {
+    chatRoomList: chatListType[];
+    setChatRoom: Dispatch<SetStateAction<number>>;
+}
 
-    const handleOnChatSelect = (roomId: string, itemId: number) => {
-        const data = {
-            roomId: roomId,
-            itemId: itemId,
-        };
-        onChatSelect(data);
-    };
-
+const ChatList = ({ chatRoomList, setChatRoom }: ChatListProps) => {
     return (
         <S.ChatList>
-            {chatList.map((chatRoom: chatListType) => (
-                <button
-                    type="button"
-                    key={chatRoom.roomId}
-                    onClick={() =>
-                        handleOnChatSelect(
-                            chatRoom.roomId.toString(),
-                            chatRoom.itemId
-                        )
-                    }
-                >
-                    {chatRoom.opponentNickname}
-                    {chatRoom.lastMessage}
-                </button>
-            ))}
+            {chatRoomList.length > 0 ? (
+                chatRoomList.map((chatRoom: chatListType) => (
+                    <button
+                        type="button"
+                        key={chatRoom.roomId}
+                        onClick={() => setChatRoom(chatRoom.itemId)}
+                    >
+                        {chatRoom.opponentNickname}
+                        {chatRoom.lastMessage}
+                    </button>
+                ))
+            ) : (
+                <p>아직 채팅방이 존재하지 않습니다</p>
+            )}
         </S.ChatList>
     );
 };

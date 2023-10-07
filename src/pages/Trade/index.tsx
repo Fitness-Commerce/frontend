@@ -1,14 +1,15 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 import { useRecoilValue } from "recoil";
 import { isLogin } from "../../recoil/login/atom";
 
-import ChatContainer from "../../components/Chat/components/ChatContainer";
+// import ChatContainer from "../../components/Chat/components/ChatContainer";
 import Modal from "../../components/Modal";
 
-import useChatRoomState from "../../hooks/useChatRoomState";
+// import useChatRoomState from "../../hooks/useChatRoomState";
+import ChatContainer from "../../components/Chat/components/ChatContainer";
 import useModal from "../../hooks/useModal";
 
 import * as S from "./styled";
@@ -23,7 +24,7 @@ import reportIcon from "../../assets/report.svg";
 // 비동기 요청
 import getProduct from "../../api/products_api/getProduct";
 import getMemberProfile from "../../api/test_api/getMemberProfile";
-import createChat from "../../api/webSocket/createChat";
+// import createChat from "../../api/webSocket/createChat";
 
 // 날짜 계산기
 import pastTimeCalculator from "../../util/pastTimeCalculator";
@@ -32,7 +33,7 @@ import pastTimeCalculator from "../../util/pastTimeCalculator";
 const Trade = () => {
     const { itemId: productId } = useParams();
     const { isOpen, openModal, closeModal } = useModal();
-    const { onChatSelect } = useChatRoomState();
+    // const { onChatSelect } = useChatRoomState();
     const login = useRecoilValue(isLogin);
     // const [isSocketLoading, setIsSocketLoading] = useState();
 
@@ -45,7 +46,9 @@ const Trade = () => {
         // setIsLoading:
         //     }
         //     createChat();
-        onChatSelect(productId as string);
+        // onChatSelect({itemId: parseInt(productId as string)});
+        console.log(productId);
+        
         openModal();
     };
 
@@ -88,7 +91,8 @@ const Trade = () => {
     return (
         <SideMarginWrapper>
             <S.Wrapper>
-                <ImageSlide itemImagesUrl={product.itemImagesUrl} />
+                {/* FIXME: url 로컬 서버로 이미지 받아오는중 */}
+                <ImageSlide itemImagesUrl={product.itemImagesUrl.map(url => url.replace("http://43.200.32.144:8080/", "http://localhost:8080/"))} />
                 <div className="trade__info-wrapper">
                     {/* 매물 제목 */}
                     <h1 className="trade__title">{product.itemName}</h1>
@@ -158,7 +162,7 @@ const Trade = () => {
                 </div>
                 {isOpen && (
                     <Modal onClose={() => closeModal()}>
-                        <ChatContainer />
+                        <ChatContainer itemId={parseInt(productId as string)}/>
                     </Modal>
                 )}
             </S.Wrapper>

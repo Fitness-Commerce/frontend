@@ -1,23 +1,26 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useChatRoomState from "../../../hooks/useChatRoomState";
 
 import useAuth from "../../../hooks/useAuth";
 
 import ChatList from "./ChatList";
 import ChatRoom from "./ChatRoom";
 
-import getChatList, {chatListType} from "../../../api/chat_api/getChatList";
+import getChatList from "../../../api/chat_api/getChatList";
 import getMyProfile from "../../../api/test_api/getMyProfile";
 
 import * as S from "../styled";
 import LoadingSpinner from "../../LoadingSpinner";
-import { useEffect, useState } from "react";
 
-const ChatContainer = () => {
+interface ChatContainerProps {
+    itemId?: number;
+}
+
+const ChatContainer = ({ itemId }: ChatContainerProps) => {
     const excuteGetChatList = useAuth(getChatList);
+    const excuteGetMyProfile = useAuth(getMyProfile);
 
     // TODO: 유저 id는 프리패칭 되도록 만들어야됨
-    const excuteGetMyProfile = useAuth(getMyProfile);
     const {
         data: userProfile,
         isError: isProfileError,
@@ -28,42 +31,37 @@ const ChatContainer = () => {
     // 유저 id 가져온 후 채팅방 목록 가져오기
     const {
         data: chatRoomList,
-        isError,
-        isLoading,
-        error,
+        isError: isChatRoomListError,
+        isLoading: isChatRoomListLoading,
+        error: chatRoomListError,
+        isPaused,
     } = useQuery(["chatRoomList"], () => excuteGetChatList(userProfile.id), {
         enabled: !!userProfile,
     });
 
-    // 채팅방이 선택되면 ChatList 대신 ChatRoom이 열리게 됨
-    const { isSelected, selectedChatRoomId, selectedItemId } = useChatRoomState();
+    const [chatRoom, setChatRoom] = useState(itemId || 0);
 
-    // 채팅방을 새로 생성할지 여부 결정 (ChatRoom 컴포넌트에 prop으로 내려줌)
-    const [willCreate, setWillCreate] = useState(false);
+    // ChatRoom 컴포넌트 뒤로가기용 onClick 함수
+    const onGoBackToList = () => {
+        setChatRoom(0);
+    };
 
-    // itemId가 채팅방 목록에 없으면 채팅방 개설
-    useEffect(() => {
-        if (isSelected && chatRoomList) {
-            chatRoomList.forEach((chatRoom: chatListType) => {
-                if(chatRoom.itemId === selectedItemId) {
-                    setWillCreate(true);
-                }
-            })
-        }
-    }, [selectedChatRoomId, selectedItemId]);
-
-    if (isError || isProfileError) console.log(error || profileError);
+    // 로그만 띄움 / 에러핸들링은 채팅창에서
+    if (isChatRoomListError || isProfileError) console.log(chatRoomListError || profileError);
 
     return (
         <S.ChatContainer>
-            {isLoading || isProfileLoading ? (
+            {isChatRoomListLoading || isProfileLoading ? (
                 <LoadingSpinner />
-            ) : isError || isProfileError ? (
+            ) : isChatRoomListError || isProfileError || isPaused ? (
                 <p>채팅방을 가져오지 못했습니다</p>
-            ) : isSelected ? (
-                <ChatRoom userProfile={userProfile} willCreate={willCreate} />
+            ) : chatRoom > 0 ? (
+                <ChatRoom itemId={chatRoom} onGoBackToList={onGoBackToList} />
             ) : (
-                <ChatList />
+                <ChatList
+                    chatRoomList={chatRoomList}
+                    setChatRoom={setChatRoom}
+                />
             )}
         </S.ChatContainer>
     );

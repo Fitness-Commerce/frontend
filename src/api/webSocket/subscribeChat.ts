@@ -1,53 +1,56 @@
 import { Client } from "@stomp/stompjs";
 import socketAuthRefresh from "./socketAuthRefresh";
-import { Dispatch, SetStateAction } from "react";
 
-export interface ChatMessage {
-    nickName: string;
-    message: string;
-    createdAt: string;
+import { chatMassegesType } from "../chat_api/getChatMessages";
+
+export interface subscribeChatType {
+    roomId: string;
+    setMessages: (arg: chatMassegesType) => void;
+    setIsLoading: (arg: boolean) => void;
 }
 
-export interface subscribeChatType  {
-    roomName: string;
-    setMessages: Dispatch<SetStateAction<ChatMessage[]>>;
-    setIsLoading: Dispatch<SetStateAction<boolean>>;
-}
-
-const subscribeChat = ({roomName, setMessages, setIsLoading}: subscribeChatType) => {
+const subscribeChat = ({
+    roomId,
+    setMessages,
+    setIsLoading,
+}: subscribeChatType) => {
     // 인증 리프레시 기능 넣은 웹소켓 클라이언트 생성
-    const client = socketAuthRefresh(new Client());
+    const client = socketAuthRefresh(
+        new Client({
+            // brokerURL: "ws://localhost:8080/ws",
+            brokerURL: "ws://43.200.32.144:8080/ws",
+        })
+    );
+
+    console.log("구독 요청 / roomId : ", roomId);
 
     // 웹소켓 연결
-    client.configure({
-        brokerURL: "ws://43.200.32.144:8080/ws",
-        onConnect: () => {
-            // 구독 시작
-            const subscription = client.subscribe(
-                `/sub/chat/room/${roomName}`,
-                (message) => {
-                    if (message.body) {
-                        const chatMessage: ChatMessage = JSON.parse(
-                            message.body
-                        );
-                        setMessages((prevMessages) => [
-                            ...prevMessages,
-                            chatMessage,
-                        ]);
-                    }
-                }
-            );
+    client.onConnect = () => {
+        // 구독 시작
+        client.subscribe(`/sub/chat/room/${roomId}`, (message) => {
+            if (message.body) {
+                const chatMessage: chatMassegesType = JSON.parse(message.body);
+                setMessages(chatMessage);
+            }
+        });
+        console.log("구독 성공");
+        
+        setIsLoading(false);
+    };
 
-            setIsLoading(false);
+    client.onStompError = () => {
+        console.log("구독 실패");
+        setIsLoading(false);
+    };
 
-            return () => {
-                // 컴포넌트 언마운트시 구독 취소
-                subscription.unsubscribe();
-            };
-        },
-    });
+    client.onDisconnect = () => {
+        console.log("구독 종료");
+        setIsLoading(false);
+    }
+
+    client.activate();
 
     return client;
-}
+};
 
 export default subscribeChat;

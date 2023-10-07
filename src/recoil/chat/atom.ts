@@ -1,11 +1,11 @@
-import { atom } from "recoil";
+import { atomFamily } from "recoil";
 
-export const selectedChatRoomState = atom<string>({
-    key: 'selectedChatRoomState',
-    default: ""
-})
+// interface selectedChatRoomStateType {
+//     roomId: string;
+//     itemId: number;
+// }
 
-export const selectedItemIdState = atom<number>({
-    key: 'selectedItemIdState',
-    default: 0
+export const selectedChatRoomState = atomFamily({
+    key: 'chatRoomState',
+    default: { roomId: '', itemId: 0 },
 })

@@ -3,6 +3,7 @@ import { CHAT } from "../../contance/endPoint";
 
 export interface chatListType {
     roomId: number;
+    roomName: string;
     itemId: number;
     itemName: string;
     opponentNickname: string;

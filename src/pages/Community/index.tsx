@@ -12,24 +12,18 @@ import PostCategoryButton from "./components/PostCategoryButton";
 import getPostCategories from "../../api/posts_api/getPostCategories";
 
 import { postFilterLabel } from "../../contance/posts";
-import useAuth from "../../hooks/useAuth";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const Community = () => {
     const [isPostForm, setIsPostForm] = useState(false);
     const [size, setSize] = useState(10);
-    const executeGetPostCategories = useAuth(getPostCategories);
 
-    // const queryClient = useQueryClient();
-
-    // // 카테고리는 프리패칭된 데이터 사용
-    // const postCategories = queryClient.getQueryData([
-    //     "postsCategories",
-    // ]) as getPostCategoriesType[];
-    // 처음 렌더시 유저 프로필 정보 가져오기
-    const { data } = useQuery({
-        queryKey: ['postsCategories'],
-        queryFn: () => executeGetPostCategories(),
-    })
+    const {
+        data: postCategories,
+        isError,
+        isLoading,
+        error,
+    } = useQuery(["postsCategories"], getPostCategories);
 
     // UX 위해서 로컬스토리지에 유저가 선택했던 보여지는 게시글 수 저장
     useEffect(() => {
@@ -38,6 +32,9 @@ const Community = () => {
             setSize(parseInt(previousSize));
         }
     }, []);
+
+    if (isError) throw error;
+    if (isLoading) return <LoadingSpinner />;
 
     // 글쓰기
     if (isPostForm) {
@@ -54,8 +51,8 @@ const Community = () => {
             {/* 카테고리 */}
             <S.CommunityCategory>
                 <ul className="community__post-boards-wrapper">
-                    {data &&
-                        data.map((e: { id: number; title: string; }) => {
+                    {postCategories &&
+                        postCategories.map((e: { id: number; title: string; }) => {
                             return (
                                 <PostCategoryButton
                                     key={self.crypto.randomUUID()}

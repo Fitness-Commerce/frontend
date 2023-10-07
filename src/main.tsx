@@ -24,9 +24,10 @@ import login from "./api/test_api/login";
 import signup from "./api/test_api/signup";
 import createProductsCategory from "./api/test_api/createProductsCategory";
 import testCreateProducts from "./api/test_api/testCreateProducts";
-import createCommunity from "./api/test_api/createCummunity";
+import createCommunity from "./api/test_api/createCommunity";
 import getProductCategories from "./api/products_api/getProductCategories";
 import getPostCategories from "./api/posts_api/getPostCategories";
+import deleteCommunity from "./api/test_api/deleteCommunityCategory";
 import logout from "./api/user_api/logout";
 
 const queryClient = new QueryClient({
@@ -100,6 +101,9 @@ const router = createBrowserRouter([
                         </button>
                         <button type="button" onClick={createCommunity}>
                             게시판 생성
+                        </button>
+                        <button type="button" onClick={deleteCommunity}>
+                            게시판 삭제
                         </button>
                         <button type="button" onClick={logout}>
                             로그아웃

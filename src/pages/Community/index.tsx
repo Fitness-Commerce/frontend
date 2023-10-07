@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import SideMarginWrapper from "../../style/SideMarginWrapper";
 import * as S from "./styled";
@@ -10,19 +10,21 @@ import PostsListLayout from "./components/PostsListLayout";
 import FilterDropdown from "../Products/components/FilterDropdown";
 import PostCategoryButton from "./components/PostCategoryButton";
 
-import { getPostCategoriesType } from "../../api/posts_api/getPostCategories";
+import getPostCategories from "../../api/posts_api/getPostCategories";
 
 import { postFilterLabel } from "../../contance/posts";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const Community = () => {
     const [isPostForm, setIsPostForm] = useState(false);
     const [size, setSize] = useState(10);
-    const queryClient = useQueryClient();
 
-    // 카테고리는 프리패칭된 데이터 사용
-    const postCategories = queryClient.getQueryData([
-        "postsCategories",
-    ]) as getPostCategoriesType[];
+    const {
+        data: postCategories,
+        isError,
+        isLoading,
+        error,
+    } = useQuery(["postsCategories"], getPostCategories);
 
     // UX 위해서 로컬스토리지에 유저가 선택했던 보여지는 게시글 수 저장
     useEffect(() => {
@@ -31,6 +33,9 @@ const Community = () => {
             setSize(parseInt(previousSize));
         }
     }, []);
+
+    if (isError) throw error;
+    if (isLoading) return <LoadingSpinner />;
 
     // 글쓰기
     if (isPostForm) {
@@ -73,7 +78,7 @@ const Community = () => {
                 <option value={50}>50</option>
             </select>
             <FilterDropdown filterLabel={postFilterLabel} />
-            <PostsListLayout size={size}/>
+            <PostsListLayout size={size} />
         </SideMarginWrapper>
     );
 };

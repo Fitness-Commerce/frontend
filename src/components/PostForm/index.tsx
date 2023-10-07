@@ -90,7 +90,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
             });
 
             // 커뮤니티, 제목, 본문을 formData에 추가
-            formData.append("postCategoryTitle", "테스트 카테고리");
+            formData.append("postCategoryTitle", communityRef.current || postCategries[0].title);
             formData.append("title", titleRef.current);
             formData.append("content", JSON.stringify(postContent));
 
@@ -101,6 +101,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
                         ? await excutePutPost(formData, modify.id)
                         : await excuteCreatePost(formData);
 
+                    setIsPostForm(false);
                     navigate(`/post/${postId}`);
                 } catch (err) {
                     console.log(err);

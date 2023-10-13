@@ -15,7 +15,7 @@ import getPostCategories from "../../api/posts_api/getPostCategories";
 import base64toFile from "../../util/base64toFile";
 import calculateNumber from "../../util/calculateNumber";
 
-import { IpostCategories } from "../../api/posts_api/getPostCategories";
+import { getPostCategoriesType } from "../../api/posts_api/getPostCategories";
 
 import * as S from "./styled";
 
@@ -90,7 +90,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
             });
 
             // 커뮤니티, 제목, 본문을 formData에 추가
-            formData.append("postCategoryTitle", "테스트 카테고리");
+            formData.append("postCategoryTitle", communityRef.current || postCategries[0].title);
             formData.append("title", titleRef.current);
             formData.append("content", JSON.stringify(postContent));
 
@@ -101,6 +101,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
                         ? await excutePutPost(formData, modify.id)
                         : await excuteCreatePost(formData);
 
+                    setIsPostForm(false);
                     navigate(`/post/${postId}`);
                 } catch (err) {
                     console.log(err);
@@ -125,7 +126,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
                     value={modify?.category}
                     required
                 >
-                    {postCategries.map((category: IpostCategories) => {
+                    {postCategries.map((category: getPostCategoriesType) => {
                         return (
                             <option value={category.title} key={category.id}>
                                 {category.title}

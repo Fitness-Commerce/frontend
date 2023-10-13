@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export interface IpostCategories {
+export interface getPostCategoriesType {
     id: number;
     title: string;
     post_ids: number[];
@@ -10,7 +10,7 @@ export interface IpostCategories {
 
 async function getPostCategories() {
     const res = await axios.get(`/api/postCategories`);
-    const postCategories: IpostCategories[] = res.data;
+    const postCategories: getPostCategoriesType[] = res.data;
     return postCategories;
 }
 

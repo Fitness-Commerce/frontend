@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 
 import CategoryButton from "../CategoryButton";
-import getCategories from "../../../../api/products_api/getCategories";
 import LoadingSpinner from "../../../../components/LoadingSpinner";
+
+import getCategories from "../../../../api/products_api/getProductCategories";
 
 function Categories() {
     const {
@@ -14,8 +15,8 @@ function Categories() {
 
     const filtered = categories?.filter((e) => {
         return e.title !== "기타";
-    })
-    const etc = categories?.filter(e => e.title === "기타");
+    });
+    const etc = categories?.filter((e) => e.title === "기타");
 
     if (isLoading) return <LoadingSpinner />;
     if (isError) throw error;
@@ -32,7 +33,9 @@ function Categories() {
                         />
                     );
                 })}
-                {etc && <CategoryButton id={etc[0]?.id} title={etc[0]?.title} /> }
+            {etc && etc?.length > 0 && (
+                <CategoryButton id={etc[0]?.id} title={etc[0]?.title} />
+            )}
         </ul>
     );
 }

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import getCategories from "./products_api/getCategories";
+import getCategories from "./products_api/getProductCategories";
 import getMyProfile from "./test_api/getMyProfile";
 import useAuth from "../hooks/useAuth";
 

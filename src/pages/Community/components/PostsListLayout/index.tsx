@@ -1,42 +1,67 @@
 import * as S from "./styled";
 
-import PostList from "./PostList";
+import PostList from "./Post";
 
-import pastTimeCalculator from "../../../../util/pastTimeCalculator";
+import LoadingSpinner from "../../../../components/LoadingSpinner";
+import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { filteredOptionState } from "../../../../recoil/products/selector";
+import { useRecoilValue } from "recoil";
+import getCategoryPostList from "../../../../api/posts_api/getCategoryPostList";
+import getPostsList from "../../../../api/posts_api/getPostsList";
+import Pagination from "../../../../components/Pagination";
 
-//FIXME: 더미데이터
-// import { dummyPostList } from "../../../../../dummy";
-
-interface PostListLayoutProps {
-    postList: {
-        id: number;
-        memberId: number;
-        postCategoryId: number;
-        postImageUrl: string[];
-        title: string;
-        content: string;
-        viewCount: number;
-        createdAt: string;
-        updatedAt: string;
- }[];
+interface PostsListLayoutProps {
+    size: number;
 }
 
-const PostsListLayout = (props: PostListLayoutProps) => {
-    
+const PostsListLayout = ({ size }: PostsListLayoutProps) => {
+    const categoryId = useSearchParams()[0].get("category-id");
+    const [page, setPage] = useState(1);
+
+    const option = useRecoilValue(filteredOptionState); // 최신순, 가격순 정렬 등
+
+    // 이쪽은 getCategoryPostList가 return 타입이 any라서 getPostsList의 return 타입과 충돌 안남
+    const {
+        data: postList,
+        isLoading: isListLoading,
+        isError,
+        error,
+    } = useQuery(
+        ["postList", size, page, option, categoryId || "default"],
+        categoryId
+            ? () => {
+                  setPage(1);
+                  return getCategoryPostList({
+                      categoryId,
+                      page,
+                      size,
+                      order: option,
+                  });
+              }
+            : () => getPostsList({ page, size, order: option }),
+        // FIXME: 최적화 필요
+        { cacheTime: 0 }
+    );
+
+    if (isListLoading) {
+        return <LoadingSpinner />;
+    }
+
+    if (isError) throw error;
+
     return (
         <S.Wrapper>
-            {props.postList?.map((post) => {
-                return (
-                    <PostList
-                        key={post.id}
-                        id={post.id}
-                        title={post.title}
-                        author={post.memberId.toString()}
-                        viewCount={post.viewCount}
-                        createdAt={pastTimeCalculator(post.createdAt)}
-                    />
-                );
+            {postList?.content?.map((post) => {
+                return <PostList key={post.id} post={post} />;
             })}
+
+            <Pagination
+                currentPage={page}
+                totalPages={postList.totalPages}
+                onPageChange={(page) => setPage(page)}
+            />
         </S.Wrapper>
     );
 };

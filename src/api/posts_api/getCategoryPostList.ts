@@ -1,8 +1,22 @@
 import axios from "axios";
+import { getPostsListProps } from "./getPostsList";
 
-async function getCategoryPostList(id: string, page: number, size: number) {
-    const res  = await axios.get(`/api/postCategories/${id}/posts?page=${page}&size=${size}`);
-    const categoryPostList = res.data;
+import { postListType } from "./getPostsList";
+
+interface getCategoryPostListProps extends getPostsListProps {
+    categoryId: string;
+}
+
+async function getCategoryPostList({
+    categoryId,
+    page,
+    size,
+    order = "id_ASC",
+}: getCategoryPostListProps) {
+    const res = await axios.get(
+        `/api/postCategories/${categoryId}/posts?page=${page}&size=${size}&order=${order}`
+    );
+    const categoryPostList: postListType = res.data;
     return categoryPostList;
 }
 

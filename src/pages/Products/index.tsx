@@ -9,6 +9,8 @@ import ProductsLayout from "./components/ProductsLayout";
 import SideMarginWrapper from "../../style/SideMarginWrapper";
 import * as S from "./styled";
 
+import { filterLabel } from "../../contance/products";
+
 const Products = () => {
     const [isGridLayout, setGridLayout] = useState<boolean>(true);
 
@@ -21,7 +23,7 @@ const Products = () => {
 
             <div className="category__sort-wrapper">
                 <SortDropdown />
-                <FilterDropdown />
+                <FilterDropdown filterLabel={filterLabel} />
             </div>
             {/* ViewLayoutButton를 ProductLayout에 넣지 않은 이유:
                     메인페이지에선 ViewLayoutButton가 필요 없음 */}

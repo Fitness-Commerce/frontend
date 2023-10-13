@@ -34,8 +34,10 @@ const createChat = async ({ roomName, itemId, message, setIsCreated }: FirstMess
     };
 
     stompClient.onDisconnect = () => {
-        console.log("헬스톡 생성!!");
-        setIsCreated(true);
+        setTimeout(() => {
+            console.log("헬스톡 생성!!");
+            setIsCreated(true);
+        }, 500);
     };
 
     stompClient.onStompError = () => console.log("헬스톡 생성 실패");

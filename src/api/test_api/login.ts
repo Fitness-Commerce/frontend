@@ -6,8 +6,16 @@ async function login() {
         //     email: "same555@naver.com",
         //     password: "12341234",
         // });
+        // const res = await axios.post("/api/auth/login", {
+        //     email: "same333@naver.com",
+        //     password: "12341234",
+        // });
+        // const res = await axios.post("/api/auth/login", {
+        //     email: "same666@naver.com",
+        //     password: "12341234",
+        // });
         const res = await axios.post("/api/auth/login", {
-            email: "same666@naver.com",
+            email: "same222@naver.com",
             password: "12341234",
         });
         const accessToken = res.data.accessToken;

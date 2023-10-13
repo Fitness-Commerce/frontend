@@ -17,8 +17,8 @@ const subscribeChat = ({
     // 인증 리프레시 기능 넣은 웹소켓 클라이언트 생성
     const client = socketAuthRefresh(
         new Client({
-            // brokerURL: "ws://localhost:8080/ws",
-            brokerURL: "ws://43.200.32.144:8080/ws",
+            brokerURL: "ws://localhost:8080/ws",
+            // brokerURL: "ws://43.200.32.144:8080/ws",
         })
     );
 

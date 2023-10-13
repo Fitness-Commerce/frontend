@@ -5,12 +5,10 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLogin } from "../../recoil/login/atom";
 
-// import ChatContainer from "../../components/Chat/components/ChatContainer";
 import Modal from "../../components/Modal";
-
-// import useChatRoomState from "../../hooks/useChatRoomState";
 import ChatContainer from "../../components/Chat/components/ChatContainer";
 import useModal from "../../hooks/useModal";
+import useAuth from "../../hooks/useAuth";
 
 import * as S from "./styled";
 import SideMarginWrapper from "../../style/SideMarginWrapper";
@@ -24,7 +22,7 @@ import reportIcon from "../../assets/report.svg";
 // 비동기 요청
 import getProduct from "../../api/products_api/getProduct";
 import getMemberProfile from "../../api/test_api/getMemberProfile";
-// import createChat from "../../api/webSocket/createChat";
+import getMyProfile from "../../api/test_api/getMyProfile";
 
 // 날짜 계산기
 import pastTimeCalculator from "../../util/pastTimeCalculator";
@@ -33,24 +31,8 @@ import pastTimeCalculator from "../../util/pastTimeCalculator";
 const Trade = () => {
     const { itemId: productId } = useParams();
     const { isOpen, openModal, closeModal } = useModal();
-    // const { onChatSelect } = useChatRoomState();
     const login = useRecoilValue(isLogin);
-    // const [isSocketLoading, setIsSocketLoading] = useState();
-
-    // 헬스톡 핸들러
-    const onOpenHealthTalk = () => {
-        //     const chatParameter = {
-        //         roomName: self.crypto.randomUUID(),
-        // itemId: productId,
-        // message:
-        // setIsLoading:
-        //     }
-        //     createChat();
-        // onChatSelect({itemId: parseInt(productId as string)});
-        console.log(productId);
-        
-        openModal();
-    };
+    const excuteGetMyProfile = useAuth(getMyProfile);
 
     // 매물 요청
     const {
@@ -58,12 +40,16 @@ const Trade = () => {
         error: productError,
         isLoading: isProductLoading,
         isError: isProductError,
-    } = useQuery(["productInfo", productId], () => getProduct(productId as string), {
-        select: (data) => ({
-            ...data,
-            createdAt: pastTimeCalculator(data.createdAt),
-        }),
-    });
+    } = useQuery(
+        ["productInfo", productId],
+        () => getProduct(productId as string),
+        {
+            select: (data) => ({
+                ...data,
+                createdAt: pastTimeCalculator(data.createdAt),
+            }),
+        }
+    );
 
     // 매물 요청 완료되면 거래가능 지역 가져오기위해 멤버 정보 요청
     const {
@@ -72,27 +58,37 @@ const Trade = () => {
         isLoading: isMemberLoading,
         isError: isMemberError,
     } = useQuery(
-        ["tradeProfile"],
+        ["tradeProfile", product ? product.id : null],
         () => getMemberProfile(product?.memberId as number),
         {
             enabled: !!product, // product가 선행되어야 함
         }
     );
 
-    if (isProductLoading || isMemberLoading) {
+    const {
+        data: userId,
+        isLoading: isUserIdLoading,
+        isError: isUserIdError,
+        error: userIdError,
+    } = useQuery(["myProfile"], excuteGetMyProfile, {
+        enabled: login,
+        select: (data) => data.id,
+    });
+
+    if (isProductLoading || isMemberLoading || isUserIdLoading) {
         return <LoadingSpinner />;
     }
 
-    if (isProductError || isMemberError) {
-        console.log(productError || memberError);
-        throw productError || memberError;
+    if (isProductError || isMemberError || isUserIdError) {
+        throw productError || memberError || userIdError;
     }
 
     return (
         <SideMarginWrapper>
             <S.Wrapper>
-                {/* FIXME: url 로컬 서버로 이미지 받아오는중 */}
-                <ImageSlide itemImagesUrl={product.itemImagesUrl.map(url => url.replace("http://43.200.32.144:8080/", "http://localhost:8080/"))} />
+                <ImageSlide
+                    itemImagesUrl={product.itemImagesUrl}
+                />
                 <div className="trade__info-wrapper">
                     {/* 매물 제목 */}
                     <h1 className="trade__title">{product.itemName}</h1>
@@ -147,14 +143,18 @@ const Trade = () => {
                         </ul>
                     </div>
                     <div className="trade__btn-container">
-                        <button type="button" className="trade__consider-btn">
+                        <button
+                            type="button"
+                            className="trade__consider-btn"
+                            disabled={userId === member.id}
+                        >
                             찜하기
                         </button>
                         <button
                             type="button"
                             className="trade__chat-btn"
-                            onClick={() => onOpenHealthTalk()}
-                            disabled={!login}
+                            onClick={() => openModal()}
+                            disabled={!login || userId == member.id}
                         >
                             헬스톡
                         </button>
@@ -162,7 +162,7 @@ const Trade = () => {
                 </div>
                 {isOpen && (
                     <Modal onClose={() => closeModal()}>
-                        <ChatContainer itemId={parseInt(productId as string)}/>
+                        <ChatContainer itemId={parseInt(productId as string)} />
                     </Modal>
                 )}
             </S.Wrapper>

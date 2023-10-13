@@ -18,7 +18,7 @@ const PrefetchComponent = () => {
         });
         
         queryClient.prefetchQuery({
-            queryKey: ["myProfile"],
+            queryKey: ["chatMyProfile"],
             queryFn: excuteGetMyProfile,
             cacheTime: Infinity,
         });

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Client } from "@stomp/stompjs";
 
 import useAuth from "../../../hooks/useAuth";
@@ -10,11 +10,14 @@ import getChatMessages, {
     chatMassegesType,
 } from "../../../api/chat_api/getChatMessages";
 import getChatList, { chatListType } from "../../../api/chat_api/getChatList";
-import { myProfileType } from "../../../api/test_api/getMyProfile";
+import getMyProfile from "../../../api/test_api/getMyProfile";
+
+import pastTimeCalculator from "../../../util/pastTimeCalculator";
 
 import * as S from "../styled";
 import LoadingSpinner from "../../LoadingSpinner";
-import arrowSVG from "../../../assets/guide_arrow.svg";
+import ArrowSVG from "../../../assets/guide_arrow.svg?react";
+import SendSVG from "../../../assets/send_message.svg?react";
 
 interface ChatRoomProps {
     itemId: number;
@@ -22,29 +25,22 @@ interface ChatRoomProps {
 }
 
 const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
+    const excuteGetMyProfile = useAuth(getMyProfile);
     const excuteGetChatList = useAuth(getChatList);
     const excuteGetChatMessages = useAuth(getChatMessages);
-    const queryClient = useQueryClient();
 
     // 프로필 가져오기
-    const userProfile = queryClient.getQueryData([
-        "myProfile",
-    ]) as myProfileType;
+    const userProfile = useQuery(["chatMyProfile"], excuteGetMyProfile);
 
-    // chatList에서 현재 선택된 itemId 있는지 확인, 없으면 새로운 방 생성\
-    // const [isCreated, setIsCreated] = useState(false);
+    // chatList에서 현재 선택된 itemId 있는지 확인, 없으면 새로운 방 생성
     const stompClient = useRef<Client | null>(null);
     const [willCreate, setWillCreate] = useState<boolean | null>(null);
     const roomIdRef = useRef("");
-    const {
-        data: chatRoomData,
-        isLoading: isChatListLoading,
-        isError: isChatListError,
-        error: chatListError,
-    } = useQuery(
+    const chatRoomData = useQuery(
         ["chatRoom", itemId],
-        () => excuteGetChatList(userProfile.id),
+        () => excuteGetChatList(userProfile.data.id),
         {
+            enabled: userProfile.isSuccess,
             select: (data) => {
                 const found = data.filter(
                     (chatRoom: chatListType) => chatRoom.itemId === itemId
@@ -53,22 +49,22 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
                 roomIdRef.current = found[0]?.roomId || "";
                 return found[0] || null;
             },
+            staleTime: Infinity,
             cacheTime: 0,
         }
     );
-    const {
-        data: chatMessagesData,
-        isLoading: isChatMessagesLoading,
-        isError: isChatMessagesError,
-        error: chatMessagesError,
-    } = useQuery(
+    const chatMessagesData = useQuery(
         ["chatMessages", itemId],
         () => excuteGetChatMessages(roomIdRef.current),
-        { enabled: !isChatListLoading && chatRoomData !== null, cacheTime: 0 }
+        {
+            enabled: !chatRoomData.isLoading && chatRoomData.data !== null,
+            cacheTime: 0,
+        }
     );
 
     const [messages, setMessages] = useState<chatMassegesType[]>([]);
     const messageRef = useRef<HTMLInputElement>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // stompjs는 연결중일때의 상태를 반환하지 않기때문에 로딩을 직접 구현해줘야 됨
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -104,18 +100,20 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
             const roomUUID = self.crypto.randomUUID();
             roomIdRef.current = roomUUID;
 
+            setIsLoading(true);
             // 채팅방 연결 요청 보내고 바로 닫힘
             await createChat({
                 roomName: roomUUID,
                 itemId: itemId,
                 message: messageRef.current.value,
                 setIsCreated: (bool) => {
+                    setIsLoading(false);
                     setWillCreate(!bool);
+
+                    // 생성한 채팅방에서 정보 리패치
+                    chatRoomData.refetch();
                 },
             });
-
-            // 생성한 채팅방에서 정보 리패치
-            queryClient.refetchQueries(["chatRoom", itemId]);
         }
     };
 
@@ -133,15 +131,13 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
                 },
                 body: JSON.stringify({
                     // FIXME: 여기 roomId로 식별하면 깔끔한데... 일단 로컬 서버에는 roomName 응답으로 주도록 수정함
-                    roomName: chatRoomData.roomName,
+                    roomName: chatRoomData.data.roomName,
                     message: messageRef.current.value,
                 }),
             });
 
             // setMessages를 입력에서도 해줘야됨
             setMessages((prev) => {
-                console.log("현재 메세지 : " + messageRef.current?.value);
-
                 if (messageRef.current) {
                     const messageValue = messageRef.current.value;
                     // 메세지 input 초기화
@@ -149,7 +145,7 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
                     return [
                         ...prev,
                         {
-                            senderNickname: userProfile.nickname,
+                            senderNickname: userProfile.data.nickname,
                             message: messageValue,
                             created_at: createdTime,
                         },
@@ -162,8 +158,6 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
 
     // 컴포넌트의 채팅방 생성 판별 로직
     useEffect(() => {
-        console.log(willCreate);
-
         // 이미 채팅방 존재하면 구독 시작
         if (willCreate === false) {
             subscribe();
@@ -174,66 +168,104 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
             if (stompClient.current?.connected) {
                 stompClient.current.deactivate();
             }
-            console.log("chat room unmount");
         };
     }, [willCreate]);
 
     useEffect(() => {
         // 채팅방 정보가 갱신되면 null일때 생성,
-        if (chatRoomData === null) {
+        if (chatRoomData.data === null) {
             setWillCreate(true);
         }
         // 참일때 구독 요청을 위해 willCreate를 false,
         // undefined인 경우(에러)가 있어서 else if로 조건 걸어줘야됨
-        else if (chatRoomData) {
+        else if (chatRoomData.data) {
             setWillCreate(false);
         }
     }, [chatRoomData]);
 
     // 채팅방 정보가 갱신되어 채팅메세지 요청 -> 채팅방 정보가 없는 경우(새로 생성해야될 때) 걸러줘야되서 조건문 필요
     useEffect(() => {
-        if (chatRoomData) {
+        if (chatRoomData.data) {
             // 가져온 채팅메세지는 client state로 관리
             // 이유는 내가 작성하는 메세지를 웹소켓이 갱신해주지 않아서 그때마다 api 요청으로 메세지 기록을 가져올 순 없기 때문
-            setMessages(() => [...chatMessagesData]);
+            setMessages(() => [...chatMessagesData.data]);
         }
-    }, [chatMessagesData]);
+    }, [chatMessagesData.data]);
 
-    if (isLoading || isChatListLoading || isChatMessagesLoading)
+    // 채팅 메세지 추가시 스크롤 자동으로 아래로 내림
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(scrollToBottom, [messages]);
+
+    if (
+        isLoading ||
+        userProfile.isLoading ||
+        chatRoomData.isLoading ||
+        (chatMessagesData.isLoading && chatMessagesData.isFetchedAfterMount)
+    )
         return <LoadingSpinner />;
-    if (isChatListError || isChatMessagesError)
-        throw chatListError || chatMessagesError;
+
+    if (userProfile.isError || chatRoomData.isError || chatMessagesData.isError)
+        throw userProfile.error || chatRoomData.error || chatMessagesData.error;
 
     return (
         <S.ChatRoom>
-            {/* <S.ChatCloseButton
-                type="button"
-                onClick={() => chatRoomState.onChatClose()}
-            >
-                <img src={arrowSVG} alt="go back" />
-            </S.ChatCloseButton> */}
-            <div className="chat-room__header">
-                <button
-                    type="button"
-                    className="chat-room__header__go-back-btn"
+            <S.ChatRoomHeader>
+                <ArrowSVG
+                    className="chat-room__go-back-btn"
                     onClick={onGoBackToList}
-                >
-                    <img src={arrowSVG} alt="go back guide arrow" />
-                </button>
-                <span className="chat-room__header__title">
-                    {chatRoomData.itemName}
+                />
+                <span className="chat-room__title">
+                    {chatRoomData.data?.itemName ||
+                        "메세지를 입력하여 채팅을 시작하세요!"}
                 </span>
-            </div>
-            <form onSubmit={handleOnChatSubmit}>
-                {messages.map(({ message }) => (
-                    <p key={self.crypto.randomUUID()}>{message}</p>
-                ))}
+            </S.ChatRoomHeader>
+            <S.ChatMessageContainer>
+                {messages.map(
+                    ({ message, senderNickname, created_at }, index) => {
+                        const priviousMessageTime = messages[index - 1]
+                            ? pastTimeCalculator(messages[index - 1].created_at)
+                            : null;
+                        const currentMessageTime =
+                            pastTimeCalculator(created_at);
+                        return (
+                            <S.ChatMessage
+                                key={self.crypto.randomUUID()}
+                                $isUser={senderNickname.startsWith(
+                                    userProfile.data.nickname
+                                )}
+                            >
+                                <p className="chat-message__message-box">
+                                    {message}
+                                </p>
+                                <span className="chat-message__create-at">
+                                    {priviousMessageTime == currentMessageTime
+                                        ? ""
+                                        : currentMessageTime}
+                                </span>
+                            </S.ChatMessage>
+                        );
+                    }
+                )}
+                <div ref={messagesEndRef} />
+            </S.ChatMessageContainer>
+            <S.ChatForm onSubmit={handleOnChatSubmit}>
                 <input
+                    className="chat-form__input"
                     type="text"
                     ref={messageRef}
-                    placeholder="메세지를 입력해주세요"
+                    placeholder="메세지 보내기..."
                 />
-            </form>
+                <button className="chat-form__btn" type="submit">
+                    <SendSVG
+                        width="30"
+                        height="30"
+                        className="chat-form__btn__send-icon"
+                    />
+                </button>
+            </S.ChatForm>
         </S.ChatRoom>
     );
 };

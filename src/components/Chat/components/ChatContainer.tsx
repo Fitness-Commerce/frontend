@@ -20,7 +20,6 @@ const ChatContainer = ({ itemId }: ChatContainerProps) => {
     const excuteGetChatList = useAuth(getChatList);
     const excuteGetMyProfile = useAuth(getMyProfile);
 
-    // TODO: 유저 id는 프리패칭 되도록 만들어야됨
     const {
         data: userProfile,
         isError: isProfileError,
@@ -59,6 +58,7 @@ const ChatContainer = ({ itemId }: ChatContainerProps) => {
                 <ChatRoom itemId={chatRoom} onGoBackToList={onGoBackToList} />
             ) : (
                 <ChatList
+                    userNickname={userProfile.nickname}
                     chatRoomList={chatRoomList}
                     setChatRoom={setChatRoom}
                 />

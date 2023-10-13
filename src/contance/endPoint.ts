@@ -16,6 +16,8 @@
 // 대시보드 상품리스트 - DASHBOARD_PRODUCT
 // 대시보드 게시글 리스트 - DASHBOARD_POST
 
+export const CATEGORIES = "/api/categories"
+export const CHAT = '/api/chatRooms';
 export const REGISTER = "/api/members/signup";
 export const LOGIN = "/api/auth/login";
 export const LOGOUT = "/api/auth/logout";

@@ -4,7 +4,6 @@ import ProductType from "../../interface/Products";
 import { useNavigate } from "react-router-dom";
 import { TRADE } from "../../contance/routeURL";
 
-
 interface ProductCardProps {
     type?: string;
     info?: ProductType;
@@ -35,7 +34,12 @@ const ProductCard = ({
     if (type === "dashboard") {
         return (
             <S.DashboardProduct $itemStatus={dashboardInfo?.itemStatus}>
-                <S.ProductCard $isGrid={layout} onClick={() => navigate(TRADE + `/${dashboardInfo?.itemId}`)} >
+                <S.ProductCard
+                    $isGrid={layout}
+                    onClick={() =>
+                        navigate(TRADE + `/${dashboardInfo?.itemId}`)
+                    }
+                >
                     <div
                         id="product-card__img-wrapper"
                         className="product-card__img-wrapper"
@@ -81,11 +85,22 @@ const ProductCard = ({
         );
     }
     return (
-        <S.ProductCard $isGrid={layout} onClick={() => navigate(TRADE + `/${info?.id}`)}>
+        <S.ProductCard
+            $isGrid={layout}
+            onClick={() => navigate(TRADE + `/${info?.id}`)}
+        >
             <div className="product-card__img-wrapper">
                 <img
                     className="product-card__img"
-                    src={info?.itemImagesUrl[0]?.toString() || dummyImage}
+                    // FIXME: url 로컬 서버에서 가져오는 중
+                    src={
+                        info?.itemImagesUrl[0]
+                            ?.toString()
+                            .replace(
+                                "http://43.200.32.144:8080/",
+                                "http://localhost:8080/"
+                            ) || dummyImage
+                    }
                     alt={info?.itemName}
                 />
             </div>
@@ -106,7 +121,11 @@ const ProductCard = ({
                     1. member_id로 거주지 정보 요청 (판매자가 다른 지역 거래 원할 경우 선택이 제한됨)
                     2. item_detail에 원하는 거래지역 넣기 (이게 좀 더 깔끔하긴 함) */}
                 <div>
-                    <span className="product-card__local">{info?.transactionArea.map(area => <span key={area}>{" " + area}</span>)}</span>
+                    <span className="product-card__local">
+                        {info?.transactionArea.map((area) => (
+                            <span key={area}>{" " + area}</span>
+                        ))}
+                    </span>
                     <span className="product-card__time">
                         {info?.createdAt}
                     </span>

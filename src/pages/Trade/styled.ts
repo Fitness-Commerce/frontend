@@ -106,10 +106,14 @@ export const Wrapper = styled.div`
                 border: none;
                 border-radius: var(--button-radius);
                 color: #fff;
-                transition: filter 0.2s ease-out;
+                transition: filter, opacity 0.2s ease-out;
 
-                &:hover {
+                &:hover :active {
                     filter: brightness(80%);
+                }
+                
+                &:disabled {
+                    display: none;
                 }
 
                 cursor: pointer;

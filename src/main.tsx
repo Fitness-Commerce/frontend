@@ -14,10 +14,12 @@ import Trade from "./pages/Trade";
 import GlobalStyles from "./style/GlobalStyles";
 import Header from "./components/header";
 import Navigation from "./components/Navigation";
+import FixedChat from "./components/Chat";
 import ProfilePage from "./pages/ProfilePage";
 import Dashboard from "./pages/ProfilePage/dashboard";
 import Profile from "./pages/ProfilePage/profile";
 import ProductForm from "./components/ProductForm";
+import PrefetchComponent from "./api/PrefetchComponent";
 
 //FIXME: 테스트용
 import login from "./api/test_api/login";
@@ -25,8 +27,6 @@ import signup from "./api/test_api/signup";
 import createProductsCategory from "./api/test_api/createProductsCategory";
 import testCreateProducts from "./api/test_api/testCreateProducts";
 import createCommunity from "./api/test_api/createCommunity";
-import getProductCategories from "./api/products_api/getProductCategories";
-import getPostCategories from "./api/posts_api/getPostCategories";
 import deleteCommunity from "./api/test_api/deleteCommunityCategory";
 import logout from "./api/user_api/logout";
 
@@ -39,25 +39,15 @@ const queryClient = new QueryClient({
     },
 });
 
-queryClient.prefetchQuery({
-    queryKey: ["productsCategories"],
-    queryFn: getProductCategories,
-    cacheTime: Infinity,
-});
-
-queryClient.prefetchQuery({
-    queryKey: ["postsCategories"],
-    queryFn: getPostCategories,
-    cacheTime: Infinity,
-});
-
 const router = createBrowserRouter([
     {
         path: "/",
         element: (
             <>
+                <PrefetchComponent />
                 <Header />
                 <Navigation />
+                <FixedChat />
                 <Outlet />
             </>
         ),

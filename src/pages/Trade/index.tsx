@@ -1,19 +1,29 @@
+// import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
+import { useRecoilValue } from "recoil";
+import { isLogin } from "../../recoil/login/atom";
+
+import Modal from "../../components/Modal";
+import ChatContainer from "../../components/Chat/components/ChatContainer";
+import useModal from "../../hooks/useModal";
+import useAuth from "../../hooks/useAuth";
+
+import * as S from "./styled";
+import SideMarginWrapper from "../../style/SideMarginWrapper";
 import Comments from "../../components/Comments";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
-import SideMarginWrapper from "../../style/SideMarginWrapper";
 import ImageSlide from "./components/ImageSlide";
 import visibillityIcon from "../../assets/visibility.svg";
 import locationIcon from "../../assets/location.svg";
 import reportIcon from "../../assets/report.svg";
-import * as S from "./styled";
 
 // 비동기 요청
 import getProduct from "../../api/products_api/getProduct";
 import getMemberProfile from "../../api/test_api/getMemberProfile";
+import getMyProfile from "../../api/test_api/getMyProfile";
 
 // 날짜 계산기
 import pastTimeCalculator from "../../util/pastTimeCalculator";
@@ -21,6 +31,9 @@ import pastTimeCalculator from "../../util/pastTimeCalculator";
 // 매물 상세 페이지(거래 페이지)
 const Trade = () => {
     const { itemId: productId } = useParams();
+    const { isOpen, openModal, closeModal } = useModal();
+    const login = useRecoilValue(isLogin);
+    const excuteGetMyProfile = useAuth(getMyProfile);
 
     // 매물 요청
     const {
@@ -46,20 +59,29 @@ const Trade = () => {
         isLoading: isMemberLoading,
         isError: isMemberError,
     } = useQuery(
-        ["tradeProfile"],
+        ["tradeProfile", product ? product.id : null],
         () => getMemberProfile(product?.memberId as number),
         {
             enabled: !!product, // product가 선행되어야 함
         }
     );
 
-    if (isProductLoading || isMemberLoading) {
+    const {
+        data: userId,
+        isLoading: isUserIdLoading,
+        isError: isUserIdError,
+        error: userIdError,
+    } = useQuery(["myProfile"], excuteGetMyProfile, {
+        enabled: login,
+        select: (data) => data.id,
+    });
+
+    if (isProductLoading || isMemberLoading || isUserIdLoading) {
         return <LoadingSpinner />;
     }
 
-    if (isProductError || isMemberError) {
-        console.log(productError || memberError);
-        throw productError || memberError;
+    if (isProductError || isMemberError || isUserIdError) {
+        throw productError || memberError || userIdError;
     }
 
     return (
@@ -122,18 +144,32 @@ const Trade = () => {
                                 )}
                             </ul>
                         </div>
+
                         <div className="trade__btn-container">
                             <button
                                 type="button"
                                 className="trade__consider-btn"
+                                disabled={userId === member.id}
                             >
                                 찜하기
                             </button>
-                            <button type="button" className="trade__chat-btn">
+                            <button
+                                type="button"
+                                className="trade__chat-btn"
+                                onClick={() => openModal()}
+                                disabled={!login || userId == member.id}
+                            >
                                 헬스톡
                             </button>
                         </div>
                     </div>
+                    {isOpen && (
+                        <Modal onClose={() => closeModal()}>
+                            <ChatContainer
+                                itemId={parseInt(productId as string)}
+                            />
+                        </Modal>
+                    )}
                 </S.Wrapper>
                 <Comments route="product" id={parseInt(productId as string)} />
             </S.Container>

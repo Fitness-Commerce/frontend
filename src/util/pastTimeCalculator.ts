@@ -7,8 +7,7 @@ const kstToUtc = (kst: string) => {
 const pastTimeCalculator = (created_at: string) => {
     const parsed = kstToUtc(created_at);
     const now = Date.now();
-    const diff = now - parsed;
-    
+    const diff = now - (now > parsed ? parsed : Date.parse(created_at));
     
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor(diff / (1000 * 60 * 60));

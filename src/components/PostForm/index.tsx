@@ -56,7 +56,6 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
     const handleSubmitPost = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // FIXME: 모달창으로 대체
         if (!window.confirm("글을 업로드 하시겠습니까?")) return;
         if (quillRef && quillRef.current) {
             const formData = new FormData();
@@ -122,7 +121,7 @@ const PostForm = ({ setIsPostForm, modify }: PostFormProps) => {
                     required
                 />
                 <S.CategorySelect
-                    onChange={(e) => (communityRef.current = e.target.value)}
+                    onChange={(e) => communityRef.current = e.target.value}
                     value={modify?.category}
                     required
                 >

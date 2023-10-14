@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import SideMarginWrapper from "../../style/SideMarginWrapper";
 import * as S from "./styled";
 
 import PostForm from "../../components/PostForm";
@@ -43,30 +42,39 @@ const Community = () => {
     }
 
     return (
-        <SideMarginWrapper>
-            {/* FIXME: 커뮤니티 이름 출력 필요 */}
+        <S.CommunitySideMargin>
+            {/* Title */}
             <S.CommunityTitle>
-                <h1 className="community__title">커뮤니티</h1>
+                <h1 className="community__title">게시판</h1>
             </S.CommunityTitle>
 
+            {/* 카테고리 */}
             <S.CommunityCategory>
                 <ul className="community__post-boards-wrapper">
                     {postCategories &&
-                        postCategories.map((category) => {
+                        postCategories.map((e: { id: number; title: string; }) => {
                             return (
                                 <PostCategoryButton
                                     key={self.crypto.randomUUID()}
-                                    id={category.id}
-                                    title={category.title}
+                                    id={e.id}
+                                    title={e.title}
                                 ></PostCategoryButton>
                             );
                         })}
                 </ul>
             </S.CommunityCategory>
-            <button type="button" onClick={() => setIsPostForm(true)}>
-                글쓰기
-            </button>
-            <select
+            {/* Filter */}
+            <FilterDropdown filterLabel={postFilterLabel} />
+
+            {/* 게시글 리스트 */}
+            <PostsListLayout size={size}/>
+            
+            {/* 페이지 버튼 및 글 쓰기 */}
+            <S.CommunityBottom>
+                <span className="community-bottom__empty">empty</span>
+                <button className="community-bottom__write-btn" type="button" onClick={() => setIsPostForm(true)}>글쓰기</button>
+            </S.CommunityBottom>
+            {/* <select
                 onChange={(e) => {
                     localStorage.setItem("communitySize", e.target.value);
                     setSize(parseInt(e.target.value));
@@ -76,10 +84,9 @@ const Community = () => {
                 <option value={10}>10</option>
                 <option value={30}>30</option>
                 <option value={50}>50</option>
-            </select>
-            <FilterDropdown filterLabel={postFilterLabel} />
-            <PostsListLayout size={size} />
-        </SideMarginWrapper>
+            </select> */}
+            
+        </S.CommunitySideMargin>
     );
 };
 

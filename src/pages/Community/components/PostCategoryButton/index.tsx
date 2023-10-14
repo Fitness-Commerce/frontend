@@ -13,7 +13,7 @@ interface PostCategoryButtonProps {
 }
 
 const PostCategoryButton = ({id, title}: PostCategoryButtonProps) => {
-    return ( 
+    return (
         <S.Wrapper>
             <button type="button" className="community__post-category-btn">
                 <S.CategoryLink to={`/community?category-id=${id}`}>{title}</S.CategoryLink>

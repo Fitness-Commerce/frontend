@@ -40,7 +40,7 @@ function Navigation() {
                     <S.Link
                         to={"/community"}
                     >
-                        커뮤니티
+                        게시판
                     </S.Link>
                 </div>
             </S.Nav>

@@ -65,10 +65,6 @@ const router = createBrowserRouter([
                 element: <ProductForm />,
             },
             {
-                path: "community",
-                element: <Community />,
-            },
-            {
                 path: "trade/:itemId",
                 element: <Trade />,
             },
@@ -89,6 +85,7 @@ const router = createBrowserRouter([
                         <button type="button" onClick={createProductsCategory}>
                             카테고리 생성
                         </button>
+                        
                         <button type="button" onClick={testCreateProducts}>
                             더미 매물
                         </button>
@@ -111,6 +108,16 @@ const router = createBrowserRouter([
         path: "*",
         element: <ErrorPage />,
         errorElement: <ErrorPage />,
+    },
+    {
+        path: "/community",
+        element: (
+            <>
+                <Header />
+                <Community />
+            </>
+        ),
+        errorElement: <ErrorPage />
     },
     {
         path: "/user",

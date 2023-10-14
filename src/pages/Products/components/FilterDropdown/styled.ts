@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
     position: relative;
     display: inline-block;
     margin-right: 10px;
+    margin-bottom: 1rem;
     
     .products__category-dropdown {
         display: flex;
@@ -11,7 +12,7 @@ export const Wrapper = styled.div`
         gap: 0.2rem;
         flex-shrink: 0;
 
-        padding: 0.2rem;
+        padding: 5px;
         border: 1px solid rgba(0, 0, 0, 0.4);
 
         font-size: 12px;
@@ -20,16 +21,16 @@ export const Wrapper = styled.div`
         color: var(--color-black-primary);
         align-items: center;
 
-        .products__category-dropdown__arrow-svg {
-            transform: rotate(-90deg);
+        svg {
+            margin-left: 2px;
+            color: var(--color-black-primary);
         }
-
         cursor: pointer;
     }
 `;
 
 export const SortModal = styled.div`
-    width: 100%;
+    width: max-content;
     position: absolute;
     display: flex;
     flex-direction: column;

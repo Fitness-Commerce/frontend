@@ -4,14 +4,10 @@ import { styled } from "styled-components";
 
 export const Wrapper = styled.li`
     display: flex;
-    flex-basis: 12%;
-
     .community__post-category-btn {
-        display: flex;
-        width: 100%;
-        padding: 8px 24px;
-        background-color: #000;
-
+        background-color: transparent;
+        border: none;
+        outline: none;
         &:hover {
             filter: brightness(80%);
         }
@@ -19,7 +15,26 @@ export const Wrapper = styled.li`
 `;
 
 export const CategoryLink = styled(Link)`
-    flex-shrink: 0;
-    color: #fff;
+    position: relative;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Jua', sans-serif;
+    font-weight: 100;
+    font-size: 1rem;
     text-align: center;
+    &:hover {
+        &::before {
+            opacity: 100;
+        }
+    }
+    &::before {
+        position: absolute;
+        content: "";
+        bottom: -5px;
+        width: 100%;
+        height: 2px;
+        background-color: black;
+        /* TODO 조건부 */
+        opacity: 0;
+        transition: .3s;
+    }
 `;

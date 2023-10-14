@@ -20,6 +20,23 @@ export const Wrapper = styled.div`
         width: 100%;
         justify-content: space-between;
 
+        @media ${props => props.theme.media.laptop} {
+            .trade__title {
+                font-size: 1.3rem;
+            }
+            .trade__price {
+                font-size: 2.1rem;
+                .trade__price__won {
+                    font-size: 1.3rem;
+                }
+            }
+            .trade__details__view-count,
+            .trade__details__created-at,
+            .trade__details__report-btn {
+                font-size: .8rem;
+            }
+        }
+
         .trade__title {
             font-size: 1.5rem;
             font-weight: 600;
@@ -106,14 +123,16 @@ export const Wrapper = styled.div`
                 border: none;
                 border-radius: var(--button-radius);
                 color: #fff;
-                transition: filter, opacity 0.2s ease-out;
+                transition: all 0.2s ease-out;
 
                 &:hover :active {
                     filter: brightness(80%);
                 }
                 
                 &:disabled {
-                    display: none;
+                    filter: brightness(0.6);
+                    background-color: rgba(0, 0, 0, 0.5);
+                    cursor: no-drop;
                 }
 
                 cursor: pointer;

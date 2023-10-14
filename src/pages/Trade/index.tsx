@@ -1,6 +1,6 @@
 // import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useRecoilValue } from "recoil";
 import { isLogin } from "../../recoil/login/atom";
@@ -24,6 +24,7 @@ import reportIcon from "../../assets/report.svg";
 import getProduct from "../../api/products_api/getProduct";
 import getMemberProfile from "../../api/test_api/getMemberProfile";
 import getMyProfile from "../../api/test_api/getMyProfile";
+import deleteProduct from "../../api/products_api/deleteProduct";
 
 // 날짜 계산기
 import pastTimeCalculator from "../../util/pastTimeCalculator";
@@ -31,9 +32,11 @@ import pastTimeCalculator from "../../util/pastTimeCalculator";
 // 매물 상세 페이지(거래 페이지)
 const Trade = () => {
     const { itemId: productId } = useParams();
+    const navigate = useNavigate();
     const { isOpen, openModal, closeModal } = useModal();
     const login = useRecoilValue(isLogin);
     const excuteGetMyProfile = useAuth(getMyProfile);
+    const excuteDeleteProduct = useAuth(deleteProduct)
 
     // 매물 요청
     const {
@@ -68,7 +71,6 @@ const Trade = () => {
 
     const {
         data: userId,
-        isLoading: isUserIdLoading,
         isError: isUserIdError,
         error: userIdError,
     } = useQuery(["myProfile"], excuteGetMyProfile, {
@@ -76,7 +78,7 @@ const Trade = () => {
         select: (data) => data.id,
     });
 
-    if (isProductLoading || isMemberLoading || isUserIdLoading) {
+    if (isProductLoading || isMemberLoading) {
         return <LoadingSpinner />;
     }
 
@@ -88,7 +90,15 @@ const Trade = () => {
         <SideMarginWrapper>
             <S.Container>
                 <S.Wrapper>
-                    <ImageSlide itemImagesUrl={product.itemImagesUrl} />
+                    <ImageSlide
+                        itemImagesUrl={product.itemImagesUrl
+                            // .map((url) =>
+                            // url.replace(
+                            //     "http://43.200.32.144:8080/",
+                            //     "http://localhost:8080/"
+                            // ))
+                        }
+                    />
                     <div className="trade__info-wrapper">
                         {/* 매물 제목 */}
                         <h1 className="trade__title">{product.itemName}</h1>
@@ -111,18 +121,27 @@ const Trade = () => {
                             <span className="trade__details__created-at">
                                 {product.updatedAt || product.createdAt}
                             </span>
-                            <button
-                                type="button"
-                                className="trade__details__report-btn"
-                            >
-                                <img
-                                    className="trade__icon"
-                                    src={reportIcon}
-                                    aria-label="report icon"
-                                    alt="report icon"
-                                />
-                                <span>신고하기</span>
-                            </button>
+                            {login && userId == member.id && (
+                                <button
+                                    type="button"
+                                    className="trade__details__report-btn"
+                                    onClick={() => {
+                                        const conf = confirm("상품을 삭제하시겠습니까?");
+                                        if(conf) {
+                                            excuteDeleteProduct(product.id);
+                                            navigate("/products")
+                                        }
+                                    }}
+                                >
+                                    <img
+                                        className="trade__icon"
+                                        src={reportIcon}
+                                        aria-label="report icon"
+                                        alt="report icon"
+                                    />
+                                    <span>삭제하기</span>
+                                </button>
+                            )}
                         </div>
                         {/* 매물 컨텐츠 */}
                         <pre className="trade__content">
@@ -146,13 +165,13 @@ const Trade = () => {
                         </div>
 
                         <div className="trade__btn-container">
-                            <button
+                            {/* <button
                                 type="button"
                                 className="trade__consider-btn"
-                                disabled={userId === member.id}
+                                disabled={!login || userId === member.id}
                             >
                                 찜하기
-                            </button>
+                            </button> */}
                             <button
                                 type="button"
                                 className="trade__chat-btn"

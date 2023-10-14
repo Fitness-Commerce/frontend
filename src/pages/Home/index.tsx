@@ -2,7 +2,7 @@ import * as S from "./styled";
 
 import Banner from "./banner";
 
-import Products from "../../components/products";
+import Products from "./ProductsLayout";
 
 const Home = () => {
     return (

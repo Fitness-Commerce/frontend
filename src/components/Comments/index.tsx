@@ -59,12 +59,36 @@ const Comments = ({ route, id }: CommentsProps) => {
             queryClient.refetchQueries(["comments", route]);
         }
     };
-
+    
     if (query.isError) throw query.error;
-
+    
     return (
         <S.CommentContainer>
+                {/* 기존의 댓글 표시 */}
+                <h2>
+                    <img src={commentSVG} alt="comment icon" />
+                    <span>댓글 목록</span>
+                </h2>
+                {query.status !== "loading" &&
+                    query.data.content?.length > 0 &&
+                    query.data.content.map((comment) => (
+                        <S.CommentContent key={comment.id}>
+                            <CommentContent comment={comment} />
+                        </S.CommentContent>
+                    ))}
+                
+                {/* 댓글 페이지네이션 */}
+                {query.status !== "loading" && (
+                    <Pagination
+                        currentPage={page}
+                        totalPages={query.data.totalPages}
+                        onPageChange={(selectedPage) => setPage(selectedPage)}
+                    />
+                )}
             {/* 새로운 댓글 작성 */}
+
+            <S.Separator />
+
             <h2>
                 <img src={addCommentSVG} alt="add comment icon" />
                 <span>댓글 쓰기</span>
@@ -91,30 +115,6 @@ const Comments = ({ route, id }: CommentsProps) => {
                     </div>
                 )}
             </form>
-
-            <S.Separator />
-
-            {/* 기존의 댓글 표시 */}
-            <h2>
-                <img src={commentSVG} alt="comment icon" />
-                <span>댓글 목록</span>
-            </h2>
-            {query.status !== "loading" &&
-                query.data.content?.length > 0 &&
-                query.data.content.map((comment) => (
-                    <S.CommentContent key={comment.id}>
-                        <CommentContent comment={comment} />
-                    </S.CommentContent>
-                ))}
-
-            {/* 댓글 페이지네이션 */}
-            {query.status !== "loading" && (
-                <Pagination
-                    currentPage={page}
-                    totalPages={query.data.totalPages}
-                    onPageChange={(selectedPage) => setPage(selectedPage)}
-                />
-            )}
         </S.CommentContainer>
     );
 };

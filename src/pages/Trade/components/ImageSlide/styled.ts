@@ -17,10 +17,23 @@ export const Image = styled.div<ImageProps>`
     border-radius: 4px;
     flex-shrink: 0;
     box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.1);
-    width: ${(props) => props.$width}px;
-    height: ${(props) => props.$height}px;
+    width: 500px;
+    height: 500px;
     background-color: var(--color-bright-black);
     overflow: hidden;
+
+    @media ${(props) => props.theme.media.laptop} {
+        width: 400px;
+        height: 400px;
+    }
+    @media ${(props) => props.theme.media.tablet} {
+        width: 300px;
+        height: 300px;
+    }
+    @media ${(props) => props.theme.media.mobile} {
+        width: 150px;
+        height: 150px;
+    }
 
     .trade__img-slide {
         opacity: 0;

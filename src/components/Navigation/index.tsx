@@ -1,8 +1,12 @@
+import { useSetRecoilState } from "recoil";
+import { SelectedCategoryState } from "../../recoil/products/atom";
+
 import Categories from "../../pages/Products/components/Categories";
 import SideMarginWrapper from "../../style/SideMarginWrapper";
 import * as S from "./styled";
 
 function Navigation() {
+    const setSelectedCategory = useSetRecoilState(SelectedCategoryState);
     return (
         <SideMarginWrapper>
             <S.Nav>
@@ -33,6 +37,7 @@ function Navigation() {
 
                     <S.Link
                         to={"/products"}
+                        onClick={() => setSelectedCategory(() => "")}
                     >
                         전체 매물
                     </S.Link>

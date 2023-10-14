@@ -1,5 +1,12 @@
 import { styled } from "styled-components";
 
+export const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+`
+
 // 상품 페이지 제목 (오른쪽 더보기 버튼 클래스로 취사 선택)
 export const Title = styled.div`
     display: flex;

@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import SliderNavDot from "./SliderNavDot";
 
 import clamp from "../../../../util/clamp";
 import { width, heigth } from "../../../../contance/tradeImgLength.json";
 import guide_arrow from "../../../../assets/guide_arrow.svg";
+import theme from "../../../../style/theme";
 import * as S from "./styled";
 
 // FIXME: 더미데이터
@@ -16,70 +17,70 @@ interface ImageSlideProps {
 
 // 매물 이미지 슬라이드
 const ImageSlide = ({ itemImagesUrl }: ImageSlideProps) => {
+    const [imageMediaLength, setImageMediaLength] = useState(
+        window.innerWidth >= theme.size.laptop
+            ? 500
+            : window.innerWidth >= theme.size.tablet
+            ? 400
+            : window.innerWidth >= theme.size.mobile
+            ? 300
+            : 150
+    );
     const [sliderX, setSliderX] = useState(0);
     const [navDotIndex, setNavDotIndex] = useState(0);
     const sliderRef = useRef<HTMLDivElement>(null);
-    
-    // TODO: 마우스 드래그로 슬라이드 구현 (최적화 필요)
-    // 1. 이미지 프레임에 맞춰서 멈춰야됨
-    // 2. 마우스가 움직일 때마다 sliderX가 변하기 때문에 재렌더링 너무 많음
-    // 3. 네비 도트 상태값을 드래그에 맞춰 변환시켜줘야됨
-
-    // const startRef = useRef<number | null>(0);
-
-    // function handleMouseMove(
-    //     event: React.MouseEvent<HTMLDivElement, MouseEvent>
-    // ) {
-    //     if (sliderRef.current && startRef.current !== null) {
-    //         const currentX = event.pageX;
-    //         const deltaX = startRef.current - currentX;
-    //         startRef.current = currentX;
-    //         setSliderX((old) =>
-    //             clamp(old - deltaX, -(itemImagesUrl.length - 1) * width, 0)
-    //         );
-    //     }
-    // }
-
-    // function handleMouseDown(
-    //     event: React.MouseEvent<HTMLDivElement, MouseEvent>
-    // ) {
-    //     event.preventDefault();
-    //     startRef.current = event.pageX;
-    // }
-
-    // function handleMouseUp() {
-    //     startRef.current = null;
-    // }
 
     const handlePrevClick = () => {
         setSliderX((old) =>
-            clamp(old + width, -(itemImagesUrl.length - 1) * width, 0)
+            clamp(
+                old + imageMediaLength,
+                -(itemImagesUrl.length - 1) * imageMediaLength,
+                0
+            )
         );
         setNavDotIndex((idx) => idx - 1);
     };
     const handleNextClick = () => {
         setSliderX((old) =>
-            clamp(old - width, -(itemImagesUrl.length - 1) * width, 0)
+            clamp(
+                old - imageMediaLength,
+                -(itemImagesUrl.length - 1) * imageMediaLength,
+                0
+            )
         );
         setNavDotIndex((idx) => idx + 1);
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= theme.size.laptop) {
+                setImageMediaLength(500);
+            } else if (window.innerWidth >= theme.size.tablet) {
+                setImageMediaLength(400);
+            } else if (window.innerWidth >= theme.size.mobile) {
+                setImageMediaLength(300);
+            } else {
+                setImageMediaLength(150);
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     return (
         <S.Image
             $img_length={itemImagesUrl.length}
             $width={width}
             $height={heigth}
-            // onMouseMove={handleMouseMove}
-            // onMouseUp={handleMouseUp}
-            // onMouseLeave={handleMouseUp}
-            // onMouseDown={handleMouseDown}
             ref={sliderRef}
         >
             <S.Slider
                 $slideX={sliderX}
                 $img_length={itemImagesUrl.length}
-                $width={width}
-                $height={heigth}
+                $width={imageMediaLength}
+                $height={imageMediaLength}
             >
                 {itemImagesUrl.map((url, index) => (
                     <img
@@ -105,7 +106,7 @@ const ImageSlide = ({ itemImagesUrl }: ImageSlideProps) => {
                 className="trade__img-slide right-btn"
                 type="button"
                 onClick={handleNextClick}
-                disabled={sliderX === -(itemImagesUrl.length - 1) * width}
+                disabled={sliderX === -(itemImagesUrl.length - 1) * imageMediaLength}
             >
                 <img
                     src={guide_arrow}

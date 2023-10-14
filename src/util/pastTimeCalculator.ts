@@ -15,7 +15,7 @@ const pastTimeCalculator = (created_at: string) => {
 
     if(days > 0) return days + '일 전';
     if(hours > 0) return hours + '시간 전';
-    return mins + '분 전';
+    return isNaN(mins) || mins <= 0 ? "방금 전" : mins + '분 전';
 };
 
 export default pastTimeCalculator;

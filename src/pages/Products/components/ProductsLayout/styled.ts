@@ -10,8 +10,8 @@ interface ProductCardProps {
 }
 
 export const Scroll = styled(InfiniteScroll)<WrapperProps>`
-    display: flex;
     width: 100%;
+    display: flex;
 
     ${(props) => {
         switch (props.$isGrid) {

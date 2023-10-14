@@ -9,7 +9,7 @@ export const Nav = styled.nav`
         height: 60px;
         gap: 16px;
         align-items: center;
-        
+
         .nav-wrapper__category-btn {
             position: relative;
             background-color: transparent;
@@ -35,8 +35,14 @@ export const Nav = styled.nav`
             &:hover ~ .category__nav-wrapper {
                 display: grid;
             }
-            
+
             .nav-wrapper__category-btn__text {
+                font-size: 1.2rem;
+                font-weight: 500;
+
+                @media ${(props) => props.theme.media.mobile} {
+                    font-size: 1rem;
+                }
                 margin-left: 5px;
             }
         }
@@ -55,14 +61,18 @@ export const Nav = styled.nav`
             z-index: 999;
             background-color: var(--color-bg-white);
             color: black;
+            font-weight: 500;
             border-radius: 4px;
+            border: 2px solid var(--color-accent-dark-green);
+
             &:hover {
                 display: grid;
             }
         }
 
         /* 카테고리,전체 매물, 커뮤니티 공통 */
-        .nav-wrapper__category-btn, a {
+        .nav-wrapper__category-btn,
+        a {
             transition: all 0.3s ease-in-out;
             &:hover {
                 /* 호버 시 텍스트를 위로 올리는 효과 */
@@ -74,8 +84,15 @@ export const Nav = styled.nav`
 
 export const Link = styled(NavLink)`
     flex: 0, 0, 0%;
+    font-size: 1.2rem;
+    font-weight: 500;
+
+    @media ${(props) => props.theme.media.mobile} {
+        font-size: 1rem;
+    }
+
     &.active {
         text-decoration: underline;
         text-underline-offset: 5px;
     }
-`
+`;

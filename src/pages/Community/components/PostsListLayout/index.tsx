@@ -32,14 +32,14 @@ const PostsListLayout = ({ size }: PostsListLayoutProps) => {
         ["postList", size, page, option, categoryId || "default"],
         categoryId
             ? () => {
-                  setPage(1);
-                  return getCategoryPostList({
-                      categoryId,
-                      page,
-                      size,
-                      order: option,
-                  });
-              }
+                setPage(1);
+                return getCategoryPostList({
+                    categoryId,
+                    page,
+                    size,
+                    order: option,
+                });
+            }
             : () => getPostsList({ page, size, order: option }),
         // FIXME: 최적화 필요
         { cacheTime: 0 }

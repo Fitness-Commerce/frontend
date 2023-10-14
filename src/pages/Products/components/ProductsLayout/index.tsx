@@ -1,8 +1,10 @@
-import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { viewModeState, SelectedCategoryState } from "../../../../recoil/products/atom";
+import {
+    viewModeState,
+    SelectedCategoryState,
+} from "../../../../recoil/products/atom";
 import { filteredOptionState } from "../../../../recoil/products/selector";
-import { useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 import useAuth from "../../../../hooks/useAuth";
 
@@ -18,22 +20,15 @@ import LoadingSpinner from "../../../../components/LoadingSpinner";
 import { sortLabel } from "../../../../contance/products";
 import ProductCard from "../../../../components/ProductsLayout/ProductCard";
 
-
 interface ProductsLayoutProps {
     layout: boolean;
 }
 
 const ProductsLayout = ({ layout }: ProductsLayoutProps) => {
-    const queryClient = useQueryClient();
     const excuteGetProductList = useAuth(getProductList);
     const selectedCategory = useRecoilValue(SelectedCategoryState);
     const viewType = useRecoilValue(viewModeState);
     const option = useRecoilValue(filteredOptionState);
-
-    useEffect(() => {
-        // option 변경될 때마다 쿼리 데이터 초기화
-        queryClient.removeQueries(["productsList"]);
-    }, [viewType, option, selectedCategory, queryClient]);
 
     // useInfiniteQuery 무한스크롤
     const {
@@ -56,7 +51,7 @@ const ProductsLayout = ({ layout }: ProductsLayoutProps) => {
 
             // 지역보기면 인증토큰 같이 보냄
             return viewType === sortLabel[0]
-                ? getProductList({ page: pageParam })
+                ? getProductList({ page: pageParam, order: option })
                 : excuteGetProductList({ page: pageParam, order: option });
         },
         {
@@ -84,6 +79,8 @@ const ProductsLayout = ({ layout }: ProductsLayoutProps) => {
                 );
                 return { ...data, pages: newData };
             },
+            staleTime: Infinity,
+            cacheTime: 0,
         }
     );
 

@@ -41,15 +41,11 @@ const ProfilePage = () => {
         queryFn: () => request(GET_SELF_MEMBER)
     })
 
-    
-
-
     if (isLoading) return <LoadingSpinner />
     if (error) return <ErrorPage />
 
     const nickname = data?.data.nickname;
     const email = data?.data.email;
-
 
     return (
         <S.ProfilePage>

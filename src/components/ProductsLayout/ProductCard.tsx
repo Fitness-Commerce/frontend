@@ -1,5 +1,5 @@
 import * as S from "./styled";
-import dummyImage from "../../assets/product1.webp";
+// import dummyImage from "../../assets/product1.webp";
 import ProductType from "../../interface/Products";
 import { useNavigate } from "react-router-dom";
 import { TRADE } from "../../contance/routeURL";
@@ -95,11 +95,11 @@ const ProductCard = ({
                     // FIXME: url 로컬 서버에서 가져오는 중
                     src={
                         info?.itemImagesUrl[0]
-                            ?.toString()
-                            .replace(
-                                "http://43.200.32.144:8080/",
-                                "http://localhost:8080/"
-                            ) || dummyImage
+                            // ?.toString()
+                            // .replace(
+                            //     "http://43.200.32.144:8080/",
+                            //     "http://localhost:8080/"
+                            // ) || dummyImage
                     }
                     alt={info?.itemName}
                 />
@@ -122,9 +122,15 @@ const ProductCard = ({
                     2. item_detail에 원하는 거래지역 넣기 (이게 좀 더 깔끔하긴 함) */}
                 <div>
                     <span className="product-card__local">
-                        {info?.transactionArea.map((area) => (
-                            <span key={area}>{" " + area}</span>
-                        ))}
+                        {info?.transactionArea
+                            .slice(0, 3)
+                            .map((area, index) =>
+                                index < 2 ? (
+                                    <p key={area}>{area}</p>
+                                ) : (
+                                    <span key={area}>...</span>
+                                )
+                            )}
                     </span>
                     <span className="product-card__time">
                         {info?.createdAt}

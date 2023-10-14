@@ -176,7 +176,7 @@ const Trade = () => {
                                 type="button"
                                 className="trade__chat-btn"
                                 onClick={() => openModal()}
-                                disabled={!login || userId == member.id}
+                                disabled={!login || userId === member.id}
                             >
                                 헬스톡
                             </button>

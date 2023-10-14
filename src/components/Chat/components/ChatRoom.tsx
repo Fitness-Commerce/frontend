@@ -57,7 +57,7 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
         ["chatMessages", itemId],
         () => excuteGetChatMessages(roomIdRef.current),
         {
-            enabled: !chatRoomData.isLoading && chatRoomData.data !== null,
+            enabled: !chatRoomData.isLoading && chatRoomData.data != null,
             cacheTime: 0,
         }
     );
@@ -203,7 +203,7 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
         isLoading ||
         userProfile.isLoading ||
         chatRoomData.isLoading ||
-        (chatMessagesData.isLoading && chatMessagesData.isFetchedAfterMount)
+        (chatMessagesData.isLoading)
     )
         return <LoadingSpinner />;
 

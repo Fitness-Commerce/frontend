@@ -26,15 +26,17 @@ const subscribeChat = ({
 
     // 웹소켓 연결
     client.onConnect = () => {
+        
         // 구독 시작
         client.subscribe(`/sub/chat/room/${roomId}`, (message) => {
+            console.log(roomId);
             if (message.body) {
                 const chatMessage: chatMassegesType = JSON.parse(message.body);
                 setMessages(chatMessage);
             }
         });
         console.log("구독 성공");
-        
+
         setIsLoading(false);
     };
 
@@ -46,7 +48,7 @@ const subscribeChat = ({
     client.onDisconnect = () => {
         console.log("구독 종료");
         setIsLoading(false);
-    }
+    };
 
     client.activate();
 

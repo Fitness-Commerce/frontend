@@ -1,9 +1,10 @@
+import { Dispatch, SetStateAction } from "react";
 import { PageButton, PaginationContainer } from "./styled";
 
 interface PaginationProps {
     currentPage: number;
     totalPages: number;
-    onPageChange: (page: number) => void;
+    onPageChange: Dispatch<SetStateAction<number>>;
 }
 
 const Pagination = ({
@@ -17,7 +18,7 @@ const Pagination = ({
 
     const handlePageChange = (newPage: number) => {
         if (newPage < 1 || newPage > totalPages) return;
-        onPageChange(newPage);
+        onPageChange(() => newPage);
     };
 
     return (

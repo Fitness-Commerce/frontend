@@ -8,6 +8,7 @@ interface IgetCategoryItems {
     page?: number;
     size?: number;
     order?: string;
+    search?: string | null;
 }
 
 const getCategoryItems = async ({id, page = 1, size = 10, order = filterdOption[0]}: IgetCategoryItems) => {

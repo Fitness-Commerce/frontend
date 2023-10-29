@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Client } from "@stomp/stompjs";
 
@@ -11,8 +11,13 @@ import getChatMessages, {
 } from "../../../api/chat_api/getChatMessages";
 import getChatList, { chatListType } from "../../../api/chat_api/getChatList";
 import getMyProfile from "../../../api/test_api/getMyProfile";
+import getProduct from "../../../api/products_api/getProduct";
+import updateStatus from "../../../api/chat_api/updateStatus";
+import deleteChatRoom from "../../../api/chat_api/deleteChatRoom";
 
 import pastTimeCalculator from "../../../util/pastTimeCalculator";
+
+import { status } from "../../../contance/products";
 
 import * as S from "../styled";
 import LoadingSpinner from "../../LoadingSpinner";
@@ -28,25 +33,38 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
     const excuteGetMyProfile = useAuth(getMyProfile);
     const excuteGetChatList = useAuth(getChatList);
     const excuteGetChatMessages = useAuth(getChatMessages);
+    const excuteUpdateStatus = useAuth(updateStatus);
+    const excuteDeleteChatRoom = useAuth(deleteChatRoom);
 
     // 프로필 가져오기
     const userProfile = useQuery(["chatMyProfile"], excuteGetMyProfile);
+
+    // 아이템 상태 가져오기
+    const itemStatus = useQuery(
+        ["itemStatus"],
+        () => getProduct(itemId.toString()),
+        { select: (data) => data.itemStatus }
+    );
 
     // chatList에서 현재 선택된 itemId 있는지 확인, 없으면 새로운 방 생성
     const stompClient = useRef<Client | null>(null);
     const [willCreate, setWillCreate] = useState<boolean | null>(null);
     const roomIdRef = useRef("");
+    const roomNameRef = useRef("");
     const chatRoomData = useQuery(
         ["chatRoom", itemId],
-        () => excuteGetChatList(userProfile.data.id),
+        () => excuteGetChatList(),
         {
-            enabled: userProfile.isSuccess,
+            enabled: userProfile.isSuccess && itemStatus.isSuccess,
             select: (data) => {
                 const found = data.filter(
                     (chatRoom: chatListType) => chatRoom.itemId === itemId
                 );
 
+                console.log(found);
+
                 roomIdRef.current = found[0]?.roomId || "";
+                roomNameRef.current = found[0]?.roomName || "";
                 return found[0] || null;
             },
             staleTime: Infinity,
@@ -58,9 +76,38 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
         () => excuteGetChatMessages(roomIdRef.current),
         {
             enabled: !chatRoomData.isLoading && chatRoomData.data != null,
+            staleTime: Infinity,
             cacheTime: 0,
         }
     );
+
+    //FIXME: 아이템 상태 업데이트
+    const handleOnUpdateStatus = useCallback(
+        (status: string) => {
+            const updateItemStatus = async () => {
+                try {
+                    const success = await excuteUpdateStatus({
+                        itemId,
+                        itemStatus: status,
+                        buyerId: chatRoomData.data.buyerId,
+                    });
+                    console.log(success);
+                    itemStatus.refetch();
+                } catch (err) {
+                    console.error(err);
+                }
+            };
+            updateItemStatus();
+        },
+        [itemStatus, itemId, chatRoomData.data]
+    );
+
+    const handleOnChatRoomDelete = () => {
+        const isDelete = confirm("채팅방을 나가시겠습니까?");
+        if (isDelete === true) {
+            excuteDeleteChatRoom(roomIdRef.current);
+        }
+    };
 
     const [messages, setMessages] = useState<chatMassegesType[]>([]);
     const messageRef = useRef<HTMLInputElement>(null);
@@ -74,7 +121,7 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
         setIsLoading(true);
 
         const client = subscribeChat({
-            roomId: roomIdRef.current,
+            roomId: roomNameRef.current,
             setMessages: (message) =>
                 setMessages((previousMessage) => [...previousMessage, message]),
             setIsLoading: (bool) => setIsLoading(bool),
@@ -98,7 +145,6 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
         if (messageRef.current) {
             // 채팅방 생성과 동시에 구독주소로 넘겨줄 roomName을 상태값으로 저장
             const roomUUID = self.crypto.randomUUID();
-            roomIdRef.current = roomUUID;
 
             setIsLoading(true);
             // 채팅방 연결 요청 보내고 바로 닫힘
@@ -119,7 +165,7 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
 
     // 메세지 전달
     const sendMessage = () => {
-        const createdTime = Date.now().toLocaleString("ko-KR");
+        // const createdTime = Date.now().toLocaleString("ko-KR");
         if (stompClient.current && messageRef.current) {
             // 웹소켓으로 메세지 전달
             stompClient.current.publish({
@@ -130,29 +176,12 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
                     ) as string,
                 },
                 body: JSON.stringify({
-                    // FIXME: 여기 roomId로 식별하면 깔끔한데... 일단 로컬 서버에는 roomName 응답으로 주도록 수정함
                     roomName: chatRoomData.data.roomName,
                     message: messageRef.current.value,
                 }),
             });
-
-            // setMessages를 입력에서도 해줘야됨
-            setMessages((prev) => {
-                if (messageRef.current) {
-                    const messageValue = messageRef.current.value;
-                    // 메세지 input 초기화
-                    messageRef.current.value = "";
-                    return [
-                        ...prev,
-                        {
-                            senderNickname: userProfile.data.nickname,
-                            message: messageValue,
-                            created_at: createdTime,
-                        },
-                    ];
-                }
-                return prev;
-            });
+            // 메세지 input 초기화
+            messageRef.current.value = "";
         }
     };
 
@@ -203,12 +232,24 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
         isLoading ||
         userProfile.isLoading ||
         chatRoomData.isLoading ||
-        (chatMessagesData.isLoading)
+        itemStatus.isLoading ||
+        (chatMessagesData.isLoading && chatMessagesData.isFetchedAfterMount)
     )
         return <LoadingSpinner />;
 
-    if (userProfile.isError || chatRoomData.isError || chatMessagesData.isError)
-        throw userProfile.error || chatRoomData.error || chatMessagesData.error;
+    if (
+        userProfile.isError ||
+        chatRoomData.isError ||
+        chatMessagesData.isError ||
+        itemStatus.isError
+    ) {
+        console.error(
+            userProfile.error ||
+                chatRoomData.error ||
+                chatMessagesData.error ||
+                itemStatus.error
+        );
+    }
 
     return (
         <S.ChatRoom>
@@ -221,6 +262,50 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
                     {chatRoomData.data?.itemName ||
                         "메세지를 입력하여 채팅을 시작하세요!"}
                 </span>
+                {chatRoomData.data?.buyerId != null &&
+                    userProfile.data.id !== chatRoomData.data.buyerId &&
+                    itemStatus.data !== status[2] && (
+                        <>
+                            <button
+                                type="button"
+                                className="chat-room__status-btn"
+                                onClick={() =>
+                                    handleOnUpdateStatus(
+                                        itemStatus.data === status[0]
+                                            ? status[1]
+                                            : status[2]
+                                    )
+                                }
+                            >
+                                {itemStatus.data === status[0]
+                                    ? status[1]
+                                    : status[2]}
+                            </button>
+                            {itemStatus.data === status[1] && (
+                                <button
+                                    type="button"
+                                    className="chat-room__cancel-btn"
+                                    onClick={() =>
+                                        handleOnUpdateStatus(status[0])
+                                    }
+                                >
+                                    CANCEL
+                                </button>
+                            )}
+                        </>
+                    )}
+                {itemStatus.data === status[2] && (
+                    <>
+                        <div className="chat-room__sold">{status[2]}</div>
+                        <button
+                            type="button"
+                            className="chat-room__delete-btn"
+                            onClick={handleOnChatRoomDelete}
+                        >
+                            DELETE
+                        </button>
+                    </>
+                )}
             </S.ChatRoomHeader>
             <S.ChatMessageContainer>
                 {messages.map(
@@ -233,7 +318,7 @@ const ChatRoom = ({ itemId, onGoBackToList }: ChatRoomProps) => {
                         return (
                             <S.ChatMessage
                                 key={self.crypto.randomUUID()}
-                                $isUser={senderNickname.startsWith(
+                                $isUser={senderNickname?.startsWith(
                                     userProfile.data.nickname
                                 )}
                             >

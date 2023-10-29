@@ -8,11 +8,13 @@ import { faEnvelope, faStar, faHandshake } from "@fortawesome/free-regular-svg-i
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useAxios } from "../../../hooks/useAxios";
-import { GET_SELF_MEMBER } from "../../../contance/endPoint";
+// import { useAxios } from "../../../hooks/useAxios";
+// import { GET_SELF_MEMBER } from "../../../contance/endPoint";
 
+import useAuth from "../../../hooks/useAuth";
 import useModal from "../../../hooks/useModal";
 import Modal from "../../../components/Modal";
+import getMyProfile from "../../../api/test_api/getMyProfile";
 
 import ModifyNickname from "./modify/ModifyNickname";
 import ModifyPhoneNumber from "./modify/ModifyPhoneNumber";
@@ -23,8 +25,9 @@ import ModifyRange from "./modify/ModifyRange";
 
 
 const Profile = () => {
-    const request = useAxios();
+    // const request = useAxios();
     const { isOpen, openModal, closeModal } = useModal();
+    const excuteGetMyProfile = useAuth(getMyProfile);
 
     // 각 수정 모달의 렌더링 여부
     const [isModifyNick, setIsModifyNick] = useState(false); // 닉네임 수정
@@ -37,21 +40,22 @@ const Profile = () => {
     // 처음 렌더시 유저 프로필 정보 가져오기
     const { isLoading, error, data } = useQuery({
         queryKey: ['myProfile'],
-        queryFn: () => request(GET_SELF_MEMBER)
+        queryFn: excuteGetMyProfile
     })
 
+    
+    
+    if (isLoading) return <>Loading...</>;
+    if (error) return <>An error has occurred</>;
+
     const rangeArr: string[] = [];
-    data?.data.area_range.forEach((e: string) => {
+    data.area_range.forEach((e: string) => {
         const parts: string[] = e.split(" ");
         const lastIndex = parts.length - 1;
         if (lastIndex >= 0) {
             rangeArr.push(parts[lastIndex]);
         }
     });
-    
-
-    if (isLoading) return <>Loading...</>;
-    if (error) return <>An error has occurred</>;
 
 
     return (
@@ -64,8 +68,8 @@ const Profile = () => {
                     <div className="user-data__name__front">
                         <img src={profile} alt="profile" />
                         <div className="user-data__name__front__data">
-                            <strong className="name">{data?.data.username}</strong>
-                            <span className="email">{data?.data.email}</span>
+                            <strong className="name">{data.username}</strong>
+                            <span className="email">{data.email}</span>
                         </div>
                     </div>
                 </div>
@@ -74,7 +78,7 @@ const Profile = () => {
                 <div className="user-data__oneline user-data__email">
                     <span>
                         <FontAwesomeIcon icon={faEnvelope} className="email" />
-                        <span>{data?.data.email}</span>
+                        <span>{data.email}</span>
                     </span>
                 </div>
 
@@ -83,7 +87,7 @@ const Profile = () => {
                 <div className="user-data__oneline user-data__nickname">
                     <span>
                         <FontAwesomeIcon icon={faStar} className="nickname" />
-                        <span>{data?.data.nickname}</span>
+                        <span>{data.nickname}</span>
                     </span>
                     <div className="user-data__modify">
                         <button className="modify-btn" onClick={() => {
@@ -92,7 +96,7 @@ const Profile = () => {
                         }}>수정</button>
                         {isOpen && isModifyNick &&
                             <Modal onClose={closeModal} setter={setIsModifyNick}>
-                                <ModifyNickname data={data?.data} onClose={closeModal} />
+                                <ModifyNickname data={data} onClose={closeModal} />
                             </Modal>
                         }
                     </div>
@@ -102,7 +106,7 @@ const Profile = () => {
                 <div className="user-data__oneline user-data__phone">
                     <span>
                         <FontAwesomeIcon icon={faMobileScreenButton} className="phone" />
-                        <span>{data?.data.phoneNumber}</span>
+                        <span>{data.phoneNumber}</span>
                     </span>
                     <div className="user-data__modify">
                         <button className="modify-btn" onClick={() => {
@@ -111,7 +115,7 @@ const Profile = () => {
                         }}>수정</button>
                         {isOpen && isModifyPhoneNumber ?
                             <Modal onClose={closeModal} setter={setIsModifyPhoneNumber}>
-                                <ModifyPhoneNumber data={data?.data} onClose={closeModal} />
+                                <ModifyPhoneNumber data={data} onClose={closeModal} />
                             </Modal>
                             : null
                         }
@@ -131,7 +135,7 @@ const Profile = () => {
                         }}>수정</button>
                         {isOpen && isModifyPassword ?
                             <Modal onClose={closeModal} setter={setIsModifyPassword}>
-                                <ModifyPassword data={data?.data} onClose={closeModal} />
+                                <ModifyPassword data={data} onClose={closeModal} />
                             </Modal>
                             : null
                         }
@@ -149,8 +153,8 @@ const Profile = () => {
                             <div className="residence__address__data__show-location">
                                 <FontAwesomeIcon icon={faLocationDot} className="location" />
                                 <div className="address-space">
-                                    <span className="address-main">{data?.data.address.front_address}</span>
-                                    <span className="address-detail">{data?.data.address.detailed_address}</span>
+                                    <span className="address-main">{data.address.front_address}</span>
+                                    <span className="address-detail">{data.address.detailed_address}</span>
                                 </div>
                             </div>
                             <button className="modify-btn modify-btn-address" onClick={() => {
@@ -159,7 +163,7 @@ const Profile = () => {
                             }}>주소변경</button>
                             {isOpen && isModifyAddress ?
                                 <Modal onClose={closeModal} setter={setIsModifyAddress}>
-                                    <ModifyAddress data={data?.data} onClose={closeModal} />
+                                    <ModifyAddress data={data} onClose={closeModal} />
                                 </Modal>
                                 : null
                             }
@@ -176,7 +180,7 @@ const Profile = () => {
                             }}>추가 및 삭제</button>
                             {isOpen && isModifyRange ?
                                 <Modal onClose={closeModal} setter={setIsModifyRange}>
-                                    <ModifyRange data={data?.data} range={data?.data.area_range} onClose={closeModal} />
+                                    <ModifyRange data={data} range={data.area_range} onClose={closeModal} />
                                 </Modal>
                                 : null
                             }

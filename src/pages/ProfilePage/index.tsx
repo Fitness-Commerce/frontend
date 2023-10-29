@@ -8,19 +8,23 @@ import { faTableColumns } from "@fortawesome/free-solid-svg-icons";
 
 import profile from "../../assets/profile.jpeg";
 import logo from "../../assets/logo.png";
-import { useLogout } from "../../hooks/useLogout";
-import { useAxios } from "../../hooks/useAxios";
+// import { useLogout } from "../../hooks/useLogout";
+// import { useAxios } from "../../hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
-import { GET_SELF_MEMBER } from "../../contance/endPoint";
+// import { GET_SELF_MEMBER } from "../../contance/endPoint";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ErrorPage from "../Error";
 import Header from "../../components/header";
-
+import logout from "../../api/user_api/logout";
+import useAuth from "../../hooks/useAuth";
+import getMyProfile from "../../api/test_api/getMyProfile";
 
 
 const ProfilePage = () => {
-    const logout = useLogout();
-    const request = useAxios();
+    // const logout = useLogout();
+    // const request = useAxios();
+    const excuteLogout = useAuth(logout);
+    const excuteGetMyProfile = useAuth(getMyProfile);
 
     const url = useLocation().pathname.slice(1);
     let isAddNow = false;
@@ -38,14 +42,14 @@ const ProfilePage = () => {
     // 처음 렌더시 유저 프로필 정보 가져오기
     const { isLoading, error, data } = useQuery({
         queryKey: ['myProfile'],
-        queryFn: () => request(GET_SELF_MEMBER)
+        queryFn: excuteGetMyProfile
     })
 
     if (isLoading) return <LoadingSpinner />
     if (error) return <ErrorPage />
 
-    const nickname = data?.data.nickname;
-    const email = data?.data.email;
+    const nickname = data.nickname;
+    const email = data.email;
 
     return (
         <S.ProfilePage>
@@ -81,7 +85,7 @@ const ProfilePage = () => {
                 </S.Ul>
 
                 <div className="profile-page__left__logout">
-                    <Link to="/"><span onClick={logout}>로그아웃</span></Link>
+                    <Link to="/"><span onClick={excuteLogout}>로그아웃</span></Link>
                 </div>
             </S.ProfilePageLeft>
 

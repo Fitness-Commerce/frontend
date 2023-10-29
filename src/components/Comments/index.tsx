@@ -33,8 +33,8 @@ const Comments = ({ route, id }: CommentsProps) => {
     const login = useRecoilValue(isLogin);
 
     let query = useQuery(
-        ["comments", route],
-        () => getProductComments({ itemId: id }),
+        ["comments", route, id, page],
+        () => getProductComments({ itemId: id, page }),
         {
             keepPreviousData: true,
             enabled: route === "product",
@@ -43,7 +43,7 @@ const Comments = ({ route, id }: CommentsProps) => {
     );
 
     query =
-        useQuery(["comments", route], () => getPostComments({ postId: id }), {
+        useQuery(["comments", route, id, page], () => getPostComments({ postId: id, page }), {
             keepPreviousData: true,
             enabled: route === "post",
             // onSuccess: (data) => setComments(data),
@@ -57,6 +57,7 @@ const Comments = ({ route, id }: CommentsProps) => {
         if (commentInputRef.current) {
             await excuteCreateComment(id, commentInputRef.current.value);
             queryClient.refetchQueries(["comments", route]);
+            commentInputRef.current.value = "";
         }
     };
     
@@ -82,7 +83,7 @@ const Comments = ({ route, id }: CommentsProps) => {
                     <Pagination
                         currentPage={page}
                         totalPages={query.data.totalPages}
-                        onPageChange={(selectedPage) => setPage(selectedPage)}
+                        onPageChange={setPage}
                     />
                 )}
             {/* 새로운 댓글 작성 */}

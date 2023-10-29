@@ -62,8 +62,28 @@ export const ChatList = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
+    overflow-y: auto;
     flex-direction: column;
     gap: 8px;
+    padding-right: 16px;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        /* position: fixed; */
+        /* right: 0; */
+        /* z-index: 9999; */
+        border-radius: 4px;
+        background: transparent;
+        width: 8px;
+    }
+
+    &:hover {
+        &::-webkit-scrollbar-thumb {
+            background: #ccc;
+        }
+    }
 
     .chat-list__header__btn {
         display: flex;
@@ -160,7 +180,48 @@ export const ChatRoomHeader = styled.div`
     }
 
     .chat-room__title {
+        /* display: block; */
         flex-grow: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .chat-room__status-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: var(--button-radius);
+        background-color: var(--color-accent-bright-green);
+
+        cursor: pointer;
+    }
+
+    .chat-room__cancel-btn {
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: var(--button-radius);
+        background-color: var(--color-bright-gray);
+
+        cursor: pointer;
+    }
+
+    .chat-room__delete-btn {
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: var(--button-radius);
+        background-color: var(--color-bright-gray);
+
+        cursor: pointer;
+    }
+
+    .chat-room__sold {
+        padding: 8px 16px;
+        border: none;
+        border-radius: var(--button-radius);
+        background-color: var(--color-bright-gray);
+        color: white;
     }
 `;
 
@@ -236,7 +297,7 @@ export const ChatForm = styled.form`
         outline: none;
         border: none;
         border-right: none;
-        caret-color: red;
+        caret-color: white;
     }
     .chat-form__btn {
         display: flex;

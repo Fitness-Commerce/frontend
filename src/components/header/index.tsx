@@ -1,6 +1,8 @@
 import * as S from "./styled";
 import logo from "../../assets/logo.png";
 
+import SearchInput from "./SearchInput";
+
 import { useState } from "react";
 
 // Recoil
@@ -32,11 +34,12 @@ const Header = ({padding = "5vw"}) => {
                 </div>
             </Link>
             
-            <div className="header__search">
+            <SearchInput />
+            {/* <div className="header__search">
                 <form className="header__search__form">
                     <input type="text" placeholder="찾고 싶은 헬스용품을 검색해 보세요" className="header__search__form__input" />
                 </form>
-            </div>
+            </div> */}
 
             {isLoggedIn ?
             <ProfileIcon /> : 

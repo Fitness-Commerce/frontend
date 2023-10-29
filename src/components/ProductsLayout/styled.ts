@@ -31,6 +31,7 @@ export const Wrapper = styled.section<WrapperProps>`
 `;
 
 export const ProductCard = styled.article<ProductCardProps>`
+    max-height: 40vh;
     width: 100%;
     display: flex;
     padding: 8px;
@@ -38,7 +39,6 @@ export const ProductCard = styled.article<ProductCardProps>`
     border-radius: 4px;
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: all 0.2s ease;
     align-self: stretch;
 
     span {
@@ -82,12 +82,14 @@ export const ProductCard = styled.article<ProductCardProps>`
                     overflow: hidden;
                     width: 100%;
                     border-radius: 4px;
-                    background-color: rgba(0, 0, 0, 0.2);
-
-                    object-fit: contain;
+                    /* background-color: rgba(0, 0, 0, 0.2); */
+                    background-color: transparent;
 
                     .product-card__img {
                         width: 100%;
+                        height: 100%;
+
+                        object-fit: contain;
                     }
                 }
             `;
@@ -139,10 +141,13 @@ export const ProductCard = styled.article<ProductCardProps>`
                     }
 
                     border-radius: 4px;
-                    background-color: rgba(0, 0, 0, 0.2);
+                    background-color: transparent;
 
                     .product-card__img {
                         width: 100%;
+                        height: 100%;
+
+                        object-fit: contain;
                     }
                 }
             `;
@@ -173,6 +178,7 @@ export const ProductCard = styled.article<ProductCardProps>`
             font-weight: 500;
         }
         .product-card__name-price-wrapper {
+            color: var(--color-black-primary);
             display: flex;
             width: 100%;
             justify-content: space-between;
@@ -181,11 +187,19 @@ export const ProductCard = styled.article<ProductCardProps>`
             flex-direction: ${(props) => (props.$isGrid ? "column" : "row")};
 
             .product-card__name {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
                 font-size: 1rem;
-                font-weight: 700;
+                font-weight: 500;
+
+                @media (max-width: 600px) {
+                    white-space: pre-wrap;
+                }
             }
 
             .product-card__price {
+                flex-shrink: 0;
                 font-size: 1.3rem;
                 font-weight: 600;
             }
@@ -193,6 +207,9 @@ export const ProductCard = styled.article<ProductCardProps>`
 
         .product-card__local,
         .product-card__time {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             margin-top: 8px;
             font-size: 0.8rem;
             font-weight: 700;
@@ -203,7 +220,7 @@ export const ProductCard = styled.article<ProductCardProps>`
     @media ${(props) => props.theme.media.mobile} {
         .product-card__name {
             font-size: 0.9rem;
-            font-weight: 700;
+            font-weight: 500;
         }
 
         .product-card__price {
@@ -213,7 +230,7 @@ export const ProductCard = styled.article<ProductCardProps>`
 
         .product-card__local,
         .product-card__time {
-            font-size: 0.6rem !important;
+            font-size: 0.8rem !important;
         }
     }
 `;
@@ -226,7 +243,7 @@ export const DashboardProduct = styled.div<IDashboardProductProp>`
     padding: 3rem 0;
     #product-card__local,
     #product-card__time {
-        color: var(--color-white-primary);
+        color: var(--color-black-primary);
         font-weight: 400;
     }
     #product-card__img-wrapper {

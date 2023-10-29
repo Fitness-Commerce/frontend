@@ -22,17 +22,21 @@ export interface getPostsListProps {
     page: number;
     size: number;
     order?: string;
+    search?: string | null;
 }
 
 const getPostsList = async ({
     page,
     size,
     order = "id_ASC",
+    search
 }: getPostsListProps) => {
     const res = await axios.get(
-        `/api/posts?page=${page}&size=${size}&order=${order}`
+        `/api/posts?page=${page}&size=${size}&order=${order}` + (search ? `&search=${search}` : "")
     );
     const newPostsList: postListType = res.data;
+    console.log(newPostsList);
+    
     return newPostsList;
 };
 

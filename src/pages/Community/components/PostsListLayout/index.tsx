@@ -18,6 +18,7 @@ interface PostsListLayoutProps {
 
 const PostsListLayout = ({ size }: PostsListLayoutProps) => {
     const categoryId = useSearchParams()[0].get("category-id");
+    const search = useSearchParams()[0].get("search");
     const [page, setPage] = useState(1);
 
     const option = useRecoilValue(filteredOptionState); // 최신순, 가격순 정렬 등
@@ -38,9 +39,10 @@ const PostsListLayout = ({ size }: PostsListLayoutProps) => {
                     page,
                     size,
                     order: option,
+                    search
                 });
             }
-            : () => getPostsList({ page, size, order: option }),
+            : () => getPostsList({ page, size, order: option, search }),
         // FIXME: 최적화 필요
         { cacheTime: 0 }
     );

@@ -32,7 +32,12 @@ export const DELETE_MEMBER = "/api/members/myProfile";
 export const PRODUCT_CATEGORIES = "/api/categories";
 export const POST_CATEGORIES = "/api/postCategories";
 export const ITEMS = "/api/items";
+export const ITEMS_UPDATE = "/api/items/updateStatus";
 export const DASHBOARD_PRODUCT = "/api/dashboard/mySales";
 export const DASHBOARD_POST = "/api/dashboard/myPost";
 export const PRODUCT_COMMENTS = "/api/items/{itemId}/comments";
 export const POST_COMMENTS = "/api/posts/{postId}/comments";
+
+
+export const WEBSOCKET = "ws://localhost:8080/ws"
+// export const WEBSOCKET = "ws://43.200.32.144:8080/ws"

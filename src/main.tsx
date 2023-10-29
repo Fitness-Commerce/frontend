@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
 import theme from "./style/theme";
@@ -22,7 +21,7 @@ import Dashboard from "./pages/ProfilePage/dashboard";
 import Profile from "./pages/ProfilePage/profile";
 import ProductForm from "./components/ProductForm";
 import PrefetchComponent from "./api/PrefetchComponent";
-
+// import Search from "./pages/Search";
 //FIXME: 테스트용
 import login from "./api/test_api/login";
 import signup from "./api/test_api/signup";
@@ -62,6 +61,10 @@ const router = createBrowserRouter([
                 path: "products",
                 element: <Products />,
             },
+            // {
+            //     path: "products/:search",
+            //     element: <Products />,
+            // },
             {
                 path: "products/:crud",
                 element: <ProductForm />,
@@ -87,7 +90,7 @@ const router = createBrowserRouter([
                         <button type="button" onClick={createProductsCategory}>
                             카테고리 생성
                         </button>
-                        
+
                         <button type="button" onClick={testCreateProducts}>
                             더미 매물
                         </button>
@@ -104,7 +107,7 @@ const router = createBrowserRouter([
                 ),
             },
         ],
-        // errorElement: <ErrorPage />,
+        errorElement: <ErrorPage />,
     },
     {
         path: "*",
@@ -119,7 +122,7 @@ const router = createBrowserRouter([
                 <Community />
             </>
         ),
-        errorElement: <ErrorPage />
+        errorElement: <ErrorPage />,
     },
     {
         path: "/user",
@@ -153,7 +156,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <RecoilRoot>
                 <GlobalStyles />
                 <RouterProvider router={router} />
-                <ReactQueryDevtools />
             </RecoilRoot>
         </ThemeProvider>
     </QueryClientProvider>

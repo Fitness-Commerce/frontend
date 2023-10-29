@@ -5,6 +5,9 @@ const socketAuthRefresh = (stompClient: Client) => {
     stompClient.onStompError = async (frame) => {
         const headers = frame.headers;
 
+        console.log(headers);
+        
+
         if (headers["message"] === "401") {
             // 401 에러 발생시 재인증 요청
             try {

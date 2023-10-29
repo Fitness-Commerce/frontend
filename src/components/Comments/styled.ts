@@ -6,6 +6,7 @@ export const CommentContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 5vh;
     gap: 12px;
     /* justify-content: center; */
 

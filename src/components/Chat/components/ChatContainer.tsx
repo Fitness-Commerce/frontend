@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import useAuth from "../../../hooks/useAuth";
@@ -36,6 +36,7 @@ const ChatContainer = ({ itemId }: ChatContainerProps) => {
         isPaused,
     } = useQuery(["chatRoomList"], () => excuteGetChatList(userProfile.id), {
         enabled: !!userProfile,
+        cacheTime: 0,
     });
 
     const [chatRoom, setChatRoom] = useState(itemId || 0);
@@ -44,6 +45,11 @@ const ChatContainer = ({ itemId }: ChatContainerProps) => {
     const onGoBackToList = () => {
         setChatRoom(0);
     };
+
+    useEffect(() => {
+        console.log(chatRoomList);
+        
+    }, []);
 
     // 로그만 띄움 / 에러핸들링은 채팅창에서
     if (isChatRoomListError || isProfileError) console.log(chatRoomListError || profileError);

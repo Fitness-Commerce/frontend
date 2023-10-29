@@ -108,6 +108,7 @@ export const Slider = styled.div.attrs<SliderProps>((props) => ({
     transition: left 0.2s ease-out;
 
     img {
+        width: ${(props) => props.$width}px;
         height: ${(props) => props.$width}px;
         object-fit: contain;
     }

@@ -1,4 +1,4 @@
-async function logout() {
+function logout() {
     const error = Error("로그아웃");
     error.name = "LOGOUT";
     throw error;

@@ -102,10 +102,11 @@ export const Wrapper = styled.div`
         .trade__area-range {
             display: flex;
             align-items: center;
-            gap: 0.2rem;
-            font-size: 8px;
-            font-weight: 700;
-            color: var(--color-black-primary);
+            gap: 0.7rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.5);
+            line-height: 1.5rem;
         }
 
         /* 거래 버튼 컨테이너 */

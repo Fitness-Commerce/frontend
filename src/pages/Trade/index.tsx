@@ -92,11 +92,11 @@ const Trade = () => {
                 <S.Wrapper>
                     <ImageSlide
                         itemImagesUrl={product.itemImagesUrl
-                            // .map((url) =>
-                            // url.replace(
-                            //     "http://43.200.32.144:8080/",
-                            //     "http://localhost:8080/"
-                            // ))
+                            .map((url) =>
+                            url.replace(
+                                "http://43.200.32.144:8080/",
+                                "http://localhost:8080/"
+                            ))
                         }
                     />
                     <div className="trade__info-wrapper">

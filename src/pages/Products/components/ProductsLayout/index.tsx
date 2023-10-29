@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import {
     viewModeState,
@@ -25,6 +26,7 @@ interface ProductsLayoutProps {
 }
 
 const ProductsLayout = ({ layout }: ProductsLayoutProps) => {
+    const search = useSearchParams()[0].get("search");
     const excuteGetProductList = useAuth(getProductList);
     const selectedCategory = useRecoilValue(SelectedCategoryState);
     const viewType = useRecoilValue(viewModeState);
@@ -39,7 +41,7 @@ const ProductsLayout = ({ layout }: ProductsLayoutProps) => {
         isLoading,
         error,
     } = useInfiniteQuery(
-        ["productsList", option, viewType, selectedCategory],
+        ["productsList", option, viewType, selectedCategory, search],
         ({ pageParam = 1 }) => {
             // 카테고리 조회
             if (selectedCategory)
@@ -47,21 +49,22 @@ const ProductsLayout = ({ layout }: ProductsLayoutProps) => {
                     id: selectedCategory,
                     page: pageParam,
                     order: option,
+                    search
                 });
 
             // 지역보기면 인증토큰 같이 보냄
             return viewType === sortLabel[0]
-                ? getProductList({ page: pageParam, order: option })
-                : excuteGetProductList({ page: pageParam, order: option });
+                ? getProductList({ page: pageParam, order: option, search })
+                : excuteGetProductList({ page: pageParam, order: option, search });
         },
         {
             getNextPageParam: (_, allPosts) => {
-                return allPosts.length < allPosts[0].totalPages // 현재 가져온 페이지 개수가 totalPages보다 작아야됨
+                return allPosts.length < allPosts[0]?.totalPages // 현재 가져온 페이지 개수가 totalPages보다 작아야됨
                     ? allPosts.length + 1
                     : undefined;
             },
             select: (data) => {
-                const newData = data.pages.map(
+                const newData = data.pages.length <= 0 ? data.pages.map(
                     (productList: ProductListType) => ({
                         ...productList,
                         content: productList.content.map(
@@ -76,7 +79,7 @@ const ProductsLayout = ({ layout }: ProductsLayoutProps) => {
                             })
                         ),
                     })
-                );
+                ) : data.pages;
                 return { ...data, pages: newData };
             },
             staleTime: Infinity,
@@ -99,8 +102,8 @@ const ProductsLayout = ({ layout }: ProductsLayoutProps) => {
             hasMore={hasNextPage}
             loader={<LoadingSpinner key={list.pages.length} />}
         >
-            {list?.pages.map((pageData) =>
-                pageData.content.map((product: ProductType) => (
+            {list.pages && list.pages.map((pageData) =>
+                pageData?.content.map((product: ProductType) => (
                     <ProductCard
                         key={product.id}
                         info={product}

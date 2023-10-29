@@ -12,9 +12,11 @@ async function getCategoryPostList({
     page,
     size,
     order = "id_ASC",
+    search,
 }: getCategoryPostListProps) {
     const res = await axios.get(
-        `/api/postCategories/${categoryId}/posts?page=${page}&size=${size}&order=${order}`
+        `/api/postCategories/${categoryId}/posts?page=${page}&size=${size}&order=${order}` +
+            (search ? `&search=${search}` : "")
     );
     const categoryPostList: postListType = res.data;
     return categoryPostList;

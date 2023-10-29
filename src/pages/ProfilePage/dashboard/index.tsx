@@ -4,20 +4,27 @@ import { faCaretUp } from "@fortawesome/free-solid-svg-icons";
 
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useAxios } from "../../../hooks/useAxios";
+// import { useAxios } from "../../../hooks/useAxios";
 import { Link } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 
 import Header from "../../../components/header";
 import ProductCard from "../../../components/ProductsLayout/ProductCard";
-import { DASHBOARD_POST, DASHBOARD_PRODUCT, GET_SELF_MEMBER } from "../../../contance/endPoint";
 import { IDashboardPost, IDashboardProduct } from "../../../interface/dashboard/DashBoardInterface";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import BashboardPost from "./BashboardPost";
 import profile from "../../../assets/profile.jpeg";
 
+import getMyProfile from "../../../api/test_api/getMyProfile";
+import getDashboardProduct from "../../../api/profile_api/getDashboardProduct";
+import getDashboardPost from "../../../api/profile_api/getDashboardPost";
+
 
 const Dashboard = () => {
-    const request = useAxios();
+    // const request = useAxios();
+    const excuteGetMyProfile = useAuth(getMyProfile);
+    const excuteGetMyProduct = useAuth(getDashboardProduct);
+    const excuteGetMyPost = useAuth(getDashboardPost);
 
     const [onSale, setOnSale] = useState<IDashboardProduct[]>([]);
     const [reserved, setReserved] = useState<IDashboardProduct[]>([]);
@@ -45,29 +52,29 @@ const Dashboard = () => {
     // 유저 프로필 정보
     const {isLoading: profileIsLoading, error: profileError, data: profileData } = useQuery({
         queryKey: ['myProfile'],
-        queryFn: () => request.get(GET_SELF_MEMBER)
+        queryFn: excuteGetMyProfile
     })
 
     // 유저가 등록한 상품 리스트
     const { isLoading: productIsLoading, error: productError, data: productData } = useQuery({
         queryKey: ['dashboardProduct'],
-        queryFn: () => request.get(DASHBOARD_PRODUCT)
+        queryFn: excuteGetMyProduct
     })
 
     // 유저가 게시한 게시글
     const { isLoading: postIsLoading, error: postError, data: postData } = useQuery({
         queryKey: ['dashboardPost'],
-        queryFn: () => request.get(DASHBOARD_POST)
+        queryFn: excuteGetMyPost
     })
     
     useEffect(() => {
         if(productData) {
-            setOnSale(productData.data.filter((e: { itemStatus: string; }) => e.itemStatus === "SELLING"));
-            setReserved(productData.data.filter((e: { itemStatus: string; }) => e.itemStatus === "RESERVED"));
-            setSoldOut(productData.data.filter((e: { itemStatus: string; }) => e.itemStatus === "SOLD"));
+            setOnSale(productData.filter((e: { itemStatus: string; }) => e.itemStatus === "SELLING"));
+            setReserved(productData.filter((e: { itemStatus: string; }) => e.itemStatus === "RESERVED"));
+            setSoldOut(productData.filter((e: { itemStatus: string; }) => e.itemStatus === "SOLD"));
         }
         if(postData) {
-            setPosts(postData?.data);
+            setPosts(postData);
         }
     }, [productData, postData])
 
@@ -86,7 +93,7 @@ const Dashboard = () => {
                     <h3 className="dashboard__container__head__user">
                         <div className="dashboard__container__head__user__welcome">Welcome!</div>
                         <Link className="dashboard__container__head__user__img" to="/user/profile"><img src={profile} alt="profile-img" /></Link>
-                        <div className="dashboard__container__head__user__nickname">{profileData?.data.nickname}</div>
+                        <div className="dashboard__container__head__user__nickname">{profileData.nickname}</div>
                     </h3>
                     {/* table */}
                     <table>
@@ -104,7 +111,7 @@ const Dashboard = () => {
                                 <td>{onSale.length ? onSale.length : 0}</td>
                                 <td>{reserved.length ? reserved.length : 0}</td>
                                 {/* FIXME */}
-                                <td>{postData && postData.data.length}</td>
+                                <td>{postData && postData.length}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -139,7 +146,7 @@ const Dashboard = () => {
                                 )) : soldOut.map((e, index) => (
                                     <ProductCard type="dashboard" dashboardInfo={e} key={index} />
                                 ))}
-                                {!productData?.data.length && <span style={{"textAlign": "center"}}>등록된 상품이 없습니다.</span>}
+                                {!productData.length && <span style={{"textAlign": "center"}}>등록된 상품이 없습니다.</span>}
                             </div>
                         </div>
                     </div>

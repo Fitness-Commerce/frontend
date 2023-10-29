@@ -38,9 +38,14 @@ const Post = () => {
                 {
                     urlSanitizer: () => {
                         // FIXME: replace는 임시방편이고 서버에서 :8080을 포함해서 보내줘야됨
-                        return postData.postImageUrl[
-                            counter.increase()
-                        ].replace("/api", ":8080/api");
+                        return (
+                            postData.postImageUrl[counter.increase()]
+                                // .replace("/api", ":8080/api");
+                                .replace(
+                                    "http://43.200.32.144",
+                                    "http://localhost:8080"
+                                )
+                        );
                         // return "http://43.200.32.144:8080/home/ec2-user/imageDir/5dd1269a-d69d-4321-9203-61eef3bcfec3.png"
                     },
                 }
@@ -89,37 +94,47 @@ const Post = () => {
             <S.Wrapper>
                 <S.Container>
                     {/* FIXME: 커뮤니티 ID가 아니라 이름을 출력해야됨 */}
-                    <S.Board>{"커뮤니티 " + postData?.postCategoryId}</S.Board>
+                    <S.Board>
+                        {"커뮤니티 > " +
+                            queryClient
+                                .getQueryData<getPostCategoriesType[]>([
+                                    "postsCategories",
+                                ])
+                                ?.filter(
+                                    (category) =>
+                                        category.id === postData?.postCategoryId
+                                )[0].title}
+                    </S.Board>
                     <hr className="post__hr" />
-                    <S.Title>{postData?.title}</S.Title>
-                    <S.Content>
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: content || (
-                                    <div>아무 내용이 없습니다</div>
-                                ),
-                            }}
-                        ></div>
-                    </S.Content>
-                    <div style={{ display: "flex" }}>
+                    <S.ContentContainer>
+                        <S.Title>{postData?.title}</S.Title>
+                        <S.Content>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: content || (
+                                        <div>아무 내용이 없습니다</div>
+                                    ),
+                                }}
+                            ></div>
+                        </S.Content>
+                    </S.ContentContainer>
+                    <S.ButtonContainer>
+                        - 부적절한 표현 사용시 게시글이 삭제될 수 있습니다 -
                         <button
                             type="button"
-                            style={{ flexGrow: "1" }}
+                            className="post__modify-btn"
                             onClick={() => setIsPostForm(true)}
                         >
                             수정
                         </button>
                         <button
                             type="button"
-                            style={{
-                                flexGrow: "1",
-                                backgroundColor: "rgba(0, 0, 0, 0.2)",
-                            }}
+                            className="post__delete-btn"
                             onClick={() => alert("아직 삭제 기능 없어요 ㅠㅠ")}
                         >
                             삭제
                         </button>
-                    </div>
+                    </S.ButtonContainer>
                     <Comments route="post" id={parseInt(postId as string)} />
                 </S.Container>
             </S.Wrapper>

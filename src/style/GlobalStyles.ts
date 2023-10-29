@@ -55,6 +55,7 @@ const GlobalStyles = createGlobalStyle`
     body {
         color: var(--color-black-primary);
         background-color: var(--color-bg-white);
+        padding-bottom: 5vh;
         
         /* input type number일 때 증감 버튼을 비활성화 */
         input::-webkit-inner-spin-button {

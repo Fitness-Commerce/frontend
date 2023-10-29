@@ -28,6 +28,8 @@ const Products = () => {
             }));
             return { content: newData };
         },
+        staleTime: Infinity,
+        cacheTime: 0,
     });
 
     if (isLoading) return <LoadingSpinner />;

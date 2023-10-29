@@ -62,7 +62,7 @@ const StyledBashboardPost = styled.div`
 const BashboardPost = ({post, nickname}: IBashboardPostProp) => {
     const time = pastTimeCalculator(post.created_at);
     return (
-        <Link to={`post/${post.postId}`}>
+        <Link to={`/post/${post.postId}`}>
         <StyledBashboardPost>
             <div className="view-count-div">
                 <FontAwesomeIcon icon={faEye} />

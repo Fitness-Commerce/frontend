@@ -3,6 +3,7 @@ import * as S from "./styled";
 import ProductType from "../../interface/Products";
 import { useNavigate } from "react-router-dom";
 import { TRADE } from "../../contance/routeURL";
+import pastTimeCalculator from "../../util/pastTimeCalculator";
 
 interface ProductCardProps {
     type?: string;
@@ -47,7 +48,11 @@ const ProductCard = ({
                         <img
                             id="product-card__img"
                             className="product-card__img"
-                            src={dashboardInfo?.mainImageUrl}
+                            src={dashboardInfo?.mainImageUrl?.toString()
+                                .replace(
+                                    "http://43.200.32.144:8080/",
+                                    "http://localhost:8080/"
+                                )}
                             alt={dashboardInfo?.itemName}
                         />
                     </div>
@@ -76,7 +81,7 @@ const ProductCard = ({
                                 id="product-card__time"
                                 className="product-card__time"
                             >
-                                {dashboardInfo?.createdAt}
+                                {pastTimeCalculator(dashboardInfo?.createdAt as string)}
                             </span>
                         </div>
                     </div>
@@ -95,11 +100,11 @@ const ProductCard = ({
                     // FIXME: url 로컬 서버에서 가져오는 중
                     src={
                         info?.itemImagesUrl[0]
-                            // ?.toString()
-                            // .replace(
-                            //     "http://43.200.32.144:8080/",
-                            //     "http://localhost:8080/"
-                            // ) || dummyImage
+                            ?.toString()
+                            .replace(
+                                "http://43.200.32.144:8080/",
+                                "http://localhost:8080/"
+                            )
                     }
                     alt={info?.itemName}
                 />
@@ -122,18 +127,19 @@ const ProductCard = ({
                     2. item_detail에 원하는 거래지역 넣기 (이게 좀 더 깔끔하긴 함) */}
                 <div>
                     <span className="product-card__local">
-                        {info?.transactionArea
-                            .slice(0, 3)
-                            .map((area, index) =>
-                                index < 2 ? (
-                                    <p key={area}>{area}</p>
-                                ) : (
-                                    <span key={area}>...</span>
-                                )
-                            )}
+                        {info?.transactionArea[0]
+                            // .slice(0, 3)
+                            // .map((area, index) =>
+                            //     index < 2 ? (
+                            //         <p key={area}>{area}</p>
+                            //     ) : (
+                            //         <span key={area}>...</span>
+                            //     )
+                            // )
+                        }
                     </span>
                     <span className="product-card__time">
-                        {info?.createdAt}
+                        {pastTimeCalculator(info?.createdAt as string)}
                     </span>
                 </div>
             </div>
